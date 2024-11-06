@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const Stu_Reg = () => {
   const [formData, setFormData] = useState({
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -24,7 +24,7 @@ export const Stu_Reg = () => {
     // try {
       e.preventDefault()
       try {
-        const response = await fetch("http://localhost:3000/api/auth/student-register", {
+        const response = await fetch("http://localhost:3000/api/auth/student-signup", {
           method: "POST",
           headers: {"Content-Type" : "application/json",},
           body: JSON.stringify(formData),
@@ -39,8 +39,9 @@ export const Stu_Reg = () => {
             password: '',
             confirmPassword: '',
           })
-          console.log(responsedata)
-          navigate("/")
+          const userId = responsedata.data.userId;
+          // console.log(userId);
+          navigate(`/otp/${userId}`);
         }
 
       } catch (error) {
@@ -59,9 +60,9 @@ export const Stu_Reg = () => {
               <input
                 className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
                 type="text"
-                name="firstname"
+                name="firstName"
                 placeholder="Enter first name"
-                value={formData.firstname}
+                value={formData.firstName}
                 onChange={handleInputChange}
                 required
               />
@@ -71,9 +72,9 @@ export const Stu_Reg = () => {
               <input
                 className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
                 type="text"
-                name="lastname"
+                name="lastName"
                 placeholder="Enter last name"
-                value={formData.lastname}
+                value={formData.lastName}
                 onChange={handleInputChange}
                 required
               />
