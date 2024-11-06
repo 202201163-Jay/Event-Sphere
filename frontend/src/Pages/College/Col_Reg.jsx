@@ -106,67 +106,84 @@ export const Col_Reg = () => {
   
 
   return (
-    <div className="w-full px-10 h-screen flex justify-center items-center">
-      <div className="w-full max-w-lg">
+    <div className="w-full px-10 h-screen flex justify-center items-center bg-gray-900 py-5 mt-5">
+      <div className="w-full max-w-lg bg-gray-800 text-white shadow-lg rounded-lg p-8">
         <div className="text-center mb-10">
-          <h2 className="text-2xl font-bold mt-4">Join us</h2>
-          <h2 className="text-2xl font-bold">Boost your Events</h2>
-          <h3 className="mt-2">Be a part of a constantly growing community.</h3>
+          <h2 className="text-2xl font-bold text-center mb-6">Join us</h2>
+          <h3 className="text-lg text-center mb-4">Boost your Events</h3>
+          <p className="text-center mb-6">Be a part of a constantly growing community.</p>
         </div>
 
-        <div className="overflow-y-auto max-h-[75vh] p-4 border rounded-lg">
+        <div className="overflow-y-auto max-h-[75vh] p-4 border rounded-lg bg-gray-800">
           <form className="w-full" onSubmit={handleSubmit}>
-            <input
-              className="w-full p-2 border rounded mb-4"
-              type="text"
-              name="collegeName"
-              placeholder="Enter Your College Name"
-              value={formData.collegeName}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              className="w-full p-2 border rounded mb-4"
-              type="email"
-              name="email"
-              placeholder="Enter Your College Email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              className="w-full p-2 border rounded mb-4"
-              type="password"
-              name="password"
-              placeholder="Create a Password"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              className="w-full p-2 border rounded mb-4"
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Your Password"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
-              required
-            />
+            <div className='mb-4'>
+              <label className="text-sm font-semibold text-gray-400">College Name *</label>
+              <input
+                className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
+                type="text"
+                name="collegeName"
+                placeholder="Enter Your College Name"
+                value={formData.collegeName}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            
+            <div className="mb-4">
+              <label className="text-sm font-semibold text-gray-400">College Email *</label>
+              <input
+                className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
+                type="email"
+                name="email"
+                placeholder="Enter Your College Email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="text-sm font-semibold text-gray-400">Password *</label>
+              <input
+                className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
+                type="password"
+                name="password"
+                placeholder="Create a Password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="text-sm font-semibold text-gray-400">Confirm Password *</label>
+              <input
+                className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Your Password"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
             {error && <p className="text-red-500 mb-4 flex justify-center">{error}</p>}
-            <input
-              className="w-full p-2 border rounded mb-4"
-              type="text"
-              name="emailDomain"
-              placeholder="Enter Your College Email Domain"
-              value={formData.emailDomain}
-              onChange={handleInputChange}
-              required
-            />
+            <div className="mb-4">
+              <label className="text-sm font-semibold text-gray-400">Email Domain *</label>
+              <input
+                className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
+                type="text"
+                name="emailDomain"
+                placeholder="Enter Your College Email Domain"
+                value={formData.emailDomain}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
 
             {representatives.map((rep, index) => (
-              <div key={index} className="w-full mb-4">
+              <div key={index} className="mb-4">
+                <label className="text-sm font-semibold text-gray-400">Representative {index + 1} *</label>
                 <input
-                  className="w-full p-2 border rounded mb-2"
+                  className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
                   type="text"
                   name="repname"
                   placeholder="Representative Name"
@@ -175,7 +192,7 @@ export const Col_Reg = () => {
                   required
                 />
                 <input
-                  className="w-full p-2 border rounded mb-2"
+                  className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
                   type="text"
                   name="repId"
                   placeholder="Representative ID"
@@ -184,7 +201,7 @@ export const Col_Reg = () => {
                   required
                 />
                 <input
-                  className="w-full p-2 border rounded mb-2"
+                  className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
                   type="password"
                   name="password"
                   placeholder="Representative Password"
@@ -202,7 +219,7 @@ export const Col_Reg = () => {
                 <button
                   type="button"
                   onClick={addRepresentative}
-                  className="w-1/2 bg-green-500 text-white p-2 rounded hover:bg-green-600"
+                  className="w-1/2 bg-green-500 text-white p-3 rounded hover:bg-green-600 transition-colors"
                 >
                   Add Representative
                 </button>
@@ -212,7 +229,7 @@ export const Col_Reg = () => {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="w-1/2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+                className="w-1/2 bg-blue-500 text-white p-3 rounded font-bold hover:bg-blue-600 transition-colors"
                 style={{ fontWeight: '800' }}
               >
                 Sign Up
@@ -223,7 +240,7 @@ export const Col_Reg = () => {
 
         <div className="text-center mt-4">
           <h3>
-            Already have an account? <a className="text-blue-500 hover:underline " href="/college-login">Log In</a>
+            Already have an account? <a className="text-blue-500 hover:underline" href="/college-login">Log In</a>
           </h3>
         </div>
       </div>

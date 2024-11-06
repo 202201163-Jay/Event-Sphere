@@ -1,73 +1,94 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { useAuth } from '../../context/AuthProvider';
 
 export const Stu_Login = () => {
-  
   const [user, setUser] = useState({
     email: "",
     password: "",
-  })
+  });
 
-
-  const {storeTokenInLs} = useAuth()
-  const navigate = useNavigate()
+  const { storeTokenInLs } = useAuth();
+  const navigate = useNavigate();
 
   const handleInput = (e) => {
-    const {name, value} = e.target
-    setUser({...user, [name]:value})
-  }
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+  };
 
-  const handleSubmit = async(e) => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const response = await fetch("http://localhost:3000/api/auth/student-login", {
-        method : "POST",
-        headers : {"Content-Type" : "application/json"},
-        body : JSON.stringify(user),
-      })
-      console.log(response)
-      if(response.ok){
-        alert("Login Successful !!")
-        const responsedata = await response.json()
-        storeTokenInLs(responsedata.token, responsedata.name)
-        console.log(responsedata.name)
-        navigate("/")
-      }
-      else if(response.status === 401){
-        alert("Invalid Credentials")
-      }
-      else{
-        alert("Something went wrong, please try again")
-      }
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user),
+      });
 
+      if (response.ok) {
+        alert("Login Successful !!");
+        const responsedata = await response.json();
+        storeTokenInLs(responsedata.token, responsedata.name);
+        navigate("/");
+      } else if (response.status === 401) {
+        alert("Invalid Credentials");
+      } else {
+        alert("Something went wrong, please try again");
+      }
     } catch (error) {
-      console.error("Error during login", error)
+      console.error("Error during login", error);
     }
-  }
+  };
 
   return (
-    <>
-        <div className="w-full px-10">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl font-bold">Welcome Back!</h2>
-            <h2 className="text-2xl font-bold">Login to your Account</h2>
-            <h3 className="mt-2">Let's start exploring events tailored for you!</h3>
+    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
+      <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8">
+        <h2 className="text-2xl font-bold text-center mb-6">Welcome Back!</h2>
+        <h3 className="text-lg text-center mb-4">Login to your Account</h3>
+        <p className="text-center mb-6">Let's start exploring events tailored for you!</p>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="text-sm font-semibold text-gray-400">Email Address *</label>
+            <input
+              className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
+              type="email"
+              name="email"
+              placeholder="Enter Your Email"
+              value={user.email}
+              onChange={handleInput}
+              required
+            />
           </div>
-          <div className="flex flex-col items-center">
-            <form className="w-full" onSubmit={handleSubmit}>
-              <input className="w-full p-2 border rounded mb-4" type="email" name="email" placeholder="Enter Your Email" value={user.email} onChange={handleInput}/>
-              <input className="w-full p-2 border rounded mb-4" type="password" name="password" placeholder="Enter Your Password" value={user.password} onChange={handleInput} />
-              <div className='flex justify-center'>
-                <button className="w-1/2 bg-green-500 text-white p-2 rounded hover:bg-green-600">Log In</button>
-              </div>
-            </form>
+          <div>
+            <label className="text-sm font-semibold text-gray-400">Password *</label>
+            <input
+              className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
+              type="password"
+              name="password"
+              placeholder="Enter Your Password"
+              value={user.password}
+              onChange={handleInput}
+              required
+            />
           </div>
-          <div className="text-center mt-4">
-            <h3>Don't have an account? <Link className="text-green-500 hover:underline" to="/student-register">Sign Up</Link></h3>
+          <div className="flex justify-center">
+            <button
+              className="w-full bg-green-500 text-white p-3 rounded font-bold hover:bg-green-600 transition-colors"
+              type="submit"
+            >
+              Log In
+            </button>
           </div>
+        </form>
+        <div className="text-center mt-4">
+          <p>
+            Don't have an account?{" "}
+            <Link className="text-green-500 hover:underline" to="/student-register">
+              Sign Up
+            </Link>
+          </p>
         </div>
-    </>
+      </div>
+    </div>
   );
 };

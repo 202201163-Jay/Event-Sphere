@@ -8,14 +8,13 @@ export const Col_Login = () => {
     password: "",
   });
 
-
-  const {storeTokenInLs} = useAuth()
-  const {isCollegeRepresentative, setIsCollegeRepresentative} = useAuth()
+  const { storeTokenInLs } = useAuth();
+  const { setIsCollegeRepresentative } = useAuth();
   const navigate = useNavigate();
 
   const toggle = () => {
-    setIsCollegeRepresentative(prev => !prev)
-  }
+    setIsCollegeRepresentative((prev) => !prev);
+  };
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -34,13 +33,8 @@ export const Col_Login = () => {
       if (response.ok) {
         alert("Login Successful !!");
         const responseData = await response.json();
-        storeTokenInLs(responseData.token, collegeRep.name)
-        toggle()
-        // swapped()
-        
-        // isCollegeRepresentative = true
-        // console.log(isCollegeRepresentative)
-        console.log(responseData);
+        storeTokenInLs(responseData.token, collegeRep.name);
+        toggle();
         navigate("/");  // Redirect to home or dashboard after successful login
       } else if (response.status === 401 || response.status === 403) {
         alert("Invalid Credentials");
@@ -53,39 +47,53 @@ export const Col_Login = () => {
   };
 
   return (
-    <div className="w-full px-10">
-      <div className="text-center mb-10">
-        <h2 className="text-2xl font-bold">Welcome Back!</h2>
-        <h2 className="text-2xl font-bold">Login to your Account</h2>
-        <h3 className="mt-2">It's nice to see you again. Ready to conquer?</h3>
-      </div>
-      <div className="flex flex-col items-center">
-        <form className="w-full" onSubmit={handleSubmit}>
-          <input
-            className="w-full p-2 border rounded mb-4"
-            type="text"
-            name="email"
-            placeholder="Your Work email"
-            value={collegeRep.email}
-            onChange={handleInput}
-            required
-          />
-          <input
-            className="w-full p-2 border rounded mb-4"
-            type="password"
-            name="password"
-            placeholder="Your Password"
-            value={collegeRep.password}
-            onChange={handleInput}
-            required
-          />
-          <div className='flex justify-center'>
-            <button className="w-1/2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Log In</button>
+    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
+      <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8">
+        <h2 className="text-2xl font-bold text-center mb-6">Welcome Back!</h2>
+        <h3 className="text-lg text-center mb-4">Login to your Account</h3>
+        <p className="text-center mb-6">It's nice to see you again. Ready to conquer?</p>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="text-sm font-semibold text-gray-400">Email Address *</label>
+            <input
+              className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
+              type="text"
+              name="email"
+              placeholder="Your Work email"
+              value={collegeRep.email}
+              onChange={handleInput}
+              required
+            />
+          </div>
+          <div>
+            <label className="text-sm font-semibold text-gray-400">Password *</label>
+            <input
+              className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
+              type="password"
+              name="password"
+              placeholder="Your Password"
+              value={collegeRep.password}
+              onChange={handleInput}
+              required
+            />
+          </div>
+          <div className="flex justify-center">
+            <button
+              className="w-full bg-blue-500 text-white p-3 rounded font-bold hover:bg-blue-600 transition-colors"
+              type="submit"
+            >
+              Log In
+            </button>
           </div>
         </form>
-      </div>
-      <div className="text-center mt-4">
-        <h3>Don't have an account? <Link className="text-blue-500 hover:underline" to="/college-register">Sign Up</Link></h3>
+        <div className="text-center mt-4">
+          <p>
+            Don't have an account?{" "}
+            <Link className="text-blue-500 hover:underline" to="/college-register">
+              Sign Up
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
