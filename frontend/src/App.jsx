@@ -10,6 +10,8 @@ import { Blogs } from './Pages/Home/Blogs';
 import {AuthProvider} from './Context/AuthProvider';
 import { Logout } from './Pages/Home/Logout';
 import { Listing } from './Pages/Home/Listing';
+import { Verification } from './Pages/Student/Verification';
+import {Otp} from './Pages/Student/Otp'
 export const App = () => {
   return (
     <>
@@ -24,6 +26,8 @@ export const App = () => {
         <Route path="/college-register" element={<College_Register/>} />
         <Route path="/student-login" element={<Student_Login/>} />
         <Route path="/student-register" element={<Student_Register/>} />
+        <Route path='/verification' element={<Verification/>}></Route>
+        <Route path='/otp' element={<Otp/>}></Route>
         <Route path="/" element={<Home/>} />
       </Routes>
       </AuthProvider>

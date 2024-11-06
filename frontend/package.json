@@ -10,18 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
+    "gsap": "^3.12.5",
     "lucide-react": "^0.454.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.27.0"
-=======
-    "gsap": "^3.12.5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "react-quill": "^2.0.0",
+    "react-router-dom": "^6.27.0",
     "sass": "^1.80.3"
->>>>>>> 9198405e77b8745c1eb0b848ca973ee9c31c07c9
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
