@@ -48,7 +48,6 @@ exports.loginAsCollege = async (req, res) => {
 exports.loginAsUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
@@ -57,13 +56,13 @@ exports.loginAsUser = async (req, res) => {
         }
 
         const userExist = await User.findOne({ email });
-        const name = userExist.name
         if (!userExist) {
             return res.status(401).json({
                 success: false,
                 message: "User does not exist",
             });
         }
+        const name = userExist.name
         const isPasswordvalid = await userExist.comparePassword(password)
         if(isPasswordvalid){
             const token = await userExist.generateToken()
