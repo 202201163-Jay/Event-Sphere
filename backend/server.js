@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const user = require("./routes/user");
-const connectDb = require("./config/dbconnection");
+require("./config/database").connect()
 require("dotenv").config();
 
 const corsOptions = {
@@ -17,8 +17,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
 app.use("/api/auth", user);
-connectDb().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server is running at port: ${PORT}`);
-    });
-});
+ 
+app.listen(PORT, () => {
+    console.log("Server Run at ", PORT);
+})

@@ -20,7 +20,7 @@ const collegeSchema = new mongoose.Schema({
   emailDomain: {
     type: String,
     required: true,
-    trim: true,
+    unique: true,
   },
   collegeRepresentatives: {
     type: [

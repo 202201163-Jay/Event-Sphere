@@ -1,55 +1,50 @@
+// models/User.js
 const mongoose = require("mongoose");
-const hashvalue = 10;
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const hashValue = 10;
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    require: true,
-    trim: true,
+  firstName: { type: String, required: true, trim: true },
+  lastName: { type: String, required: true, trim: true },
+  email: { type: String, required: true, trim: true, unique: true },
+  password: { type: String, required: true },
+  isVerified: { type: Boolean, default: false },
+  collegeEmail: { type: String, trim: true }, // Email used for college verification
+  college: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "College",
+    required: function () { return this.isVerified; }, // Required if user is verified as a student
   },
-  email: {
-    type: String,
-    require: true,
-    trim: true,
-  },
-  password: {
-    type: String,
-    require: true,
+  image: { type: String, required: true },
+  additionalDetails: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "UserProfile",
+    required: true,
   },
 });
 
-userSchema.pre('save', async function (next) {
-  const user = this;
-  // console.log(user)
-  if (!user.isModified('password')) return next();
+// Pre-save hook to hash password before saving user
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
 
   try {
-      const saltRound = await bcrypt.genSalt(hashvalue);
-      const hashedPassword = await bcrypt.hash(user.password, saltRound);
-      user.password = hashedPassword;
-      next();
+    const salt = await bcrypt.genSalt(hashValue);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
   } catch (error) {
-      console.error(error);
-      next(error);
+    console.error("Error hashing password:", error);
+    next(error);
   }
 });
 
+// Method to generate JWT for user
 userSchema.methods.generateToken = async function () {
-  try {
-      return jwt.sign({
-          name: this.name,
-          userId: this._id.toString(),
-          email: this.email,
-      }, "TeamDoIt", {
-          expiresIn: "30d",
-      });
-  } catch (error) { 
-      console.error(error);
-  }
+  return jwt.sign({ userId: this._id, email: this.email }, "Smit", { expiresIn: "30d" });
 };
 
+// Method to compare passwords
 userSchema.methods.comparePassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
