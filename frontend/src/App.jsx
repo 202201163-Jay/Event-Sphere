@@ -10,7 +10,6 @@ import { Blogs } from './Pages/Home/Blogs';
 import {AuthProvider} from './Context/AuthProvider';
 import { Logout } from './Pages/Home/Logout';
 import { Listing } from './Pages/Home/Listing';
-
 export const App = () => {
   return (
     <>
