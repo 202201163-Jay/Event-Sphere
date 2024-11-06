@@ -8,11 +8,11 @@ import {Home} from './Pages/Home/Home';
 import { Login } from './Pages/Home/Login';
 import {AuthProvider} from './Context/AuthProvider';
 import { Logout } from './Pages/Home/Logout';
-import { Listing } from './Pages/Home/Listing';
 import { Verification } from './Pages/Student/Verification';
 import {Otp} from './Pages/Student/Otp'
 import BlogHome from './Pages/BlogPage/pages/Blogs';
 import Blog from './Pages/BlogPage/pages/Blog';
+import EventForm from './Pages/Event_listing_page/EventListingForm';
 
 export const App = () => {
   return (
@@ -24,7 +24,7 @@ export const App = () => {
         <Route path='/logout' element={<Logout/>}></Route>
         <Route path='/blogs' element={<BlogHome/>}></Route>
         <Route path='/blogs/:id' element={<Blog/>}></Route>
-        <Route path='/listing' element={<Listing/>}></Route>
+        <Route path='/listing' element={<EventForm/>}></Route>
         <Route path="/college-login" element={<College_Login/>} />
         <Route path="/college-register" element={<College_Register/>} />
         <Route path="/student-login" element={<Student_Login/>} />
