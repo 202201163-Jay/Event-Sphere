@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Stu_Login = () => {
   const [user, setUser] = useState({
@@ -26,14 +28,16 @@ export const Stu_Login = () => {
       });
 
       if (response.ok) {
-        alert("Login Successful !!");
+        toast.success("Login Successful !!");
         const responsedata = await response.json();
         storeTokenInLs(responsedata.token, responsedata.name);
-        navigate("/");
-      } else if (response.status === 401) {
-        alert("Invalid Credentials");
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else if (response.status === 401 || response.status === 403) {
+        toast.error("Invalid Credentials");
       } else {
-        alert("Something went wrong, please try again");
+        toast.error("Something went wrong, please try again");
       }
     } catch (error) {
       console.error("Error during login", error);
@@ -42,6 +46,7 @@ export const Stu_Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
+      <ToastContainer/>
       <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Welcome Back!</h2>
         <h3 className="text-lg text-center mb-4">Login to your Account</h3>

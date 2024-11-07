@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../Models/User");
 const UserProfile = require("../Models/UserProfile");
@@ -15,8 +16,7 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+// const bcrypt = require("bcrypt")
 
 
 exports.login = async (req, res) => {
@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, "TeamDoIt", {
       expiresIn: "1h", // Set token expiry as needed
     });
 
@@ -68,6 +68,8 @@ exports.signup = async (req, res) => {
     const hashedPass = await bcrypt.hash(password, saltRounds);
 
     const existingUser = await User.findOne({ email });
+
+    console.log(existingUser);
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -95,39 +97,14 @@ exports.signup = async (req, res) => {
                 console.log(err);
                 res.send("Sign up error!!!!");
             });
-    
+            // await newUser.save();
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ message: "Error registering user" });
   }
 };
 
-
 const sendotpVerificationEmail = async ({ _id, email }, res) => {
-// Helper function to verify college and send OTP
-exports.verifyCollegeAndSendOtp = async (req, res) => {
-  // Extract domain from collegeEmail (everything after '@' up to the first '.')
-  const { collegeEmail } = req.body;
-  const emailDomain = collegeEmail.split('@')[1].split('.')[0];
-
-  // Check if a college with this domain exists
-  console.log(`${emailDomain}`);
-  const college = await College.findOne({ emailDomain });
-
-  if (!college) {
-    throw new Error("Invalid college domain");
-  }
-
-  // Generate OTP and save it
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  await OTP.create({ email: collegeEmail, otp });
-
-  // Send OTP via email
-  await mailSender(collegeEmail, "Verification OTP", `Your OTP is ${otp}`);
-};
-
-// Function to verify OTP and complete registration
-exports.verifyOtp = async (req, res) => {
   try {
       const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
 
@@ -148,13 +125,6 @@ exports.verifyOtp = async (req, res) => {
       });
 
       await newotpVerification.save();
-      const emailDomain = email.split('@')[1].split('.')[0];
-      const college = await College.findOne({ emailDomain });
-      
-      if (!college) {
-        throw new Error("Invalid college domain");
-      }
-      
       await transporter.sendMail(mailOptions);
       console.log("Smit - 4");
       res.json({
@@ -202,7 +172,7 @@ module.exports.verifyOTP = async (req, res) => {
       if (!validOTP) {
           throw new Error("Invalid OTP. Please try again.");
       }
-      await User.updateOne({ _id: userId }, { isVerified: true });
+      // await User.updateOne({ _id: userId }, { isVerified: true });
 
       await OTP.deleteMany({ userId });
 
