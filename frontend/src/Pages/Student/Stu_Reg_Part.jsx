@@ -39,6 +39,7 @@ export const Stu_Reg = () => {
             password: '',
             confirmPassword: '',
           })
+          console.log(responsedata);
           const userId = responsedata.data.userId;
           // console.log(userId);
           navigate(`/otp/${userId}`);
