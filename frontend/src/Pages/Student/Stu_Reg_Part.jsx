@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Stu_Reg = () => {
   const [formData, setFormData] = useState({
@@ -23,15 +25,22 @@ export const Stu_Reg = () => {
     // e.preventDefault();
     // try {
       e.preventDefault()
+      if (formData.password !== formData.confirmPassword) {
+        // setError('Passwords do not match');
+        toast.error('Passwords do not match');
+        return;
+      }
       try {
         const response = await fetch("http://localhost:3000/api/auth/student-signup", {
           method: "POST",
           headers: {"Content-Type" : "application/json",},
           body: JSON.stringify(formData),
         })
+        
+        const responsedata = await response.json()
 
         if(response.ok){
-          const responsedata = await response.json()
+          toast.success(responsedata.message || 'Verification OTP email sent');
           setFormData({
             firstname: '',
             lastname:'',
@@ -42,8 +51,14 @@ export const Stu_Reg = () => {
           console.log(responsedata);
           const userId = responsedata.data.userId;
           // console.log(userId);
-          navigate(`/otp/${userId}`);
+
+          setTimeout(() => {
+            navigate(`/otp/${userId}`);
+          }, 2000);
         }
+      else{
+        toast.error(responsedata.message || 'Something went wrong');
+      }
 
       } catch (error) {
         console.log(error)
@@ -52,6 +67,7 @@ export const Stu_Reg = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
+      <ToastContainer/>
       <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Create Account</h2>
         <form onSubmit={handleSubmit} className="space-y-4">

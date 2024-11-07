@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export const Otp = () => {
+export const College_otp = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [code, setCode] = useState(['', '', '', '']);
@@ -33,17 +33,19 @@ export const Otp = () => {
       })
       const data = await response.json();
       console.log(data);
+      
       if (data.status === "VERIFIED") {
         toast.success(data.message || "Email verified successfully!");
         setTimeout(() => {
-          navigate('/student-login');
+          navigate('/college-login');
         }, 2000);
       } else {
         toast.error(data.message || "OTP verification failed");
         setTimeout(() => {
-            navigate('/student-register');
+            navigate('/college-register');
         }, 2000);
       }
+       
     } catch (err) {
       setError(err.response ? err.response.data.message : "Something went wrong");
     }
@@ -51,7 +53,7 @@ export const Otp = () => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900">
-      <ToastContainer/>
+        <ToastContainer/>
       <div className="p-6 bg-gray-800 text-white rounded-lg w-96 text-center">
         <h2 className="text-2xl font-semibold mb-4">Verify email</h2>
         <p className="mb-6">A verification code has been sent to you. Enter the code below</p>

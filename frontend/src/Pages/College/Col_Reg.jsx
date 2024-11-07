@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Col_Reg = () => {
   const [formData, setFormData] = useState({
@@ -9,9 +11,9 @@ export const Col_Reg = () => {
     confirmPassword: '',
     emailDomain: '',
   });
-  const [representatives, setRepresentatives] = useState([]);
+  // const [representatives, setRepresentatives] = useState([]);
   const [error, setError] = useState('');
-  const [repError, setRepError] = useState('');
+  // const [repError, setRepError] = useState('');
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -22,52 +24,54 @@ export const Col_Reg = () => {
     });
   };
 
-  const handleRepChange = (index, e) => {
-    const { name, value } = e.target;
-    const newRepresentatives = [...representatives];
-    newRepresentatives[index][name] = value;
-    setRepresentatives(newRepresentatives);
-  };
+  // const handleRepChange = (index, e) => {
+  //   const { name, value } = e.target;
+  //   const newRepresentatives = [...representatives];
+  //   newRepresentatives[index][name] = value;
+  //   setRepresentatives(newRepresentatives);
+  // };
 
-  const addRepresentative = () => {
-    const lastRep = representatives[representatives.length - 1];
+  // const addRepresentative = () => {
+  //   const lastRep = representatives[representatives.length - 1];
 
-    if (representatives.length > 0 && (!lastRep.repname || !lastRep.repId || !lastRep.password)) {
-      setRepError('Please fill out all fields for the current representative.');
-    } else {
-      setRepError('');
-      if (representatives.length < 10) {
-        setRepresentatives([...representatives, { repname: '', repId: '', password: '' }]);
-      } else {
-        alert('You can add a maximum of 10 representatives.');
-      }
-    }
-  };
+  //   if (representatives.length > 0 && (!lastRep.repname || !lastRep.repId || !lastRep.password)) {
+  //     setRepError('Please fill out all fields for the current representative.');
+  //   } else {
+  //     setRepError('');
+  //     if (representatives.length < 10) {
+  //       setRepresentatives([...representatives, { repname: '', repId: '', password: '' }]);
+  //     } else {
+  //       alert('You can add a maximum of 10 representatives.');
+  //     }
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
   
-    const incompleteRep = representatives.some(rep => !rep.repname || !rep.repId || !rep.password);
-    if (incompleteRep) {
-      setRepError('Please fill in all fields for each representative before submitting.');
-      return;
-    }
+    // const incompleteRep = representatives.some(rep => !rep.repname || !rep.repId || !rep.password);
+    // if (incompleteRep) {
+    //   setRepError('Please fill in all fields for each representative before submitting.');
+    //   return;
+    // }
   
     const dataToSubmit = {
       name: formData.collegeName,
       email: formData.email,
       password: formData.password,
+      confirmPassword:formData.confirmPassword,
       emailDomain: formData.emailDomain,
-      collegeRepresentatives: representatives.map(rep => ({
-        repname: rep.repname,
-        repId: rep.repId,
-        password: rep.password,
-      })),
+      // collegeRepresentatives: representatives.map(rep => ({
+      //   repname: rep.repname,
+      //   repId: rep.repId,
+      //   password: rep.password,
+      // })),
     };
   
     try {
@@ -78,15 +82,16 @@ export const Col_Reg = () => {
         },
         body: JSON.stringify(dataToSubmit),
       });
+
+      const responseData = await response.json();
   
       if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.message || 'Something went wrong');
-        console.log('Error:', errorData);
+        setError(responseData.message || 'Something went wrong');
+        toast.error(responseData.message || 'Something went wrong');
       } else {
-        const responseData = await response.json();
+        
+        toast.success(responseData.message || 'Verification OTP email sent');
         setError('');
-        console.log('Form Submitted:', responseData);
   
         setFormData({
           collegeName: '',
@@ -95,9 +100,14 @@ export const Col_Reg = () => {
           confirmPassword: '',
           emailDomain: '',
         });
-        setRepresentatives([{ repname: '', repId: '', password: '' }]);
+        // setRepresentatives([{ repname: '', repId: '', password: '' }]);
   
-        navigate("/");
+        console.log(responseData);
+        const userId = responseData.data.userId;
+          // console.log(userId);
+          setTimeout(() => {
+            navigate(`/college-otp/${userId}`);
+          }, 2000);
       }
     } catch (error) {
       console.log('Network error:', error);
@@ -107,6 +117,7 @@ export const Col_Reg = () => {
 
   return (
     <div className="w-full px-10 h-screen flex justify-center items-center bg-gray-900 py-5 mt-5">
+      <ToastContainer/>
       <div className="w-full max-w-lg bg-gray-800 text-white shadow-lg rounded-lg p-8">
         <div className="text-center mb-10">
           <h2 className="text-2xl font-bold text-center mb-6">Join us</h2>
@@ -179,7 +190,7 @@ export const Col_Reg = () => {
               />
             </div>
 
-            {representatives.map((rep, index) => (
+            {/* {representatives.map((rep, index) => (
               <div key={index} className="mb-4">
                 <label className="text-sm font-semibold text-gray-400">Representative {index + 1} *</label>
                 <input
@@ -224,7 +235,7 @@ export const Col_Reg = () => {
                   Add Representative
                 </button>
               )}
-            </div>
+            </div> */}
 
             <div className="flex justify-center">
               <button

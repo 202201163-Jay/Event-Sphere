@@ -13,6 +13,7 @@ import {Otp} from './Pages/Student/Otp'
 import BlogHome from './Pages/BlogPage/pages/Blogs';
 import Blog from './Pages/BlogPage/pages/Blog';
 import EventForm from './Pages/Event_listing_page/EventListingForm';
+import {College_otp} from './Pages/College/College_otp'
 
 export const App = () => {
   return (
@@ -31,6 +32,7 @@ export const App = () => {
         <Route path="/student-register" element={<Student_Register/>} />
         <Route path='/verification' element={<Verification/>}></Route>
         <Route path='/otp/:userId' element={<Otp/>}></Route>
+        <Route path='/college-otp/:userId' element={<College_otp/>}></Route>
         <Route path="/" element={<Home/>} />
       </Routes>
       </AuthProvider>

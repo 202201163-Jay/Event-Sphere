@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../Models/User");
 const UserProfile = require("../Models/UserProfile");
@@ -15,47 +16,46 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-// const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
+// const bcrypt = require("bcrypt")
 
 
-// exports.login = async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-//     // Check if the user exists in the database
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
+    // Check if the user exists in the database
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-//     // Check if the provided password matches the stored hashed password
-//     const isPasswordValid = await bcrypt.compare(password, user.password);
-//     if (!isPasswordValid) {
-//       return res.status(401).json({ error: "Invalid password" });
-//     }
+    // Check if the provided password matches the stored hashed password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
 
-//     // Generate a JWT token
-//     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: "1h", // Set token expiry as needed
-//     });
+    // Generate a JWT token
+    const token = jwt.sign({ userId: user._id }, "TeamDoIt", {
+      expiresIn: "1h", // Set token expiry as needed
+    });
 
-//     // Respond with the token and user information if needed
-//     res.status(200).json({
-//       message: "Login successful",
-//       token,
-//       user: {
-//         id: user._id,
-//         email: user.email,
-//         name: user.name,
-//       },
-//     });
-//   } catch (error) {
-//     console.error("Login error:", error);
-//     res.status(500).json({ error: "Server error. Please try again later." });
-//   }
+    // Respond with the token and user information if needed
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+      },
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ error: "Server error. Please try again later." });
+  }
 
-// };
+};
 
 exports.signup = async (req, res) => {
   try {
