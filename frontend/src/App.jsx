@@ -30,7 +30,7 @@ export const App = () => {
         <Route path="/student-login" element={<Student_Login/>} />
         <Route path="/student-register" element={<Student_Register/>} />
         <Route path='/verification' element={<Verification/>}></Route>
-        <Route path='/otp' element={<Otp/>}></Route>
+        <Route path='/otp/:userId' element={<Otp/>}></Route>
         <Route path="/" element={<Home/>} />
       </Routes>
       </AuthProvider>

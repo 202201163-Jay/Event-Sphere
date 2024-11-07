@@ -1,24 +1,40 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export const Otp = () => {
-    const navigate = useNavigate();
-    
-    
-    const handleSubmit = async(e) => {
-        e.preventDefault()
-        navigate('/student-login');
-    }
-  const [code, setCode] = useState(['', '', '', '', '', '']);
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const [code, setCode] = useState(['', '', '', '']);
+  const { userId } = useParams();
 
   const handleChange = (value, index) => {
     const newCode = [...code];
-    newCode[index] = value.slice(0, 1); // Only take the first character
+    newCode[index] = value.slice(0, 1);
     setCode(newCode);
 
     // Automatically focus on the next input
     if (value && index < code.length - 1) {
       document.getElementById(`code-${index + 1}`).focus();
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const otp = code.join('');
+
+    try {
+      const response = await fetch("http://localhost:3000/api/auth/verify-otp", {
+        method: "POST",
+        headers: {"Content-Type" : "application/json",},
+        body: JSON.stringify({userId, otp}),
+      })
+      const data = await response.json();
+      console.log(data);
+      navigate('/student-login'); 
+    } catch (err) {
+      setError(err.response ? err.response.data.message : "Something went wrong");
     }
   };
 
@@ -40,11 +56,12 @@ export const Otp = () => {
             />
           ))}
         </div>
-        <button className="w-full py-3 bg-yellow-500 text-gray-800 font-semibold rounded hover:bg-yellow-600 transition duration-200">
+        <button onClick={handleSubmit} className="w-full py-3 bg-yellow-500 text-gray-800 font-semibold rounded hover:bg-yellow-600 transition duration-200">
           Verify email
         </button>
+        {error && <p className="mt-4 text-red-500">{error}</p>}
         <div className="mt-4 text-sm flex justify-between">
-          <button className="text-gray-400 hover:underline" onClick={handleSubmit}>← Back to login</button>
+          <button className="text-gray-400 hover:underline" onClick={() => navigate('/student-login')}>← Back to login</button>
         </div>
       </div>
     </div>
