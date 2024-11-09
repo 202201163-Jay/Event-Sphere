@@ -4,11 +4,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export const Otp = () => {
+export const Profile_Otp = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [code, setCode] = useState(['', '', '', '']);
   const { userId } = useParams();
+
+  // console.log(userId);
 
   const handleChange = (value, index) => {
     const newCode = [...code];
@@ -26,7 +28,7 @@ export const Otp = () => {
     const otp = code.join('');
     
     try {
-      const response = await fetch("http://localhost:3000/api/auth/verify-otp", {
+      const response = await fetch("http://localhost:3000/api/auth/profile-verify", {
         method: "POST",
         headers: {"Content-Type" : "application/json",},
         body: JSON.stringify({userId, otp}),
@@ -36,12 +38,12 @@ export const Otp = () => {
       if (data.status === "VERIFIED") {
         toast.success(data.message || "Email verified successfully!");
         setTimeout(() => {
-          navigate('/student-login');
+          navigate('/student-profile');
         }, 2000);
       } else {
         toast.error(data.message || "OTP verification failed");
         setTimeout(() => {
-            navigate('/student-register');
+            navigate('/student-profile');
         }, 2000);
       }
     } catch (err) {
