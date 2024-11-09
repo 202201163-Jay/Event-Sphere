@@ -81,6 +81,8 @@ exports.signup = async (req, res) => {
       contactNumer: null,
     });
 
+    await profileDetails.save();
+
     const newUser = new User({
       firstName,
       lastName,
