@@ -25,11 +25,11 @@ const collegeSchema = new mongoose.Schema({
   collegeRepresentatives: {
     type: [
       {
-        repname: {
+        clubName: {
           type: String,
           required: true,
         },
-        repId: {
+        clubemail: {
           type: String,
           required: true,
           trim: true,

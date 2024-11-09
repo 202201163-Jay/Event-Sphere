@@ -4,7 +4,12 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
 const CollegeRep = new mongoose.Schema({
-  repId: {
+  clubName:{
+    type: String,
+    required: true,
+    trim: true,
+  },
+  email: {
     type: String,
     required: true,
     trim: true,
@@ -29,7 +34,7 @@ CollegeRep.pre('save', async function (next) {
   try {
       const saltRound = await bcrypt.genSalt(hashvalue);
       const hashedPassword = await bcrypt.hash(collegeRep.password, saltRound);
-      user.password = hashedPassword;
+      collegeRep.password = hashedPassword;
       next();
   } catch (error) {
       console.error(error);

@@ -167,7 +167,7 @@ export const ProfilePage = () => {
           email: '',
         }));
 
-        if (responseData.message === "User already verified!!!" || responseData.message === "Oops, Your college is not exist!!!") {
+        if ((responseData.message === "User already verified!!!") || responseData.message === "Oops, Your college is not exist!!!") {
           setTimeout(() => {
             window.location.reload();
           }, 2000);
@@ -355,34 +355,23 @@ export const ProfilePage = () => {
       case 'events':
         return (
           <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
-      <h4 className="text-lg font-semibold text-yellow-500 mb-4">Events</h4>
-      {/* <p className="text-gray-200 space-y-3">View and manage your registered events here.</p> */}
-      
-      {editData.participated && editData.participated.length > 0 ? (
-        <ul className="list-disc pl-5 space-y-2">
-          {editData.participated.map((event, index) => (
-            <li key={index} className="text-gray-200">
-              {event.name} {/* Assuming each event has a 'name' property */}
+          <h4 className="text-lg font-semibold text-yellow-500 mb-4">Events</h4>
+          <ul className="list-none pl-0 space-y-4">
+          {editData.participated && editData.participated.length > 0 ? (
+            editData.participated.map((event, index) => (
+              <li key={index} className="bg-gray-700 p-4 rounded-lg shadow-lg">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-xl text-yellow-500">{event.name}</span>
+                  <span className="text-sm text-gray-400">{event.time}</span>
+                </div>
+              </li>
+              ))
+          ) : (
+            <li className="bg-gray-700 p-4 rounded-lg shadow-lg text-center text-gray-400">
+              No Events available
             </li>
-          ))}
-        </ul>
-      ) : (
-        // <p className="text-gray-400">You have not participated in any events yet.</p>
-        <ul className="list-none pl-0 space-y-4">
-  <li className="bg-gray-700 p-4 rounded-lg shadow-lg">
-    <div className="flex justify-between items-center">
-      <span className="font-semibold text-xl text-yellow-500">Tech Conference 2024</span>
-      <span className="text-sm text-gray-400">- 10:00 AM, January 15</span>
-    </div>
-  </li>
-  <li className="bg-gray-700 p-4 rounded-lg shadow-lg">
-    <div className="flex justify-between items-center">
-      <span className="font-semibold text-xl text-yellow-500">Hackathon 2024</span>
-      <span className="text-sm text-gray-400">- 3:00 PM, February 20</span>
-    </div>
-  </li>
-</ul>
-      )}
+          )}
+      </ul>
     </div>
         );
       case 'delete':

@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
     setUserId("");
     setIsCollegeRepresentative(false)
     localStorage.removeItem("token")
+    localStorage.removeItem("userId")
   }
 
   return (

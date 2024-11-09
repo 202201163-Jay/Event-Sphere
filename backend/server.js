@@ -4,6 +4,8 @@ const user = require("./routes/user");
 const connectDb = require("./config/dbconnection");
 const blogRoutes = require('./routes/blogRoutes'); // Import the blog routes
 const crud = require('./routes/crud')
+const college = require('./routes/college')
+const {cloudinaryConnect }= require("../backend/config/cloudinary")
 require("dotenv").config();
 
 const corsOptions = {
@@ -21,6 +23,7 @@ const PORT = process.env.PORT || 3000;
 app.use("/api/auth", user);
 app.use("/api/blog", blogRoutes); // Adding blog routes to the server
 app.use("/api/users", crud);
+app.use("/api/college",college)
  
 connectDb().then(() => {
     app.listen(PORT, () => {
