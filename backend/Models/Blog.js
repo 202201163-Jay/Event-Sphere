@@ -4,11 +4,6 @@ const mongoose = require('mongoose');
 // Blog Schema
 const blogSchema = new mongoose.Schema(
   {
-    college_id: {
-      type: mongoose.Schema.Types.ObjectId, // This will reference the College model
-      ref: 'CollegeRep', // Ensure you have a College model set up
-      required: true,
-    },
     title: {
       type: String,
       required: true,
@@ -18,24 +13,18 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    images: [
-      {
-        type: String, // Each image will be stored as a URL string (path to the image)
-      },
-    ],
-    created_at: {
-      type: Date,
-      default: Date.now, // Automatically sets the creation date to the current date
+    college: {
+      type: String, 
+      required: true,
     },
-    updated_at: {
+    date:{
       type: Date,
-      default: Date.now, // Automatically sets the update date to the current date
+      required: true,
     },
+    images: [{ type: String }]
+
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt
+  { timestamps: true } // Automatically add createdAt & updatedAt
 );
 
-// Create the Blog model
-const Blog = mongoose.model('Blog', blogSchema);
-
-module.exports = Blog;
+module.exports = mongoose.model('Blog', blogSchema);
