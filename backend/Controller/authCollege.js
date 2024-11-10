@@ -9,11 +9,11 @@ const { VERIFICATION_EMAIL_TEMPLATE } = require("../utils/emailTemplates");
 const nodemailer = require("nodemailer")
 
 let transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-      user: "eventsphereandteam@gmail.com",
-      pass: "sxuk srwu azmt dtly",
-  },
+    service: "gmail",
+    auth: {
+        user: "eventsphereandteam@gmail.com",
+        pass: "sxuk srwu azmt dtly",
+    },
 });
 
 exports.signup = async (req, res) => {
@@ -74,14 +74,15 @@ exports.signup = async (req, res) => {
         //     }
         // }
 
-      
-          college.save()
-                  .then((result) => { 
-                    sendotpVerificationEmail(result, res); })
-                  .catch((err) => {
-                      console.log(err);
-                      res.send("Sign up error!!!!");
-                  });
+
+        college.save()
+            .then((result) => {
+                sendotpVerificationEmail(result, res);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.send("Sign up error!!!!");
+            });
         // res.status(201).json({ message: "College registered successfully." });
 
     } catch (error) {
@@ -109,7 +110,7 @@ exports.login = async (req, res) => {
         }
 
         // Generate JWT token
-        const token = jwt.sign({ userId: college._id }, "TeamDoIt", {
+        const token = jwt.sign({ userId: college._id, type: 'college' }, "TeamDoIt", {
             expiresIn: "1h", // Set token expiry as needed
         });
 
@@ -132,14 +133,14 @@ exports.login = async (req, res) => {
 const sendotpVerificationEmail = async ({ _id, email }, res) => {
     try {
         const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
-  
+
         const mailOptions = {
             from: "eventsphereandteam@gmail.com",
             to: email,
             subject: "Verify Your Email",
             html: VERIFICATION_EMAIL_TEMPLATE.replace("{verificationCode}", otp)
         };
-  
+
         const saltRounds = 10;
         const hashedOTP = await bcrypt.hash(otp, saltRounds);
         const newotpVerification = new OTP({
@@ -148,7 +149,7 @@ const sendotpVerificationEmail = async ({ _id, email }, res) => {
             createdAt: Date.now(),
             expiresAt: Date.now() + 3600000,
         });
-  
+
         await newotpVerification.save();
         await transporter.sendMail(mailOptions);
         console.log("Smit - 4");
@@ -166,9 +167,9 @@ const sendotpVerificationEmail = async ({ _id, email }, res) => {
             message: error.message,
         });
     }
-  };
-  
-  module.exports.verifyOTP = async (req, res) => {
+};
+
+module.exports.verifyOTP = async (req, res) => {
     try {
         const { userId, otp } = req.body;
         // console.log(userId)
@@ -176,31 +177,31 @@ const sendotpVerificationEmail = async ({ _id, email }, res) => {
         if (!userId || !otp) {
             throw new Error("Empty OTP details are not allowed");
         }
-  
+
         // Find OTP records for the user
         const userOTPRecords = await OTP.find({ userId });
-  
+
         if (userOTPRecords.length <= 0) {
             throw new Error("Account record doesn't exist or has been verified already. Please sign up or log in.");
         }
-  
+
         const expiresAt = userOTPRecords[0].expiresAt;
         const hashedOTP = userOTPRecords[0].otp;
-  
+
         if (expiresAt < Date.now()) {
             await otpVerification.deleteMany({ userId });
             throw new Error("Code has expired. Please request again.");
         }
-  
+
         // Verify the OTP
         const validOTP = await bcrypt.compare(otp, hashedOTP);
         if (!validOTP) {
             throw new Error("Invalid OTP. Please try again.");
         }
         // await User.updateOne({ _id: userId }, { isVerified: true });
-  
+
         await OTP.deleteMany({ userId });
-  
+
         res.json({
             status: "VERIFIED",
             message: "User email verified successfully."
@@ -211,4 +212,4 @@ const sendotpVerificationEmail = async ({ _id, email }, res) => {
             message: error.message,
         });
     }
-  }
+}

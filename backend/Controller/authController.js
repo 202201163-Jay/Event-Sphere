@@ -11,8 +11,8 @@ const nodemailer = require("nodemailer")
 let transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-      user: "eventsphereandteam@gmail.com",
-      pass: "sxuk srwu azmt dtly",
+    user: "eventsphereandteam@gmail.com",
+    pass: "sxuk srwu azmt dtly",
   },
 });
 
@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, "TeamDoIt", {
+    const token = jwt.sign({ userId: user._id, type: 'student' }, "TeamDoIt", {
       expiresIn: "1h", // Set token expiry as needed
     });
 
@@ -93,13 +93,14 @@ exports.signup = async (req, res) => {
     });
 
     newUser.save()
-            .then((result) => { 
-              sendotpVerificationEmail(result, res); })
-            .catch((err) => {
-                console.log(err);
-                res.send("Sign up error!!!!");
-            });
-            // await newUser.save();
+      .then((result) => {
+        sendotpVerificationEmail(result, res);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.send("Sign up error!!!!");
+      });
+    // await newUser.save();
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ message: "Error registering user" });
@@ -108,84 +109,84 @@ exports.signup = async (req, res) => {
 
 const sendotpVerificationEmail = async ({ _id, email }, res) => {
   try {
-      const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+    const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
 
-      const mailOptions = {
-          from: "eventsphereandteam@gmail.com",
-          to: email,
-          subject: "Verify Your Email",
-          html: VERIFICATION_EMAIL_TEMPLATE.replace("{verificationCode}", otp)
-      };
+    const mailOptions = {
+      from: "eventsphereandteam@gmail.com",
+      to: email,
+      subject: "Verify Your Email",
+      html: VERIFICATION_EMAIL_TEMPLATE.replace("{verificationCode}", otp)
+    };
 
-      const saltRounds = 10;
-      const hashedOTP = await bcrypt.hash(otp, saltRounds);
-      const newotpVerification = new OTP({
-          userId: _id,
-          otp: hashedOTP,
-          createdAt: Date.now(),
-          expiresAt: Date.now() + 3600000,
-      });
+    const saltRounds = 10;
+    const hashedOTP = await bcrypt.hash(otp, saltRounds);
+    const newotpVerification = new OTP({
+      userId: _id,
+      otp: hashedOTP,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 3600000,
+    });
 
-      await newotpVerification.save();
-      await transporter.sendMail(mailOptions);
-      console.log("Smit - 4");
-      res.json({
-          status: "PENDING",
-          message: "Verification otp email sent",
-          data: {
-              userId: _id,
-              email: email,
-          },
-      });
+    await newotpVerification.save();
+    await transporter.sendMail(mailOptions);
+    console.log("Smit - 4");
+    res.json({
+      status: "PENDING",
+      message: "Verification otp email sent",
+      data: {
+        userId: _id,
+        email: email,
+      },
+    });
   } catch (error) {
-      res.json({
-          status: "FAILED",
-          message: error.message,
-      });
+    res.json({
+      status: "FAILED",
+      message: error.message,
+    });
   }
 };
 
 module.exports.verifyOTP = async (req, res) => {
   try {
-      const { userId, otp } = req.body;
-      // console.log(userId)
-      // console.log(otp);
-      if (!userId || !otp) {
-          throw new Error("Empty OTP details are not allowed");
-      }
+    const { userId, otp } = req.body;
+    // console.log(userId)
+    // console.log(otp);
+    if (!userId || !otp) {
+      throw new Error("Empty OTP details are not allowed");
+    }
 
-      // Find OTP records for the user
-      const userOTPRecords = await OTP.find({ userId });
+    // Find OTP records for the user
+    const userOTPRecords = await OTP.find({ userId });
 
-      if (userOTPRecords.length <= 0) {
-          throw new Error("Account record doesn't exist or has been verified already. Please sign up or log in.");
-      }
+    if (userOTPRecords.length <= 0) {
+      throw new Error("Account record doesn't exist or has been verified already. Please sign up or log in.");
+    }
 
-      const expiresAt = userOTPRecords[0].expiresAt;
-      const hashedOTP = userOTPRecords[0].otp;
+    const expiresAt = userOTPRecords[0].expiresAt;
+    const hashedOTP = userOTPRecords[0].otp;
 
-      if (expiresAt < Date.now()) {
-          await otpVerification.deleteMany({ userId });
-          throw new Error("Code has expired. Please request again.");
-      }
+    if (expiresAt < Date.now()) {
+      await otpVerification.deleteMany({ userId });
+      throw new Error("Code has expired. Please request again.");
+    }
 
-      // Verify the OTP
-      const validOTP = await bcrypt.compare(otp, hashedOTP);
-      if (!validOTP) {
-          throw new Error("Invalid OTP. Please try again.");
-      }
-      // await User.updateOne({ _id: userId }, { isVerified: true });
+    // Verify the OTP
+    const validOTP = await bcrypt.compare(otp, hashedOTP);
+    if (!validOTP) {
+      throw new Error("Invalid OTP. Please try again.");
+    }
+    // await User.updateOne({ _id: userId }, { isVerified: true });
 
-      await OTP.deleteMany({ userId });
+    await OTP.deleteMany({ userId });
 
-      res.json({
-          status: "VERIFIED",
-          message: "User email verified successfully."
-      });
+    res.json({
+      status: "VERIFIED",
+      message: "User email verified successfully."
+    });
   } catch (error) {
-      res.json({
-          status: "FAILED",
-          message: error.message,
-      });
+    res.json({
+      status: "FAILED",
+      message: error.message,
+    });
   }
 }

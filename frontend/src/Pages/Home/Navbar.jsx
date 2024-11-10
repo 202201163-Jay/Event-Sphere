@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 
 const Navbar = () => {
-  const { isLoggedIn, username } = useAuth();
+  const { isLoggedIn, username, profilePicture } = useAuth();
   const { isCollegeRepresentative } = useAuth();
 
   const [sticky, setSticky] = useState(false);
@@ -26,16 +26,6 @@ const Navbar = () => {
       <li>
         <Link to="/">Home</Link>
       </li>
-      {isLoggedIn ? (
-        <li>
-          <Link to="/logout">Logout</Link>
-        </li>
-      ) : (
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-      )}
-
       <li>
         <Link to="/blogs">Blogs</Link>
       </li>
@@ -113,14 +103,27 @@ const Navbar = () => {
                 </svg>
               </label>
             </div>
+
+            {/* Profile and Login/Logout button */}
             {isLoggedIn ? (
-              <div>
-                <Link
-                  to="/logout"
-                  className="bg-indigo-500 text-white px-3 py-2 rounded-md hover:bg-indigo-700 duration-300"
-                >
-                  Logout
-                </Link>
+              <div className="relative">
+                {/* Profile Picture and Dropdown */}
+                <div className="flex items-center space-x-2">
+                  <Link to="/user-profile">
+                    <img
+                      src={profilePicture || "/default-profile.jpg"} // Add default picture if none exists
+                      alt="Profile"
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  </Link>
+                  {/* Hoverable dropdown */}
+                  <div className="group relative">
+                    <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <Link to="/user-profile" className="block px-4 py-2">View Profile</Link>
+                      <Link to="/logout" className="block px-4 py-2">Logout</Link>
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
               <div>
@@ -132,7 +135,6 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
-            <div>{isLoggedIn ? <div>{username}</div> : <div></div>}</div>
           </div>
         </div>
       </div>

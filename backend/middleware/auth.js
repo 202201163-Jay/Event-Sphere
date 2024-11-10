@@ -1,77 +1,42 @@
-const jwt = require("jsonwebtoken")
-require("dotenv").config();
+const jwt = require('jsonwebtoken');
+const College = require('../Models/College');
+const User = require('../Models/User');
 
+const authMiddleware = async (req, res, next) => {
+  // 1. Get the token from the request header
+  const token = req.header('x-auth-token');
+  
+  // 2. If no token, deny access
+  if (!token) {
+    return res.status(401).json({ message: 'No token, authorization denied' });
+  }
 
-exports.auth = (req, res, next) => {
-    try {
-        const token = req.body.token;
-        // const token = req.cookie.token 
+  try {
+    // 3. Verify the token and decode the user information
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Attach the decoded token to the request object
 
-        if (!token) {
-            return res.status(401).json({
-                success: false,
-                message: "token missing"
-            })
-        }
-
-        // verify the token 
-        try {
-            const decode = jwt.verify(token, process.env.JWT_SECRET);
-
-            console.log(decode)
-
-            req.user = decode;
-        }
-        catch (e) {
-            return res.status(401).json({
-                success: false,
-                message: "token is invalid"
-            })
-        }
-
-        next();
+    // 4. Fetch the user or college based on the type
+    if (req.user.type === 'college') {
+      const college = await College.findById(req.user.userId);
+      req.user = college; // Attach college information to the request object
+    } else {
+      const student = await User.findById(req.user.userId);
+      req.user = student; // Attach student information to the request object
     }
-    catch (err) {
-        console.log(err)
-        return res.status(401).json({
-            success: false,
-            message: "Something went wrong while verifying token"
-        })
-    }
-}
 
-exports.isStudent = (req, res, next) => {
-    try {
-        if (req.user.role !== "Student") {
-            return res.status(401).json({
-                success: false,
-                message: "This is a protect route for students you can not access it"
-            })
-        }
-        next();
+    // 5. Check if user is a college (if needed) and allow the request to proceed
+    if (req.user.type !== 'college') {
+      // Optional: You can restrict certain routes (like creating blogs) to only colleges
+      return res.status(403).json({ message: 'Forbidden: Only colleges can create blogs' });
     }
-    catch (err) {
-        return res.status(500).json({
-            success: false,
-            message: "User Role is not Matching"
-        })
-    }
-}
 
-exports.isAdmin = (req, res, next) => {
-    try {
-        if (req.user.role !== "Admin") {
-            return res.status(401).json({
-                success: false,
-                message: "This is a protect route for Admins,you can not access it"
-            })
-        }
-        next();
-    }
-    catch (err) {
-        return res.status(500).json({
-            success: false,
-            message: "User Role is not Matching"
-        })
-    }
-}
+    // 6. Allow the request to continue
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: 'Token is not valid' }); // Invalid token
+  }
+};
+
+module.exports = authMiddleware;

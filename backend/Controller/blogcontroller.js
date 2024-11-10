@@ -4,11 +4,19 @@ const { uploadOnCloudinary } = require("../config/cloudinary");
 
 const createBlog = async (req, res) => {
   try {
+    // Check if the logged-in user is a college
+    const { type } = req.user; // Assuming the user info is available in req.user (set during authentication)
+
+    // Allow blog creation only for college users
+    if (type !== 'college') {
+      return res.status(403).json({ message: 'You do not have permission to create a blog' });
+    }
+
     // Extract data from the request body
     const { title, content, date, college } = req.body;
     const images = req.files.posters; // The uploaded images will be in req.files
 
-    console.log( `images : ${images}`)
+    console.log(`images : ${images}`);
 
     const imageUrls = await Promise.all(
       images.map(async (file) => {
@@ -16,7 +24,6 @@ const createBlog = async (req, res) => {
         return uploadResult ? uploadResult.url : null;
       })
     );
-
 
     // Create a new blog post and save it to the database
     const newBlog = new Blog({
