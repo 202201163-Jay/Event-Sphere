@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 
-export const Navbar = () => {
+const Navbar = () => {
   const { isLoggedIn, username } = useAuth();
   const { isCollegeRepresentative } = useAuth();
 
@@ -95,8 +95,8 @@ export const Navbar = () => {
             <div className="hidden md:block">
               <label className="px-3 py-2 border rounded-md flex items-center gap-2 bg-gray-200">
                 <input
-                  type="text"
-                  className="grow outline-none rounded-md px-1"
+                  type="search"
+                  className="w-full px-4 py-2 border-none border-gray-300 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Search"
                 />
                 <svg
@@ -139,3 +139,5 @@ export const Navbar = () => {
     </>
   );
 };
+
+export default Navbar;
