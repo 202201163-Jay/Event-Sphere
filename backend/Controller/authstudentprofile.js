@@ -40,7 +40,7 @@ const sendotpVerificationEmail = async ({ userId, email }, res) => {
     if(user.isVerified){
         res.json({
             status: "PENDING",
-            message: "User already verfied!!!",
+            message: "User already verified!!!",
         });
         return;
     }

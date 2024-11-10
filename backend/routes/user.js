@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../Controller/authController");
 const collegeController = require("../Controller/authCollege")
-const profileController = require("../Controller/profileverify")
+const profileController = require("../Controller/authstudentprofile")
 
 router.post("/student-signup", authController.signup);
 // router.post("/studentverify", authController.verifyCollegeAndSendOtp);

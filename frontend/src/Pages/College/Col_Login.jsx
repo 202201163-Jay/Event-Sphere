@@ -35,7 +35,8 @@ export const Col_Login = () => {
       if (response.ok) {
         toast.success("Login Successful !!");
         const responseData = await response.json();
-        storeTokenInLs(responseData.token, collegeRep.name);
+        console.log(responseData)
+        storeTokenInLs(responseData.token, responseData.name, responseData.representative.id);
         // toggle();
         setTimeout(() => {
           navigate("/");

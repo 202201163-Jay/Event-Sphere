@@ -14,8 +14,10 @@ import BlogHome from './Pages/BlogPage/pages/Blogs';
 import Blog from './Pages/BlogPage/pages/Blog';
 import EventForm from './Pages/Event_listing_page/EventListingForm';
 import {College_otp} from './Pages/College/College_otp'
-import { ProfilePage } from './Pages/Profile/Profile';
+import { ProfilePage } from './Pages/Profile/Student_Profile';
 import { Profile_Otp } from './Pages/Profile/Profile_Otp';
+import { CollegeProfile } from './Pages/Profile/College_Profile';
+import { Club_Otp } from './Pages/Profile/Club_Otp';
 
 export const App = () => {
   return (
@@ -36,8 +38,10 @@ export const App = () => {
         <Route path='/otp/:userId' element={<Otp/>}></Route>
         <Route path='/college-otp/:userId' element={<College_otp/>}></Route>
         <Route path='/profile-otp/:userId' element={<Profile_Otp/>}></Route>
+        <Route path='/club-otp/:userId' element={<Club_Otp/>}></Route>
         <Route path="/" element={<Home/>} />
         <Route path="/student-profile" element={<ProfilePage/>} />
+        <Route path="/college-profile" element={<CollegeProfile/>} />
       </Routes>
       </AuthProvider>
     </Router>
