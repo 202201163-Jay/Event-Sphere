@@ -1,37 +1,60 @@
-import { createContext, useContext, useState, useEffect} from "react";
+import { createContext, useContext, useState } from "react";
 
 export const AuthContext = createContext();
+
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("token"))
-  const [username, setUserName] = useState("")
-  const authorizationToken = `Bearer ${token}`
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [username, setUserName] = useState("");
   const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  // const [userData, setUserData] = useState(null);
+  const [image, setimage] = useState(null); // Default or fallback image
 
-  const storeTokenInLs = (serverToken, name, userId) => {
-    setToken(serverToken)
-    setUserName(name)
-    setUserId(userId); 
-    localStorage.setItem("token", serverToken)
-    localStorage.setItem("userId", userId); 
-  }
+  const authorizationToken = `Bearer ${token}`;
 
-  const isLoggedIn = !!token
-  console.log(isLoggedIn)
-  const [isCollegeRepresentative, setIsCollegeRepresentative] = useState(false)
+  const storeTokenInLs = (serverToken, name, userId, image) => {
+    setToken(serverToken);
+    setUserName(name);
+    setUserId(userId);
+    setimage(image);
+   
+    localStorage.setItem("token", serverToken);
+    localStorage.setItem("userId", userId);
+    localStorage.setItem("image", image);
+  };
+
+  const isLoggedIn = !!token;
+
+  const [isCollegeRepresentative, setIsCollegeRepresentative] = useState(false);
 
   const Logout = () => {
-    setToken("")
-    setUserName("")
+    setToken("");
+    setUserName("");
     setUserId("");
-    setIsCollegeRepresentative(false)
-    localStorage.removeItem("token")
-    localStorage.removeItem("userId")
-  }
+    setimage(""); // Clear profile image on logout
+    setIsCollegeRepresentative(false);
+    
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("image"); // Remove profile image from local storage
+  };
 
   return (
-    <AuthContext.Provider value={{isLoggedIn, storeTokenInLs, Logout, authorizationToken, isCollegeRepresentative, setIsCollegeRepresentative, username, userId}}>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn,
+        storeTokenInLs,
+        Logout,
+        authorizationToken,
+        isCollegeRepresentative,
+        setIsCollegeRepresentative,
+        username,
+        userId,
+        image, // Make profile image available in context
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
-}
+};
+
 export const useAuth = () => useContext(AuthContext);

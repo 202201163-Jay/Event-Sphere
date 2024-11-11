@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider"; // Assuming useAuth provides user info
 
 const Navbar = () => {
-  const { isLoggedIn, username, profilePicture } = useAuth();
+  const { isLoggedIn, image, firstName, userId } = useAuth(); // Destructure userId
   const { isCollegeRepresentative } = useAuth();
+  const [userData, setUserData] = useState(null);
 
   const [sticky, setSticky] = useState(false);
   useEffect(() => {
@@ -21,20 +22,37 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchUserById = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/users/${userId}`);
+        const data = await response.json();
+
+        setUserData(data.data);
+
+      } catch (error) {
+        toast.error('Error fetching user data');
+      }
+    };
+    if (userId) {
+      fetchUserById();
+    }
+  }, [userId]);
+
   const navItems = (
     <>
       <li>
-        <Link to="/">Home</Link>
+        <Link to="/" className="text-yellow-500 hover:text-yellow-300">Home</Link>
       </li>
       <li>
-        <Link to="/blogs">Blogs</Link>
+        <Link to="/blogs" className="text-yellow-500 hover:text-yellow-300">Blogs</Link>
       </li>
       <li>
-        <a>About</a>
+        <a className="text-yellow-500 hover:text-yellow-300">About</a>
       </li>
       {isCollegeRepresentative && (
         <li>
-          <Link to="/listing">List Events</Link>
+          <Link to="/listing" className="text-yellow-500 hover:text-yellow-300">List Events</Link>
         </li>
       )}
     </>
@@ -43,11 +61,10 @@ const Navbar = () => {
   return (
     <>
       <div
-        className={`max-w-screen-2xl container mx-auto md:px-20 px-4 fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
-          sticky
-            ? "sticky-navbar shadow-lg bg-white text-black"
-            : "bg-gray-100 text-black"
-        }`}
+        className={`max-w-screen-2xl container mx-auto md:px-20 px-4 fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${sticky
+          ? "sticky-navbar shadow-lg bg-black text-white"
+          : "bg-gray-800 text-white"
+          }`}
       >
         <div className="navbar py-4">
           <div className="navbar-start">
@@ -72,21 +89,21 @@ const Navbar = () => {
                 {navItems}
               </ul>
             </div>
-            <a className="text-2xl font-bold cursor-pointer text-indigo-500">
+            <a className="text-2xl font-bold cursor-pointer text-yellow-500">
               Event Sphere
             </a>
           </div>
           <div className="navbar-end space-x-3">
             <div className="navbar-center hidden lg:flex">
-              <ul className="menu menu-horizontal px-1 space-x-6 font-medium text-gray-600">
+              <ul className="menu menu-horizontal px-1 space-x-6 font-medium">
                 {navItems}
               </ul>
             </div>
             <div className="hidden md:block">
-              <label className="px-3 py-2 border rounded-md flex items-center gap-2 bg-gray-200">
+              <label className="px-3 py-2 border rounded-md flex items-center gap-2 bg-gray-700 text-white">
                 <input
                   type="search"
-                  className="w-full px-4 py-2 border-none border-gray-300 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border-none bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   placeholder="Search"
                 />
                 <svg
@@ -108,19 +125,21 @@ const Navbar = () => {
             {isLoggedIn ? (
               <div className="relative">
                 {/* Profile Picture and Dropdown */}
-                <div className="flex items-center space-x-2">
-                  <Link to="/user-profile">
+                <div className="flex items-center space-x-2 h-20">
+                  <Link to={`/profile/${userId}`}> {/* Dynamic profile route */}
                     <img
-                      src={profilePicture || "/default-profile.jpg"} // Add default picture if none exists
+                      src={userData?.image || "https://via.placeholder.com/80"}
                       alt="Profile"
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="w-12 h-12 rounded-full shadow-md"
                     />
                   </Link>
+                  {/* Display "Hi FirstName" */}
+                  <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${userData?.firstName}`}</span>
                   {/* Hoverable dropdown */}
                   <div className="group relative">
-                    <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <Link to="/user-profile" className="block px-4 py-2">View Profile</Link>
-                      <Link to="/logout" className="block px-4 py-2">Logout</Link>
+                    <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <Link to={`/student-profile`} className="block px-4 py-2 hover:bg-yellow-500">View Profile</Link>
+                      <Link to="/logout" className="block px-4 py-2 hover:bg-yellow-500">Logout</Link>
                     </div>
                   </div>
                 </div>
@@ -129,7 +148,7 @@ const Navbar = () => {
               <div>
                 <Link
                   to="/login"
-                  className="bg-indigo-500 text-white px-3 py-2 rounded-md hover:bg-indigo-700 duration-300"
+                  className="bg-yellow-500 text-black px-3 py-2 rounded-md hover:bg-yellow-600 duration-300"
                 >
                   Login
                 </Link>
