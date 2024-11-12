@@ -67,7 +67,10 @@ export const Stu_Login = () => {
             />
           </div>
           <div>
-            <label className="text-sm font-semibold text-gray-400">Password *</label>
+            <label className="text-sm font-semibold text-gray-400">Password * </label>
+            <span className="text-right mt-4">
+              <Link className="text-indigo-500 hover:underline" to="/forgot-password-stu">Forgot Password?</Link>
+            </span>
             <input
               className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
               type="password"

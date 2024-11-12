@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const Col_Login = () => {
+export const Forgot_Pass_Col = () => {
   const [collegeRep, setCollegeRep] = useState({
     email: "",
     password: "",
@@ -47,12 +47,17 @@ export const Col_Login = () => {
   };
 
   return (
+    // <div className="flex h-screen">
+    //   <div className="w-3/5">
+    //     <img src="back_login.jpg" alt="" className="w-full h-full object-cover" />
+    //   </div>
+    //   <div className="w-2/5 flex justify-center items-center">
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
       <ToastContainer/>
       <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8">
-        <h2 className="text-2xl font-bold text-center mb-6">Welcome Back!</h2>
-        <h3 className="text-lg text-center mb-4">Login to your Account</h3>
-        <p className="text-center mb-6">It's nice to see you again. Ready to conquer?</p>
+        <h2 className="text-2xl font-bold text-center mb-6">Reset Your Password</h2>
+        {/* <h3 className="text-lg text-center mb-4">Reset Your Password</h3> */}
+        <p className="text-center mb-6">Enter Your Email Id & a valid password</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-sm font-semibold text-gray-400">Email Address *</label>
@@ -67,39 +72,41 @@ export const Col_Login = () => {
             />
           </div>
           <div>
+            <label className="text-sm font-semibold text-gray-400">Enter New Password *</label>
+            <input
+              className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
+              type="text"
+              name="email"
+              placeholder="Your New Password"
+              value={collegeRep.email}
+              onChange={handleInput}
+              required
+            />
+          </div>
+          <div>
             <span className="text-center mt-4">
-              <label className="text-sm font-semibold text-gray-400">Password * </label>
-            </span>
-            <span className="text-right mt-4">
-              <Link className="text-indigo-500 hover:underline" to="/forgot-password-col">Forgot Password?</Link>
+              <label className="text-sm font-semibold text-gray-400">Confirm Password * </label>
             </span>
             <input
               className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
               type="password"
               name="password"
-              placeholder="Your Password"
+              placeholder="Confirm Your New Password"
               value={collegeRep.password}
               onChange={handleInput}
               required
             />
           </div>
           <div className="flex justify-center">
+            <Link className="w-full" to="/college-login">
             <button
               className="w-full bg-blue-500 text-white p-3 rounded font-bold hover:bg-blue-600 transition-colors"
               type="submit"
             >
-              Log In
-            </button>
+              Submit
+            </button></Link>
           </div>
         </form>
-        <div className="text-center mt-4">
-          <p>
-            Don't have an account?{" "}
-            <Link className="text-blue-500 hover:underline" to="/college-register">
-              Sign Up
-            </Link>
-          </p>
-        </div>
       </div>
     </div>
   );
