@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider"; // Assuming useAuth provides user info
+import { useAuth } from "../../context/AuthProvider";
 
 const Navbar = () => {
-  const { isLoggedIn, image, firstName, userId } = useAuth(); // Destructure userId
+  const { isLoggedIn, userId, type, image, name} = useAuth();
   const { isCollegeRepresentative } = useAuth();
   const [userData, setUserData] = useState(null);
 
@@ -50,10 +50,15 @@ const Navbar = () => {
       <li>
         <a className="text-yellow-500 hover:text-yellow-300">About</a>
       </li>
-      {isCollegeRepresentative && (
-        <li>
-          <Link to="/listing" className="text-yellow-500 hover:text-yellow-300">List Events</Link>
-        </li>
+      {type === "club" && (
+        <>
+          <li>
+            <Link to="/listing" className="text-yellow-500 hover:text-yellow-300">List Events</Link>
+          </li>
+          <li>
+            <Link to="/add-blog" className="text-yellow-500 hover:text-yellow-300">Add Blogs</Link>
+          </li>
+        </>
       )}
     </>
   );
@@ -126,19 +131,17 @@ const Navbar = () => {
               <div className="relative">
                 {/* Profile Picture and Dropdown */}
                 <div className="flex items-center space-x-2 h-20">
-                  <Link to={`/profile/${userId}`}> {/* Dynamic profile route */}
+                  <Link to={`/profile/${userId}`}>
                     <img
-                      src={userData?.image || "https://via.placeholder.com/80"}
+                      src={image || "https://via.placeholder.com/80"}
                       alt="Profile"
-                      className="w-12 h-12 rounded-full shadow-md"
+                      className="w-11 h-11 rounded-full shadow-md"
                     />
                   </Link>
-                  {/* Display "Hi FirstName" */}
-                  <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${userData?.firstName}`}</span>
-                  {/* Hoverable dropdown */}
+                  <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${name}`}</span>
                   <div className="group relative">
                     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <Link to={`/student-profile`} className="block px-4 py-2 hover:bg-yellow-500">View Profile</Link>
+                      <Link to={type === "college" ? "/college-profile" : type === "club" ? "/club-profile" : "/student-profile"} className="block px-4 py-2 hover:bg-yellow-500">View Profile</Link>
                       <Link to="/logout" className="block px-4 py-2 hover:bg-yellow-500">Logout</Link>
                     </div>
                   </div>

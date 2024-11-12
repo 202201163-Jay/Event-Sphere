@@ -30,7 +30,9 @@ export const Stu_Login = () => {
       if (response.ok) {
         toast.success("Login Successful !!");
         const responsedata = await response.json();
-        storeTokenInLs(responsedata.token, responsedata.name, responsedata.user.id);
+        console.log(responsedata)
+        const type = "user";
+        storeTokenInLs(responsedata.token, responsedata.representative.name, responsedata.representative.id, type, responsedata.representative.image);
         setTimeout(() => {
           navigate("/");
         }, 1000);

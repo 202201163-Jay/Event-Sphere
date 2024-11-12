@@ -11,12 +11,8 @@ export const Col_Login = () => {
   });
 
   const { storeTokenInLs } = useAuth();
-  // const { setIsCollegeRepresentative } = useAuth();
   const navigate = useNavigate();
 
-  // const toggle = () => {
-  //   setIsCollegeRepresentative((prev) => !prev);
-  // };
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -31,20 +27,19 @@ export const Col_Login = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(collegeRep),
       });
-      console.log(response);
       if (response.ok) {
         toast.success("Login Successful !!");
         const responseData = await response.json();
-        console.log(responseData)
-        storeTokenInLs(responseData.token, responseData.name, responseData.representative.id);
+        const type = responseData.representative?.club ? 'club' : 'college';
+        storeTokenInLs(responseData.token, responseData.representative?.club || responseData.representative?.college, responseData.representative.id, type);
         // toggle();
         setTimeout(() => {
           navigate("/");
-        }, 1000);  // Redirect to home or dashboard after successful login
+        }, 1000);
       } else if (response.status === 401 || response.status === 403) {
         toast.error("Invalid Credentials");
-      } else {
-        toast.error("Something went wrong, please try again");
+      } else if(response.status === 404){
+        toast.error("Email does not exist!");
       }
     } catch (error) {
       console.error("Error during login", error);
