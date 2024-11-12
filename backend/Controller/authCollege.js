@@ -99,7 +99,40 @@ exports.login = async (req, res) => {
         // Find the representative by repId
         const college = await College.findOne({ email });
         if (!college) {
-            return res.status(404).json({ error: "College not found" });
+            const collegeWithClub = await College.findOne({
+                "collegeRepresentatives.clubemail": email
+            });
+
+            if (!collegeWithClub) {
+                return res.status(404).json({ error: "Club not found!" });
+            }
+
+            const club = collegeWithClub.collegeRepresentatives.find(
+                (rep) => rep.clubemail === email
+            );
+
+            if (!club) {
+                return res.status(404).json({ error: "Club not found!" });
+            }
+            const isPasswordValid = await bcrypt.compare(password, club.password);
+            if (!isPasswordValid) {
+                return res.status(401).json({ error: "Invalid password" });
+            }
+
+            // Generate JWT token
+            const token = jwt.sign({ userId: club._id, type: 'club' }, "TeamDoIt", {
+                expiresIn: "1h", // Set token expiry as needed
+            });
+
+            return res.status(200).json({
+                message: "Login successful",
+                token,
+                representative: {
+                    id: club._id,
+                    email: club.clubemail,
+                    club: club.clubName,
+                },
+            });
         }
 
         // Check password

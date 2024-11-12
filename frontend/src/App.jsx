@@ -7,6 +7,7 @@ import { Student_Register } from './Pages/Student/Stu_Reg';
 import { Home } from './Pages/Home/Home';
 import { Login } from './Pages/Home/Login';
 import { AuthProvider } from './Context/AuthProvider';
+import { useAuth } from "./Context/AuthProvider";
 import { Logout } from './Pages/Home/Logout';
 import { Verification } from './Pages/Student/Verification';
 import { Otp } from './Pages/Student/Otp';
@@ -22,11 +23,13 @@ import { ProfilePage } from './Pages/Profile/Student_Profile';
 import { Profile_Otp } from './Pages/Profile/Profile_Otp';
 import { CollegeProfile } from './Pages/Profile/College_Profile';
 import { Club_Otp } from './Pages/Profile/Club_Otp';
+import { ClubProfile } from './Pages/Profile/ClubProfile';
 
 export const App = () => {
+  const type = localStorage.getItem("type");
   return (
     <>
-      <Router>
+      <Router >
         <AuthProvider>
           <Routes>
             <Route path='/login' element={<Login />} />
@@ -45,8 +48,15 @@ export const App = () => {
             <Route path='/profile-otp/:userId' element={<Profile_Otp />} />
             <Route path='/club-otp/:userId' element={<Club_Otp />} />
             <Route path="/" element={<Home />} />
-            <Route path="/student-profile" element={<ProfilePage />} />
-            <Route path="/college-profile" element={<CollegeProfile />} />
+            {type === "user" && (
+              <Route path="/student-profile" element={<ProfilePage />} />
+            )}
+            {type === "college" && (
+              <Route path="/college-profile" element={<CollegeProfile />} />
+            )}
+            {type === "club" && (
+              <Route path="/club-profile" element={<ClubProfile />} />
+            )}
           </Routes>
         </AuthProvider>
       </Router>
