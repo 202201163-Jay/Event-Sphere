@@ -10,9 +10,8 @@ export const BlogPage = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("/api/blogs");
-        console.log("API Response:", response); // Log the full response to inspect it
-        // Ensure the response is an array before setting the state
+        const response = await axios.get("http://localhost:3000/api/blog");
+        console.log("API Response:", response); 
         if (Array.isArray(response.data)) {
           setBlogs(response.data);
         } else {
@@ -47,7 +46,7 @@ export const BlogPage = () => {
       <div className="flex justify-between mb-6">
         <input
           type="text"
-          placeholder="Search blogs..."
+          placeholder="Search blog by title"
           className="p-2 border rounded-md"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

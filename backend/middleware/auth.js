@@ -4,7 +4,7 @@ const User = require('../Models/User');
 
 const authMiddleware = async (req, res, next) => {
   // 1. Get the token from the request header
-  const token = req.header('x-auth-token');
+  const token = req.header('Authorization') && req.header('Authorization').split(' ')[1];
   
   // 2. If no token, deny access
   if (!token) {
@@ -13,7 +13,7 @@ const authMiddleware = async (req, res, next) => {
 
   try {
     // 3. Verify the token and decode the user information
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, 'TeamDoIt');
     req.user = decoded; // Attach the decoded token to the request object
 
     // 4. Fetch the user or college based on the type

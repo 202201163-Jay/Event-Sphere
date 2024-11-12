@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill';
 import './eventdescription.scss';
 import 'react-quill/dist/quill.snow.css';
 
+
 const EventDescription = ({ description, onDescriptionChange }) => {
   return (
     <div className='event-description'>

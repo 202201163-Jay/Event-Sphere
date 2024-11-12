@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider"; // Assuming useAuth provides user info
 
 const Navbar = () => {
-  const { isLoggedIn, image, firstName, userId } = useAuth(); // Destructure userId
+  const { isLoggedIn, userId } = useAuth(); // Destructure userId
   const { isCollegeRepresentative } = useAuth();
   const [userData, setUserData] = useState(null);
 
@@ -52,7 +52,7 @@ const Navbar = () => {
       </li>
       {isCollegeRepresentative && (
         <li>
-          <Link to="/listing" className="text-yellow-500 hover:text-yellow-300">List Events</Link>
+          <Link to="/`listing`" className="text-yellow-500 hover:text-yellow-300">List Events</Link>
         </li>
       )}
     </>
