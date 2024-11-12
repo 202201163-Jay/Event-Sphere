@@ -18,7 +18,9 @@ import AddBlog from  './Pages/BlogJ/addBlog';
 // import Blog from './Pages/BlogPage/pages/Blog';
 
 import EventForm from './Pages/Event_listing_page/EventListingForm';
-import { College_otp } from './Pages/College/College_otp'
+import { Forgot_Pass_Col } from './Pages/College/Forgot_Pass';
+import { Forgot_Pass_Stu } from './Pages/Student/Forgot_Pass';
+import { College_otp } from './Pages/College/College_otp';
 import { ProfilePage } from './Pages/Profile/Student_Profile';
 import { Profile_Otp } from './Pages/Profile/Profile_Otp';
 import { CollegeProfile } from './Pages/Profile/College_Profile';
@@ -47,6 +49,8 @@ export const App = () => {
             <Route path='/college-otp/:userId' element={<College_otp />} />
             <Route path='/profile-otp/:userId' element={<Profile_Otp />} />
             <Route path='/club-otp/:userId' element={<Club_Otp />} />
+            <Route path='/forgot-password-col' element={<Forgot_Pass_Col/>} />
+            <Route path='/forgot-password-stu' element={<Forgot_Pass_Stu/>} />
             <Route path="/" element={<Home />} />
             {type === "user" && (
               <Route path="/student-profile" element={<ProfilePage />} />
