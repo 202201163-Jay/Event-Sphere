@@ -4,21 +4,23 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [username, setUserName] = useState("");
+  const [name, setName] = useState(localStorage.getItem("name"));
   const [userId, setUserId] = useState(localStorage.getItem("userId"));
-  // const [userData, setUserData] = useState(null);
-  const [image, setimage] = useState(null); // Default or fallback image
-
+  const [type, setType] = useState(localStorage.getItem("type"));
+  const [image, setImage] = useState(localStorage.getItem("image"));
   const authorizationToken = `Bearer ${token}`;
 
-  const storeTokenInLs = (serverToken, name, userId, image) => {
+  const storeTokenInLs = (serverToken, name, userId, type, image) => {
     setToken(serverToken);
-    setUserName(name);
+    setName(name);
     setUserId(userId);
-    setimage(image);
+    setType(type);
+    setImage(image);
    
     localStorage.setItem("token", serverToken);
     localStorage.setItem("userId", userId);
+    localStorage.setItem("name", name);
+    localStorage.setItem("type", type);
     localStorage.setItem("image", image);
   };
 
@@ -28,14 +30,17 @@ export const AuthProvider = ({ children }) => {
 
   const Logout = () => {
     setToken("");
-    setUserName("");
+    setName("");
     setUserId("");
-    setimage(""); // Clear profile image on logout
+    setType("");
+    setImage("");
     setIsCollegeRepresentative(false);
     
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
-    localStorage.removeItem("image"); // Remove profile image from local storage
+    localStorage.removeItem("name");
+    localStorage.removeItem("type");
+    localStorage.removeItem("image");
   };
 
   return (
@@ -47,9 +52,10 @@ export const AuthProvider = ({ children }) => {
         authorizationToken,
         isCollegeRepresentative,
         setIsCollegeRepresentative,
-        username,
+        name,
         userId,
-        image, // Make profile image available in context
+        type,
+        image,
       }}
     >
       {children}

@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/auth');
 const router = express.Router();
 
 // Blog creation route - only accessible by colleges
-router.post("/create", authMiddleware, upload.fields([
+router.post("/create", upload.fields([
   {
     name: "posters",
     maxCount: 10

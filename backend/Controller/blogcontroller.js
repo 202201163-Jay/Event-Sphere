@@ -5,12 +5,12 @@ const { uploadOnCloudinary } = require("../config/cloudinary");
 const createBlog = async (req, res) => {
   try {
     // Check if the logged-in user is a college
-    const { type } = req.user; // Assuming the user info is available in req.user (set during authentication)
+    // const { type } = req.user; // Assuming the user info is available in req.user (set during authentication)
 
-    // Allow blog creation only for college users
-    if (type !== 'college') {
-      return res.status(403).json({ message: 'You do not have permission to create a blog' });
-    }
+    // // Allow blog creation only for college users
+    // if (type !== 'college') {
+    //   return res.status(403).json({ message: 'You do not have permission to create a blog' });
+    // }
 
     // Extract data from the request body
     const { title, content, date, college } = req.body;

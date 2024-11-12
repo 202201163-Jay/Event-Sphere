@@ -31,9 +31,6 @@ export const CollegeProfile = () => {
     }
   }, [userId]);
 
-  console.log(collegeData)
-
-
 
   const [userData, setUserData] = useState({
     firstName: 'John',
@@ -149,22 +146,6 @@ export const CollegeProfile = () => {
                     <p className="text-gray-200">{collegeData?.emailDomain || ''}</p>
                 </div>
               </div>
-
-              {/* {isEditing ? (
-                <button
-                //   onClick={handleSave}
-                  className="absolute top-4 right-4 flex items-center text-yellow-500 hover:text-yellow-600 bg-transparent border border-yellow-500 hover:border-yellow-600 rounded-full px-3 py-1"
-                >
-                  Save
-                </button>
-              ) : (
-                <button
-                //   onClick={handleEditToggle}
-                  className="absolute top-4 right-4 flex items-center text-yellow-500 hover:text-yellow-600 bg-transparent border border-yellow-500 hover:border-yellow-600 rounded-full px-3 py-1"
-                >
-                  <PencilIcon className="h-4 w-4 mr-1" /> Edit
-                </button>
-              )} */}
             </div>
 
             <div className="relative border border-gray-700 rounded-lg p-4 bg-gray-800">
