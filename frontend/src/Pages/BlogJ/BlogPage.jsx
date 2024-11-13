@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../../context/AuthProvider";
 export const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const { isLoggedIn, userId, type, image, name} = useAuth();
 
   // Fetch blogs on component mount
   useEffect(() => {
@@ -100,12 +101,9 @@ export const BlogPage = () => {
             </ul>
           )}
         </div>
-        <Link
-          to="/add-blog"
-          className="bg-blue-600 text-white px-5 py-3 rounded-md shadow-md ml-4 hover:bg-blue-700"
-        >
-          Add Blog
-        </Link>
+        {type === "club" && (
+          <Link to="/add-blog" className="bg-blue-600 text-white px-5 py-3 rounded-md shadow-md ml-4 hover:bg-blue-700">Add Blog</Link>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

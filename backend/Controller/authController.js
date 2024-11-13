@@ -26,7 +26,7 @@ exports.login = async (req, res) => {
     // Check if the user exists in the database
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(403).json({ error: "User not found" });
     }
 
     // Check if the provided password matches the stored hashed password
@@ -191,3 +191,4 @@ module.exports.verifyOTP = async (req, res) => {
     });
   }
 }
+

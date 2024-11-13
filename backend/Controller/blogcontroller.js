@@ -14,7 +14,6 @@ const createBlog = async (req, res) => {
 
     // Extract data from the request body
     const { title, content, date, college } = req.body;
-    console.log(req.body);
     const images = req.files.posters; // The uploaded images will be in req.files
 
     console.log(`images : ${images}`);

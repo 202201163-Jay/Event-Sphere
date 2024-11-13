@@ -7,4 +7,6 @@ router.get('/:userId', controller.getCollegeById);
 router.post("/club-signup", controller.signup);
 router.post("/club-verify", controller.verifyOTP);
 
+router.delete("/delete/:userId", controller.deletecollegebyId);
+
 module.exports = router;
