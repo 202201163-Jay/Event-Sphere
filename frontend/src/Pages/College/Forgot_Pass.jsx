@@ -49,7 +49,7 @@ export const Forgot_Pass_Col = () => {
   return (
     // <div className="flex h-screen">
     //   <div className="w-3/5">
-    //     <img src="back_login.jpg" alt="" className="w-full h-full object-cover" />
+      
     //   </div>
     //   <div className="w-2/5 flex justify-center items-center">
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
@@ -75,10 +75,10 @@ export const Forgot_Pass_Col = () => {
             <label className="text-sm font-semibold text-gray-400">Enter New Password *</label>
             <input
               className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-              type="text"
-              name="email"
+              type="password"
+              name="password"
               placeholder="Your New Password"
-              value={collegeRep.email}
+              value={collegeRep.password}
               onChange={handleInput}
               required
             />
@@ -90,9 +90,8 @@ export const Forgot_Pass_Col = () => {
             <input
               className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
               type="password"
-              name="password"
+              name="c-password"
               placeholder="Confirm Your New Password"
-              value={collegeRep.password}
               onChange={handleInput}
               required
             />

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const Forgot_Pass_Stu = () => {
-  const [collegeRep, setCollegeRep] = useState({
+  const [user, setUser] = useState({
     email: "",
     password: "",
   });
@@ -13,33 +13,33 @@ export const Forgot_Pass_Stu = () => {
   const { storeTokenInLs } = useAuth();
   const navigate = useNavigate();
 
-
   const handleInput = (e) => {
     const { name, value } = e.target;
-    setCollegeRep({ ...collegeRep, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/api/auth/college-login", {
+      const response = await fetch("http://localhost:3000/api/auth/student-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(collegeRep),
+        body: JSON.stringify(user),
       });
+
       if (response.ok) {
         toast.success("Login Successful !!");
-        const responseData = await response.json();
-        const type = responseData.representative?.club ? 'club' : 'college';
-        storeTokenInLs(responseData.token, responseData.representative?.club || responseData.representative?.college, responseData.representative.id, type);
-        // toggle();
+        const responsedata = await response.json();
+        console.log(responsedata)
+        const type = "user";
+        storeTokenInLs(responsedata.token, responsedata.representative.name, responsedata.representative.id, type, responsedata.representative.image);
         setTimeout(() => {
           navigate("/");
         }, 1000);
       } else if (response.status === 401 || response.status === 403) {
         toast.error("Invalid Credentials");
-      } else if(response.status === 404){
-        toast.error("Email does not exist!");
+      } else {
+        toast.error("Something went wrong, please try again");
       }
     } catch (error) {
       console.error("Error during login", error);
@@ -66,7 +66,7 @@ export const Forgot_Pass_Stu = () => {
               type="text"
               name="email"
               placeholder="Enter Your Email"
-              value={collegeRep.email}
+              value={user.email}
               onChange={handleInput}
               required
             />
@@ -75,10 +75,10 @@ export const Forgot_Pass_Stu = () => {
             <label className="text-sm font-semibold text-gray-400">Enter New Password *</label>
             <input
               className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-              type="text"
-              name="email"
+              type="password"
+              name="password"
               placeholder="Your New Password"
-              value={collegeRep.email}
+              value={user.password}
               onChange={handleInput}
               required
             />
@@ -90,9 +90,8 @@ export const Forgot_Pass_Stu = () => {
             <input
               className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
               type="password"
-              name="password"
+              name="c-password"
               placeholder="Confirm Your New Password"
-              value={collegeRep.password}
               onChange={handleInput}
               required
             />
