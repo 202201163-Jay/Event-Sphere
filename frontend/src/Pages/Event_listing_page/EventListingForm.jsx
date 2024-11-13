@@ -14,7 +14,11 @@ function EventForm() {
     occasion: '',
     mode: '',
     tags: [],
-    description: ''
+    description: '',
+    registrationStartDate: '',
+    registrationEndDate: '',
+    venue: '',
+    poster: null
   });
 
   const handleModeChange = (mode) => {
@@ -29,6 +33,16 @@ function EventForm() {
     setFormInput((prevInput) => ({ ...prevInput, description }));
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormInput((prevInput) => ({ ...prevInput, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFormInput((prevInput) => ({ ...prevInput, poster: file }));
+  };
+
   const handleSubmit = (e) => {
 
     e.preventDefault();
@@ -40,7 +54,11 @@ function EventForm() {
       occasion: e.target.elements.occasion.value,
       mode: formInput.mode,
       tags: formInput.tags,
-      description: formInput.description
+      description: formInput.description,
+      registrationStartDate: formInput.registrationStartDate,
+      registrationEndDate: formInput.registrationEndDate,
+      venue: formInput.venue,
+      poster: formInput.poster
     };
 
     setEvents((prevEvents) => [...prevEvents, newEvent]);
@@ -52,7 +70,11 @@ function EventForm() {
       occasion: '',
       mode: '',
       tags: [],
-      description: ''
+      description: '',
+      registrationStartDate: '',
+      registrationEndDate: '',
+      venue: '',
+      poster: null
     });
 
     e.target.reset();
@@ -66,7 +88,7 @@ function EventForm() {
 
         <form onSubmit={handleSubmit}>
 
-        <h1>Basic Details</h1>
+        <h1>Event Details</h1>
 
         <div className="event-input">
 
@@ -76,13 +98,23 @@ function EventForm() {
           <h4>Event Type</h4>
 
           <select name="event-type" id="event-type" required>
-            <option value="General">General Competition</option>
-            <option value="Hackathon">Coding Event</option>
-            <option value="dance">Dance Competition</option>
-            <option value="singing">Singing Competition</option>
-            <option value="concert">Concert Event</option>
+            <option value="Cultural Event">Cultural Event</option>
+            <option value="Technical Event">Technical Event</option>
+            <option value="Sports Event">Sports Event</option>
+            <option value="Social Event">Social Event</option>
+            <option value="concert">Concert</option>
           </select>
           </div>
+
+          <div className="event-poster">
+              <h4>Event Poster</h4>
+              <input
+                type="file"
+                name="poster"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </div>
 
           {/*---------------- Event Title ------------------- */}
           <div className="event-name">
@@ -117,6 +149,43 @@ function EventForm() {
             placeholder="Enter Festival Name" 
             />
           </div>
+
+          {/* Registration Start Date */}
+          <div className="registration-start-date">
+              <h4>Registration Start Date</h4>
+              <input
+                type="date"
+                name="registrationStartDate"
+                value={formInput.registrationStartDate}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            {/* Registration End Date */}
+            <div className="registration-end-date">
+              <h4>Registration End Date</h4>
+              <input
+                type="date"
+                name="registrationEndDate"
+                value={formInput.registrationEndDate}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            {/* Event Venue */}
+            <div className="event-venue">
+              <h4>Event Venue</h4>
+              <input
+                type="text"
+                name="venue"
+                placeholder="Enter Venue Location"
+                value={formInput.venue}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
 
           <div className="mode-of-event">
             <h4>Mode of Event</h4>
