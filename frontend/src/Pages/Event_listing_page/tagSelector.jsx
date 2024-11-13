@@ -2,7 +2,16 @@ import React, { useState } from 'react';
 
 const TagSelector = ({ selectedTags, onTagChange }) => {
   const [inputValue, setInputValue] = useState('');
-  const options = ['Tag 1', 'Tag 2', 'Tag 3'];
+  const options = [
+    'Coding', 'Workshop', 'Career Fair',
+    'Cultural Festival', 'Music', 'Theater',
+    'Orientation', 'Party', 'Club Fair',
+    'Resume Building', 'Networking', 'Leadership',
+    'Intramural', 'Fitness', 'Tournament',
+    'Social Justice', 'Mental Health', 'Diversity',
+    'Game Night', 'Trivia', 'Talent Show'
+  ];
+  
 
   const handleSelect = (event) => {
     const value = event.target.value;
@@ -37,7 +46,7 @@ const TagSelector = ({ selectedTags, onTagChange }) => {
           Select tags...
         </option>
         {options.map((option) => (
-          <option key={option} value={option}>{option}</option>
+          <option key={option} value={option} style={{color: 'whitesmoke'}}>{option}</option>
         ))}
       </select>
 
