@@ -11,6 +11,9 @@ export const AuthProvider = ({ children }) => {
   const authorizationToken = `Bearer ${token}`;
 
   const storeTokenInLs = (serverToken, name, userId, type, image) => {
+    if(type === "college" || type === "club"){
+      image = `https://api.dicebear.com/5.x/initials/svg?seed=${name}`
+    }
     setToken(serverToken);
     setName(name);
     setUserId(userId);

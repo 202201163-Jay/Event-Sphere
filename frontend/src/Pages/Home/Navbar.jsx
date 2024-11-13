@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 
 const Navbar = () => {
@@ -8,6 +8,7 @@ const Navbar = () => {
   const [userData, setUserData] = useState(null);
 
   const [sticky, setSticky] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -97,7 +98,7 @@ const Navbar = () => {
                 {navItems}
               </ul>
             </div>
-            <Link className="text-2xl font-bold cursor-pointer text-yellow-500" to="/">
+            <Link className="text-2xl font-bold cursor-pointer text-yellow-500" to = "/">
               Event Sphere
             </Link>
           </div>
@@ -134,19 +135,29 @@ const Navbar = () => {
               <div className="relative">
                 {/* Profile Picture and Dropdown */}
                 <div className="flex items-center space-x-2 h-20">
-                  <Link to={`/profile/${userId}`}>
+                <Link to={`/profile/${userId}`}>
                     <img
-                      src={image || "https://via.placeholder.com/80"}
+                      src={image || `https://api.dicebear.com/5.x/initials/svg?seed=${name}`}
                       alt="Profile"
                       className="w-11 h-11 rounded-full shadow-md"
                     />
                   </Link>
                   <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${name}`}</span>
                   <div className="group relative">
-                    <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <Link to={type === "college" ? "/college-profile" : type === "club" ? "/club-profile" : "/student-profile"} className="block px-4 py-2 hover:bg-yellow-500">View Profile</Link>
-                      <Link to="/logout" className="block px-4 py-2 hover:bg-yellow-500">Logout</Link>
-                    </div>
+                  <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <button
+                      onClick={() => navigate(type === "college" ? "/college-profile" : type === "club" ? "/club-profile" : "/student-profile")}
+                      className="block w-full text-left px-4 py-2 hover:bg-yellow-500"
+                    >
+                      View Profile
+                    </button>
+                    <button
+                      onClick={() => navigate("/logout")}
+                      className="block w-full text-left px-4 py-2 hover:bg-yellow-500"
+                    >
+                      Logout
+                    </button>
+                  </div>
                   </div>
                 </div>
               </div>

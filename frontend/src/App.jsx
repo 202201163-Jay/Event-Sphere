@@ -13,7 +13,7 @@ import { Verification } from './Pages/Student/Verification';
 import { Otp } from './Pages/Student/Otp';
 import { BlogDetail } from './Pages/BlogJ/BlogDetail';
 import { BlogPage } from './Pages/BlogJ/BlogPage';
-import AddBlog from  './Pages/BlogJ/addBlog';
+import {AddBlog} from  './Pages/BlogJ/addBlog';
 // import BlogHome from './Pages/BlogPage/pages/Blogs';
 // import Blog from './Pages/BlogPage/pages/Blog';
 
@@ -40,7 +40,7 @@ export const App = () => {
             <Route path='/logout' element={<Logout />} />
             <Route path="/blogs" element={<BlogPage />} />
             <Route path="/blogs/:blogId" element={<BlogDetail />} />
-            <Route path="/add-blog" component={<AddBlog/>} />
+            <Route path="/add-blog" element={<AddBlog/>} />
             <Route path='/listing' element={<EventForm />} />
             <Route path="/college-login" element={<College_Login />} />
             <Route path="/college-register" element={<College_Register />} />

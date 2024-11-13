@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { PencilIcon } from '@heroicons/react/24/solid';
+import { PencilIcon, TrashIcon, PlusIcon} from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../../context/AuthProvider';
 
 const userId = localStorage.getItem("userId");
 
@@ -10,6 +11,7 @@ export const CollegeProfile = () => {
   const [activeSection, setActiveSection] = useState('profile');
   const navigate = useNavigate();
   const [collegeData, setCollegeData] = useState(null);
+  const {image} = useAuth();
 
   useEffect(() => {
     const fetchCollegeById = async () => {
@@ -103,6 +105,23 @@ export const CollegeProfile = () => {
       }
   };
 
+  const handleDeleteProfile = async() => {
+    try {
+      console.log(userId);
+      const response = await fetch(`http://localhost:3000/api/college/delete/${userId}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        toast.success("User deleted successfully");
+        navigate("/logout");
+      } else {
+        toast.error("Error deleting profile");
+      }
+    } catch (error) {
+      toast.error("Error deleting profile");
+    }
+  }
+
   const renderContent = () => {
     switch (activeSection) {
       case 'profile':
@@ -112,7 +131,7 @@ export const CollegeProfile = () => {
             <div className="relative border border-gray-700 rounded-lg p-4 mb-8 bg-gray-800">
               <div className="flex items-center space-x-4">
                 <img
-                  src={collegeData?.image || "https://via.placeholder.com/80"}
+                  src={image || "https://via.placeholder.com/80"}
                   alt="Profile"
                   className="w-20 h-20 rounded-full shadow-md"
                 />
@@ -122,11 +141,6 @@ export const CollegeProfile = () => {
                   <p className="text-sm text-gray-500">Leeds, United Kingdom</p>
                 </div>
               </div>
-              {/* <button
-                className="absolute top-4 right-4 flex items-center text-yellow-500 hover:text-yellow-600 bg-transparent border border-yellow-500 hover:border-yellow-600 rounded-full px-3 py-1"
-              >
-                <PencilIcon className="h-4 w-4 mr-1" /> {"Edit"}
-              </button> */}
             </div>
 
             {/* Personal Information */}
@@ -156,7 +170,7 @@ export const CollegeProfile = () => {
                   collegeData.collegeRepresentatives.map((club) => (
                     <li key={club._id} className="bg-gray-700 p-4 rounded-lg shadow-lg">
                       <div className="flex justify-between items-center">
-                        <span className="font-semibold text-xl text-yellow-500">{club.clubName}</span>
+                        <span className="font-semibold text-lg text-gray-400">{club.clubName}</span>
                         <span className="text-sm text-gray-400">{club.clubemail}</span>
                       </div>
                     </li>
@@ -230,12 +244,10 @@ export const CollegeProfile = () => {
                 </div>
 
               <div className="flex justify-between gap-4">
-                <button
-                  type="submit"
-                  className="w-full bg-yellow-500 text-gray-800 p-2 rounded font-semibold hover:bg-yellow-600 transition duration-200"
-                >
-                  Add
-                </button>
+              <button className="flex items-center px-4 py-2 w-full bg-yellow-500 text-white rounded-md shadow-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition duration-200 ease-in-out justify-center">
+                <PlusIcon className="w-5 h-5 mr-2" />
+                <span className="text-lg font-bold">Add</span>
+              </button>
               </div>
             </form>
           </div>
@@ -245,7 +257,10 @@ export const CollegeProfile = () => {
           <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
             <h4 className="text-lg font-semibold text-red-500 mb-4">Delete Account</h4>
             <p className="text-gray-200">Deleting your account is permanent and cannot be undone.</p>
-            <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md">Delete Account</button>
+            <button onClick={handleDeleteProfile} className="mt-4 px-4 py-2 bg-red-500 hover:bg-red-400 text-white rounded-md flex">
+              <TrashIcon className="h-5 w-5 mr-2" />
+              Delete Account
+            </button>
           </div>
         );
       default:
@@ -260,7 +275,6 @@ export const CollegeProfile = () => {
         <h2 className="text-2xl font-bold text-center mb-6">Account Settings</h2>
 
         <div className="flex">
-          {/* Sidebar */}
           <aside className="w-1/4 space-y-6 pr-4 border-r border-gray-700">
             <button
               className={`w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'profile' ? 'text-yellow-500 bg-gray-700' : 'text-gray-300 hover:bg-gray-700'}`}
@@ -275,7 +289,7 @@ export const CollegeProfile = () => {
               Add Club
             </button>
             <button
-              className={`w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'delete' ? 'text-red-500 bg-red-600' : 'text-gray-300 hover:bg-red-600'}`}
+              className={`w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'delete' ? 'text-red-500 bg-gray-700' : 'text-gray-300 hover:bg-red-600'}`}
               onClick={() => setActiveSection('delete')}
             >
               Delete Account
