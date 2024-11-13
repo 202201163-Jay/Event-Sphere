@@ -239,3 +239,17 @@ module.exports.getUserprofileById = async (req, res) => {
       res.status(500).json({ message: "Error updating user profile" });
     }
   };
+
+
+  module.exports.deleteUserbyId = async(req, res) => {
+    try {
+        const {userId}= req.params;
+        const user = await User.findOne({_id: userId});
+        const id = user.additionalDetails;
+        await User.deleteOne({_id : userId})
+        await UserProfile.deleteOne({_id : id})
+        return res.status(200).json({message : "User deleted successfully"})
+    } catch (error) {
+      return res.status(404).json({message : "Error"})
+    }
+}

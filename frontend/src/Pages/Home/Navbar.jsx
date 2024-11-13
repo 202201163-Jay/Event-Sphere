@@ -59,9 +59,6 @@ const Navbar = () => {
           <li>
             <Link to="/listing" className="text-yellow-500 hover:text-yellow-300">List Events</Link>
           </li>
-          <li>
-            <Link to="/add-blog" className="text-yellow-500 hover:text-yellow-300">Add Blogs</Link>
-          </li>
         </>
       )}
     </>

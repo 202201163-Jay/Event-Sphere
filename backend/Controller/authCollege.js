@@ -237,7 +237,7 @@ module.exports.verifyOTP = async (req, res) => {
 
         res.json({
             status: "VERIFIED",
-            message: "User email verified successfully."
+            message: "College email verified successfully."
         });
     } catch (error) {
         res.json({

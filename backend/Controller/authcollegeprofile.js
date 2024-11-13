@@ -208,3 +208,14 @@ module.exports.getCollegeById = async (req, res) => {
     res.status(500).json({ message: "Error retrieving college data" });
   }
 };
+
+module.exports.deletecollegebyId = async(req, res) => {
+  try {
+      const {userId}= req.params;
+      await CollegeRep.deleteMany({collegeId:userId});
+      await College.deleteOne({_id : userId});
+      return res.status(200).json({message : "College deleted successfully"})
+  } catch (error) {
+    return res.status(404).json({message : "Error during delete"})
+  }
+}
