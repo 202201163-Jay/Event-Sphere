@@ -10,7 +10,7 @@ export const Home = () => {
   return (
     <>
       <Navbar/>
-      <div className='m-[67px]'></div>
+      {/* <div className='h-[92px]'></div> */}
       <Banner/>
       <EventCard title="Recommended Events"/>
       <EventCard title="Events Happening Near You"/>

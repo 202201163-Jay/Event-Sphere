@@ -45,6 +45,9 @@ const Navbar = () => {
         <Link to="/" className="text-yellow-500 hover:text-yellow-300">Home</Link>
       </li>
       <li>
+        <Link to="/events-page" className="text-yellow-500 hover:text-yellow-300">Events</Link>
+      </li>
+      <li>
         <Link to="/blogs" className="text-yellow-500 hover:text-yellow-300">Blogs</Link>
       </li>
       <li>
@@ -94,9 +97,9 @@ const Navbar = () => {
                 {navItems}
               </ul>
             </div>
-            <a className="text-2xl font-bold cursor-pointer text-yellow-500">
+            <Link className="text-2xl font-bold cursor-pointer text-yellow-500" to="/">
               Event Sphere
-            </a>
+            </Link>
           </div>
           <div className="navbar-end space-x-3">
             <div className="navbar-center hidden lg:flex">

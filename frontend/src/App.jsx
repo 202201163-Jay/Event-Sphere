@@ -26,6 +26,8 @@ import { Profile_Otp } from './Pages/Profile/Profile_Otp';
 import { CollegeProfile } from './Pages/Profile/College_Profile';
 import { Club_Otp } from './Pages/Profile/Club_Otp';
 import { ClubProfile } from './Pages/Profile/ClubProfile';
+import { Events_Page } from './Pages/EventDetails/Events_Page';
+import { Register_For_Event } from './Pages/EventDetails/Register_For_Event';
 
 export const App = () => {
   const type = localStorage.getItem("type");
@@ -51,6 +53,8 @@ export const App = () => {
             <Route path='/club-otp/:userId' element={<Club_Otp />} />
             <Route path='/forgot-password-col' element={<Forgot_Pass_Col/>} />
             <Route path='/forgot-password-stu' element={<Forgot_Pass_Stu/>} />
+            <Route path='/events-page' element={<Events_Page/>} />
+            <Route path='/register-for-event' element={<Register_For_Event/>} />
             <Route path="/" element={<Home />} />
             {type === "user" && (
               <Route path="/student-profile" element={<ProfilePage />} />
