@@ -11,9 +11,7 @@ export const Col_Reg = () => {
     confirmPassword: '',
     emailDomain: '',
   });
-  // const [representatives, setRepresentatives] = useState([]);
   const [error, setError] = useState('');
-  // const [repError, setRepError] = useState('');
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -23,29 +21,6 @@ export const Col_Reg = () => {
       [name]: value,
     });
   };
-
-  // const handleRepChange = (index, e) => {
-  //   const { name, value } = e.target;
-  //   const newRepresentatives = [...representatives];
-  //   newRepresentatives[index][name] = value;
-  //   setRepresentatives(newRepresentatives);
-  // };
-
-  // const addRepresentative = () => {
-  //   const lastRep = representatives[representatives.length - 1];
-
-  //   if (representatives.length > 0 && (!lastRep.repname || !lastRep.repId || !lastRep.password)) {
-  //     setRepError('Please fill out all fields for the current representative.');
-  //   } else {
-  //     setRepError('');
-  //     if (representatives.length < 10) {
-  //       setRepresentatives([...representatives, { repname: '', repId: '', password: '' }]);
-  //     } else {
-  //       alert('You can add a maximum of 10 representatives.');
-  //     }
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -55,23 +30,12 @@ export const Col_Reg = () => {
       return;
     }
   
-    // const incompleteRep = representatives.some(rep => !rep.repname || !rep.repId || !rep.password);
-    // if (incompleteRep) {
-    //   setRepError('Please fill in all fields for each representative before submitting.');
-    //   return;
-    // }
-  
     const dataToSubmit = {
       name: formData.collegeName,
       email: formData.email,
       password: formData.password,
       confirmPassword:formData.confirmPassword,
       emailDomain: formData.emailDomain,
-      // collegeRepresentatives: representatives.map(rep => ({
-      //   repname: rep.repname,
-      //   repId: rep.repId,
-      //   password: rep.password,
-      // })),
     };
   
     try {
@@ -100,11 +64,9 @@ export const Col_Reg = () => {
           confirmPassword: '',
           emailDomain: '',
         });
-        // setRepresentatives([{ repname: '', repId: '', password: '' }]);
   
         console.log(responseData);
         const userId = responseData.data.userId;
-          // console.log(userId);
           setTimeout(() => {
             navigate(`/college-otp/${userId}`);
           }, 2000);
@@ -116,16 +78,15 @@ export const Col_Reg = () => {
   
 
   return (
-    <div className="w-full px-10 h-screen flex justify-center items-center bg-gray-900 py-5 mt-5">
+    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
       <ToastContainer/>
-      <div className="w-full max-w-lg bg-gray-800 text-white shadow-lg rounded-lg p-8">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl font-bold text-center mb-6">Join us</h2>
-          <h3 className="text-lg text-center mb-4">Boost your Events</h3>
-          <p className="text-center mb-6">Be a part of a constantly growing community.</p>
+      <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8">
+        <div className="text-center mb-4">
+          <h2 className="text-2xl font-bold text-center mb-4">Join us</h2>
+          <h3 className="text-lg text-center mb-2">Boost your events and make an impact!</h3>
         </div>
 
-        <div className="overflow-y-auto max-h-[75vh] p-4 border rounded-lg bg-gray-800">
+        <div className="overflow-y-auto max-h-[50vh] p-4 border rounded-lg bg-gray-800">
           <form className="w-full" onSubmit={handleSubmit}>
             <div className='mb-4'>
               <label className="text-sm font-semibold text-gray-400">College Name *</label>
@@ -190,58 +151,10 @@ export const Col_Reg = () => {
               />
             </div>
 
-            {/* {representatives.map((rep, index) => (
-              <div key={index} className="mb-4">
-                <label className="text-sm font-semibold text-gray-400">Representative {index + 1} *</label>
-                <input
-                  className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                  type="text"
-                  name="repname"
-                  placeholder="Representative Name"
-                  value={rep.repname}
-                  onChange={(e) => handleRepChange(index, e)}
-                  required
-                />
-                <input
-                  className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                  type="text"
-                  name="repId"
-                  placeholder="Representative ID"
-                  value={rep.repId}
-                  onChange={(e) => handleRepChange(index, e)}
-                  required
-                />
-                <input
-                  className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                  type="password"
-                  name="password"
-                  placeholder="Representative Password"
-                  value={rep.password}
-                  onChange={(e) => handleRepChange(index, e)}
-                  required
-                />
-              </div>
-            ))}
-
-            {repError && <p className="text-red-500 mb-4 flex justify-center">{repError}</p>}
-
-            <div className="flex justify-center mb-4">
-              {representatives.length < 10 && (
-                <button
-                  type="button"
-                  onClick={addRepresentative}
-                  className="w-1/2 bg-green-500 text-white p-3 rounded hover:bg-green-600 transition-colors"
-                >
-                  Add Representative
-                </button>
-              )}
-            </div> */}
-
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="w-1/2 bg-blue-500 text-white p-3 rounded font-bold hover:bg-blue-600 transition-colors"
-                style={{ fontWeight: '800' }}
+                className="w-full bg-blue-600 text-white p-3 rounded font-bold hover:bg-blue-500 transition-colors"
               >
                 Sign Up
               </button>

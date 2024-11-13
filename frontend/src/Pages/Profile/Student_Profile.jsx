@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PencilIcon } from '@heroicons/react/24/solid';
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,6 +15,7 @@ export const ProfilePage = () => {
   const [editData, setEditData] = useState({});
 
   useEffect(() => {
+    
     const fetchUserById = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/users/${userId}`);
@@ -185,6 +186,23 @@ export const ProfilePage = () => {
     }
   };
 
+  const handleDeleteProfile = async() => {
+    try {
+      console.log(userId);
+      const response = await fetch(`http://localhost:3000/api/users/delete/${userId}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        toast.success("User deleted successfully");
+        navigate("/logout");
+      } else {
+        toast.error("Error deleting profile");
+      }
+    } catch (error) {
+      toast.error("Error deleting profile");
+    }
+  }
+
   const renderContent = () => {
     switch (activeSection) {
       case 'profile':
@@ -204,17 +222,11 @@ export const ProfilePage = () => {
                   <p className="text-sm text-gray-500">Leeds, United Kingdom</p>
                 </div>
               </div>
-              <button
-                // onClick={handleEditToggle}
-                className="absolute top-4 right-4 flex items-center text-yellow-500 hover:text-yellow-600 bg-transparent border border-yellow-500 hover:border-yellow-600 rounded-full px-3 py-1"
-              >
-                <PencilIcon className="h-4 w-4 mr-1" /> {"Edit"}
-              </button>
             </div>
 
             {/* Personal Information */}
             <div className="relative border border-gray-700 rounded-lg p-4 bg-gray-800">
-              <h4 className="text-lg font-semibold text-yellow-500 mb-2">Personal Information</h4>
+              <h4 className="text-md font-semibold text-yellow-500 mb-2">Personal Information</h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-gray-400">First Name</p>
@@ -261,13 +273,17 @@ export const ProfilePage = () => {
                 <div>
                   <p className="text-sm text-gray-400">Gender</p>
                   {isEditing ? (
-                    <input
-                      type="text"
+                    <select
                       name="gender"
                       value={editData.gender || ''}
                       onChange={handleInputChange1}
                       className="bg-gray-900 text-white p-2 rounded"
-                    />
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
                   ) : (
                     <p className="text-gray-200">{userprofileData?.gender || 'Not available'}</p>
                   )}
@@ -377,9 +393,12 @@ export const ProfilePage = () => {
       case 'delete':
         return (
           <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
-            <h4 className="text-lg font-semibold text-red-500 mb-4">Delete Account</h4>
+            <h4 className="text-lg font-semibold text-red-600 mb-4">Delete Account</h4>
             <p className="text-gray-200">Deleting your account is permanent and cannot be undone.</p>
-            <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md">Delete Account</button>
+            <button onClick={handleDeleteProfile} className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-md flex">
+            <TrashIcon className="h-5 w-5 mr-2" />
+              Delete Account
+            </button>
           </div>
         );
       default:
@@ -424,7 +443,7 @@ export const ProfilePage = () => {
               <button
                 onClick={() => setActiveSection('delete')}
                 className={`block w-full text-left p-3 ${
-                  activeSection === 'delete' ? 'text-red-500 bg-red-600' : 'text-gray-300 hover:bg-red-600'
+                  activeSection === 'delete' ? 'text-red-500  bg-gray-700' : 'text-gray-300 hover:bg-red-600'
                 } rounded-md`}
               >
                 Delete Account

@@ -112,7 +112,7 @@ export const BlogPage = () => {
         {filteredBlogs.length > 0 ? (
           filteredBlogs.map((blog) => (
             <div key={blog._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <Link to={`/blog/${blog._id}`}>
+              <Link to={`http://localhost:3000/api/blog/${blog._id}`}>
                 <img
                   src={blog.images[0] || "https://via.placeholder.com/600x300"}
                   alt={blog.title}
@@ -126,7 +126,7 @@ export const BlogPage = () => {
               </Link>
               <div className="p-4 border-t text-right">
                 <Link
-                  to={`/blog/${blog._id}`}
+                  to={`http://localhost:3000/api/blog/${blog._id}`}
                   className="text-blue-500 hover:underline"
                 >
                   Read More
