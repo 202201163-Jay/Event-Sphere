@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider";
+
 export const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const { isLoggedIn, userId, type, image, name} = useAuth();
 
   // Fetch blogs on component mount
   useEffect(() => {
@@ -28,30 +27,28 @@ export const BlogPage = () => {
     fetchBlogs();
   }, []);
 
-  // Debounce search query to avoid making API requests on every keystroke
+  // Debounce search query
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
-    }, 300); // Adjust the debounce time as needed
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Fetch autocomplete suggestions based on debounced query
+  // Fetch suggestions based on debounced query
   useEffect(() => {
     if (debouncedQuery) {
       const fetchSuggestions = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:3000/api/blog/suggestions?q=${debouncedQuery}`
+           `http://localhost:3000/api/blog/suggestions?q=${debouncedQuery}`
           );
           setSuggestions(response.data);
           setShowSuggestions(true);
         } catch (error) {
           console.error("Error fetching suggestions:", error.message);
-          console.error(error); // Logs full error details for debugging
         }
-        
       };
       fetchSuggestions();
     } else {
@@ -60,11 +57,9 @@ export const BlogPage = () => {
     }
   }, [debouncedQuery]);
 
-  // Filter blogs based on the debounced query
   const filteredBlogs = Array.isArray(blogs)
     ? blogs.filter((blog) =>
-        blog.title &&
-        blog.title.toLowerCase().includes(debouncedQuery.toLowerCase())
+        blog.title?.toLowerCase().includes(debouncedQuery.toLowerCase())
       )
     : [];
 
@@ -101,30 +96,35 @@ export const BlogPage = () => {
             </ul>
           )}
         </div>
-        {type === "club" && (
-          <Link to="/add-blog" className="bg-blue-600 text-white px-5 py-3 rounded-md shadow-md ml-4 hover:bg-blue-700">Add Blog</Link>
-        )}
+        <Link
+          to="/add-blog"
+          className="bg-blue-600 text-white px-5 py-3 rounded-md shadow-md ml-4 hover:bg-blue-700"
+        >
+          Add Blog
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {filteredBlogs.length > 0 ? (
           filteredBlogs.map((blog) => (
             <div key={blog._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <Link to={`http://localhost:3000/api/blog/${blog._id}`}>
+              <Link to={`/blogs/${blog._id}`}>
                 <img
-                  src={blog.images[0] || "https://via.placeholder.com/600x300"}
+                  src={blog.images?.[0] || "https://via.placeholder.com/600x300"}
                   alt={blog.title}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">
                   <h2 className="text-xl font-bold text-gray-800">{blog.title}</h2>
-                  <p className="text-sm text-gray-500">By: {blog.college || "Unknown College"}</p>
+                  <p className="text-sm text-gray-500">
+                    By: {blog.college || "Unknown College"}
+                  </p>
                   <p className="text-gray-600 mt-3">{blog.content.substring(0, 100)}...</p>
                 </div>
               </Link>
               <div className="p-4 border-t text-right">
                 <Link
-                  to={`http://localhost:3000/api/blog/${blog._id}`}
+                  to={`/blogs/${blog._id}`}
                   className="text-blue-500 hover:underline"
                 >
                   Read More

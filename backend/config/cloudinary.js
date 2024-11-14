@@ -24,8 +24,7 @@ exports.uploadOnCloudinary = async (localFilePath, folder) => {
             resource_type: "auto",
             folder:folder
         })
-        // file has been uploaded successfull
-        console.log("file is uploaded on cloudinary ", response.url);
+        // file has been uploaded successful
         fs.unlinkSync(localFilePath)
         return response;
 
