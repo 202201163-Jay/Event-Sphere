@@ -1,54 +1,49 @@
 const cloudinary = require('../config/cloudinary'); // Import Cloudinary config
 const Blog = require('../Models/Blog'); // Import Blog model
 const { uploadOnCloudinary } = require("../config/cloudinary");
+const {upload} = require("../middleware/multer")
 
 const createBlog = async (req, res) => {
-  try {
-    // Check if the logged-in user is a college
-    // const { type } = req.user; // Assuming the user info is available in req.user (set during authentication)
+  upload(req, res, async(err) => {
+    if (err) {
+      return res.status(500).json({ message: 'File upload error', error: err });
+    }
+    
+    try {
+      const { title, content, date, college, clubId} = req.body;
 
-    // // Allow blog creation only for college users
-    // if (type !== 'college') {
-    //   return res.status(403).json({ message: 'You do not have permission to create a blog' });
-    // }
+      // Access uploaded files
+      const uploadedFiles = req.files;
 
-    // Extract data from the request body
-    const { title, content, date, college } = req.body;
-    const images = req.files.posters; // The uploaded images will be in req.files
-
-    console.log(`images : ${images}`);
-
-    const imageUrls = await Promise.all(
-      images.map(async (file) => {
-        const uploadResult = await uploadOnCloudinary(file.path, "/eventsphere/blog");
-        return uploadResult ? uploadResult.url : null;
-      })
-    );
-
-    // Create a new blog post and save it to the database
-    const newBlog = new Blog({
-      title,
-      content,
-      college,
-      date,
-      images: imageUrls, // Store the array of image URLs
-    });
-
-    // Save the blog post
-    await newBlog.save();
-
-    // Return the response
-    res.status(201).json({
-      message: 'Blog created successfully!',
-      blog: newBlog,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: 'An error occurred while creating the blog',
-      error: error.message,
-    });
-  }
+      const imageUrls = await Promise.all(
+          uploadedFiles.map(async (file) => {
+          const uploadResult = await uploadOnCloudinary(file.path, "/eventsphere/blog");
+          return uploadResult ? uploadResult.url : null;
+          })
+      );
+  
+      //   // Create a new blog post and save it to the database
+      const newBlog = new Blog({
+          title,
+          content,
+          college,
+          date,
+          images: imageUrls,
+          clubId: clubId,
+      });
+      await newBlog.save();
+      res.status(201).json({
+              message: 'Blog created successfully!',
+              blog: newBlog,
+            });
+    } catch (error) {
+      console.error(error);
+        res.status(500).json({
+          message: 'An error occurred while creating the blog',
+          error: error.message,
+        });
+    }
+  });
 };
 
 // Function to get all blogs

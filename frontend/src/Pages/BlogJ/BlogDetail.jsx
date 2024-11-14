@@ -1,65 +1,77 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export const BlogDetail = () => {
-  const blogData = {
-    title: 'Sample Blog Title',
-    content: 'This is the blog content. It can be very long and include various details about the blog post...',
-    images: [
-      'https://via.placeholder.com/600x300?text=Image+1',
-      'https://via.placeholder.com/600x300?text=Image+2',
-      'https://via.placeholder.com/600x300?text=Image+3',
-      // Add more images if needed
-    ]
-  };
-
-  // State to manage the current image index
+  const { id } = useParams(); // Get blog ID from URL
+  const [blog, setBlog] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Function to go to the previous image
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/blog/${id}`);
+        setBlog(response.data);
+      } catch (err) {
+        setError('Failed to load the blog. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlog();
+  }, [id]);
+
+  if (loading) return <div className="text-center mt-10">Loading...</div>;
+  if (error) return <div className="text-center text-red-500 mt-10">{error}</div>;
+
+  const { title, content, college, date, images } = blog;
+
   const prevImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? blogData.images.length - 1 : prevIndex - 1
-    );
+    setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
   };
 
-  // Function to go to the next image
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === blogData.images.length - 1 ? 0 : prevIndex + 1
-    );
+    setCurrentImageIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
   };
 
   return (
-    <div className="max-w-screen-lg mx-auto p-4">
+    <div className="max-w-screen-lg mx-auto p-6">
       {/* Blog Title */}
-      <h1 className="text-3xl font-semibold text-center mb-6">{blogData.title}</h1>
+      <h1 className="text-4xl font-bold text-center mb-4 text-blue-400">{title}</h1>
+      <div className="text-center text-sm text-blue-500 mb-8">
+        <span>Published by {college}</span> | <span>{new Date(date).toLocaleDateString()}</span>
+      </div>
 
       {/* Image Slider */}
-      <div className="relative">
-        <img
-          src={blogData.images[currentImageIndex]}
-          alt={`Blog Image ${currentImageIndex + 1}`}
-          className="w-full h-64 object-cover rounded-lg mb-4"
-        />
-        {/* Navigation buttons */}
-        <button
-          onClick={prevImage}
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full"
-        >
-          &#8592;
-        </button>
-        <button
-          onClick={nextImage}
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full"
-        >
-          &#8594;
-        </button>
-      </div>
+      {images && images.length > 0 && (
+        <div className="relative mb-8">
+          <img
+            src={images[currentImageIndex]}
+            alt={`Blog Image ${currentImageIndex + 1}`}
+            className="w-full h-72 object-cover rounded-lg shadow-md"
+          />
+          <button
+            onClick={prevImage}
+            className="absolute top-1/2 left-4 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full"
+          >
+            &#8592;
+          </button>
+          <button
+            onClick={nextImage}
+            className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full"
+          >
+            &#8594;
+          </button>
+        </div>
+      )}
 
       {/* Blog Content */}
       <div className="bg-white p-6 rounded-lg shadow-lg">
-        <p className="text-gray-700 text-lg leading-relaxed">{blogData.content}</p>
+        <p className="text-lg leading-relaxed text-gray-700">{content}</p>
       </div>
+
     </div>
   );
 };

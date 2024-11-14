@@ -16,8 +16,7 @@ import { BlogPage } from './Pages/BlogJ/BlogPage';
 import {AddBlog} from  './Pages/BlogJ/addBlog';
 // import BlogHome from './Pages/BlogPage/pages/Blogs';
 // import Blog from './Pages/BlogPage/pages/Blog';
-
-import EventForm from './Pages/Event_listing_page/EventListingForm';
+import {EventForm} from './Pages/Event_listing_page/EventListingForm';
 import { Forgot_Pass_Col } from './Pages/College/Forgot_Pass';
 import { Forgot_Pass_Stu } from './Pages/Student/Forgot_Pass';
 import { College_otp } from './Pages/College/College_otp';
@@ -39,7 +38,7 @@ export const App = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/logout' element={<Logout />} />
             <Route path="/blogs" element={<BlogPage />} />
-            <Route path="/blogs/:blogId" element={<BlogDetail />} />
+            <Route path="/blogs/:id" element={<BlogDetail />} />
             <Route path="/add-blog" element={<AddBlog/>} />
             <Route path='/listing' element={<EventForm />} />
             <Route path="/college-login" element={<College_Login />} />
