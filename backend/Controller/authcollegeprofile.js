@@ -162,17 +162,40 @@ module.exports.verifyOTP = async (req, res) => {
       if (!validOTP) {
           throw new Error("Invalid OTP. Please try again.");
       }
+      const collRep=await CollegeRep.findOne({_id:userId})
+      const collegeID=collRep.collegeId
+      const college=await College.findOne({_id:collegeID})
+      // const RepData={
+      //   clubName: collRep.clubName,
+      //   email: collRep.email,
+      //   password:collRep.password,
+      // }
+      console.log("collrep")
+      // console.log(RepData)
+      console.log(collegeID)
+      console.log("College",college)
 
-      const collegeRep = await CollegeRep.findById(userId);
-      if (!collegeRep) {
-          throw new Error("College club not found.");
-      }
-
+      // const newRep = new CollegeRep({ ...RepData, collegeID });
+      // await newRep.save();
       await College.findByIdAndUpdate(
-        collegeRep.collegeId,
-        { $push: { collegeRepresentatives: { clubName: collegeRep.clubName, clubemail: collegeRep.email, password: collegeRep.password } } },
-        { new: true, useFindAndModify: false }
-    );
+        collegeID,
+        { $push: { collegeRepresentatives: userId } }, // Push the newRep's _id to the collegeRepresentatives array
+        { new: true } // Return the updated document
+      );
+
+      console.log("hehe")
+
+      // await College.findByIdAndUpdate(
+      //   collegeID,
+      //   { $push: { collegeRepresentatives: newRep._id } }, // Pushes the newRep's _id into collegeRepresentatives array
+      //   { new: true } // Returns the updated document if you want to use it
+      // );
+
+    //   await College.findByIdAndUpdate(
+    //     collegeRep.collegeId,
+    //     { $push: { collegeRepresentatives: { clubName: collegeRep.clubName, clubemail: collegeRep.email, password: collegeRep.password } } },
+    //     { new: true, useFindAndModify: false }
+    // );
 
       await OTP.deleteMany({ userId });
 
@@ -192,7 +215,7 @@ module.exports.getCollegeById = async (req, res) => {
   try {
     const { userId } = req.params; 
     // console.log(userId);
-    const college = await College.findOne({ _id: userId });
+    const college = await College.findOne({ _id: userId }).populate('collegeRepresentatives');
 
     if (!college) {
       return res.status(404).json({ message: "College not found" });
