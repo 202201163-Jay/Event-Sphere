@@ -22,32 +22,11 @@ const collegeSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  collegeRepresentatives: {
-    type: [
-      {
-        clubName: {
-          type: String,
-          required: true,
-        },
-        clubemail: {
-          type: String,
-          required: true,
-          trim: true,
-        },
-        password: {
-          type: String,
-          required: true, // Ensure this is hashed before saving
-        },
-      },
-    ],
-    default: [], // Set default to an empty array if no representatives are provided
-    validate: {
-      validator: function (v) {
-        return v.length <= 10;
-      },
-      message: "You can add a maximum of 10 batch representatives.",
-    },
+  collegeRepresentatives: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "CollegeRep"
   },
+]
 });
 
 collegeSchema.pre('save', async function(next) {

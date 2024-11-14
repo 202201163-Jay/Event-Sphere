@@ -99,17 +99,7 @@ exports.login = async (req, res) => {
         // Find the representative by repId
         const college = await College.findOne({ email });
         if (!college) {
-            const collegeWithClub = await College.findOne({
-                "collegeRepresentatives.clubemail": email
-            });
-
-            if (!collegeWithClub) {
-                return res.status(404).json({ error: "Club not found!" });
-            }
-
-            const club = collegeWithClub.collegeRepresentatives.find(
-                (rep) => rep.clubemail === email
-            );
+            const club = await CollegeRep.findOne({ email });
 
             if (!club) {
                 return res.status(404).json({ error: "Club not found!" });
@@ -165,7 +155,7 @@ exports.login = async (req, res) => {
 
 const sendotpVerificationEmail = async ({ _id, email }, res) => {
     try {
-        const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+        const otp =    `${Math.floor(1000 + Math.random() * 9000)}`;
 
         const mailOptions = {
             from: "eventsphereandteam@gmail.com",
