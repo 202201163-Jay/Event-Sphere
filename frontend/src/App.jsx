@@ -52,9 +52,9 @@ export const App = () => {
             <Route path='/profile-otp/:userId' element={<Profile_Otp />} />
             <Route path='/club-otp/:userId' element={<Club_Otp />} />
             <Route path='/forgot-password-col' element={<Forgot_Pass_Col/>} />
-            <Route path='/forgot-password-stu' element={<Forgot_Pass_Stu/>} />
+            <Route path='/forgot-password-stu' element={<Forgot_Pass_Stu/>} />  
             <Route path='/events-page' element={<Events_Page/>} />
-            <Route path='/register-for-event' element={<Register_For_Event/>} />
+            <Route path='/event/:id' element={<Register_For_Event/>} />
             <Route path='/participants/:eventId' element={<Participants/>} />
             
             <Route path="/" element={<Home />} />

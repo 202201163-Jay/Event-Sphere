@@ -1,116 +1,137 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Navbar from "../Home/Navbar.jsx";
 import Footer from "../Home/Footer.jsx";
-import EventCard from "../Home/Event_Card.jsx";
-import Banner from "../Home/Banner.jsx";
 
 export const Register_For_Event = () => {
-    const events = [
-        {
-          name: 'Synapse',
-          posterUrl: '/maxresdefault.jpg',
-          rating: '9/10',
-          college: 'DAIICT',
-          date: '10 Nov, 2024',
-            },
-        ];
+  const { id } = useParams(); // Extract the event ID from the URL
+  const [event, setEvent] = useState(null);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
 
-    const [isFooterVisible, setIsFooterVisible] = useState(false);
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/event/${id}`); // Replace with your API URL
+        const data = await response.json();
+        setEvent(data);
+      } catch (error) {
+        console.error("Failed to fetch event", error);
+      }
+    };
 
-    useEffect(() => {
-        const handleScroll = () => {
-        const footer = document.getElementById('footer');
-        const footerTop = footer.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
+    if (id) {
+      fetchEvent();
+    }
+  }, [id]);
 
-        // Check if the footer is within view
-        setIsFooterVisible(footerTop <= windowHeight);
-        };
+  console.log(event);
 
-        // Add scroll event listener
-        window.addEventListener('scroll', handleScroll);
+  useEffect(() => {
+    const handleScroll = () => {
+      const footer = document.getElementById("footer");
+      const footerTop = footer.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      setIsFooterVisible(footerTop <= windowHeight);
+    };
 
-        // Clean up event listener on unmount
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (!event) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading event details...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-white text-white min-h-screen">
-        <Navbar/>
-        <div className="h-[100px]"></div>
+    <div className="bg-gray-50 text-gray-900 min-h-screen">
+      <Navbar />
+      <div className="h-[100px]"></div>
 
-        {/* Event Banner */}
-        <div className="relative w-full overflow-hidden mr-8">
-            {events.map((event,index) => (
-                <div className="text-gray-800 pl-5 pr-5 text-3xl font-bold">
-                    <h1>{event.name}</h1>
-                    <div className="h-[30px]"></div>
-                    <a href="#" className="bg-gray-200">
-                        <img
-                            src={`https://via.placeholder.com/1200x400?text=${event.posterUrl}`}
-                            alt={`Banner ${event.name}`}
-                            className="w-full h-[350px] block rounded-xl"
-                        />
-                    </a>
-                    <div className="flex m-3 space-x-2">
-                        <span className="bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-md">{event.college}</span>
-                        <span className="bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-md">{event.date}</span>
-                    </div>
-
-                    <span className="flex items-center justify-between bg-white p-3 rounded-md mb-3">
-                        <div className="p-3 bg-gray-100 flex items-center rounded-xl">
-                            <p className="text-xl">Rating</p>
-                            <span className="w-12"></span>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                                className="w-5 h-5 text-red-500 mr-2"
-                            >
-                                <path d="M12 .587l3.668 7.568L24 9.75l-6 5.84L19.33 24 12 20.115 4.67 24 6 15.59 0 9.75l8.332-1.595z" />
-                            </svg>
-                            <span className="text-lg font-semibold text-gray-800">{event.rating}</span>
-                            {/* <span className="text-sm text-gray-500 ml-2">({movie.votes})</span> */}
-                        </div>
-                    </span>
-                </div>
-            ))}
+      <div className="flex flex-col items-center p-4 space-y-6">
+        <h1 className="text-4xl font-extrabold text-center text-yellow-600 mt-5">{event.eventName}</h1>
+        <div className="w-full max-w-3xl mx-auto">
+          <img
+            src={event.poster}
+            alt={`Banner for ${event.eventName}`}
+            className="w-full h-[300px] object-cover rounded-lg shadow-lg"
+          />
         </div>
+      </div>
 
-        <div className="mt-24 ml-12 mr-12 mb-24 h-[1000px] text-black"><p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis totam fuga cum doloribus, hic dolor! Assumenda, libero quod magnam quas dolorem debitis, velit quis aliquam facilis incidunt esse pariatur a.
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint iste itaque, amet a reprehenderit asperiores dignissimos eos quaerat vitae sunt optio, assumenda, doloribus quidem architecto illum autem magni! Dolorum!
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam ab consequuntur amet molestias, quod cumque, magni beatae nam et, mollitia rem. Maxime, nulla distinctio officia ducimus dolore quod? Voluptatem, error.
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis totam fuga cum doloribus, hic dolor! Assumenda, libero quod magnam quas dolorem debitis, velit quis aliquam facilis incidunt esse pariatur a.
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint iste itaque, amet a reprehenderit asperiores dignissimos eos quaerat vitae sunt optio, assumenda, doloribus quidem architecto illum autem magni! Dolorum!
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam ab consequuntur amet molestias, quod cumque, magni beatae nam et, mollitia rem. Maxime, nulla distinctio officia ducimus dolore quod? Voluptatem, error.
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis totam fuga cum doloribus, hic dolor! Assumenda, libero quod magnam quas dolorem debitis, velit quis aliquam facilis incidunt esse pariatur a.
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint iste itaque, amet a reprehenderit asperiores dignissimos eos quaerat vitae sunt optio, assumenda, doloribus quidem architecto illum autem magni! Dolorum!
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam ab consequuntur amet molestias, quod cumque, magni beatae nam et, mollitia rem. Maxime, nulla distinctio officia ducimus dolore quod? Voluptatem, error.
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis totam fuga cum doloribus, hic dolor! Assumenda, libero quod magnam quas dolorem debitis, velit quis aliquam facilis incidunt esse pariatur a.
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint iste itaque, amet a reprehenderit asperiores dignissimos eos quaerat vitae sunt optio, assumenda, doloribus quidem architecto illum autem magni! Dolorum!
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam ab consequuntur amet molestias, quod cumque, magni beatae nam et, mollitia rem. Maxime, nulla distinctio officia ducimus dolore quod? Voluptatem, error.
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis totam fuga cum doloribus, hic dolor! Assumenda, libero quod magnam quas dolorem debitis, velit quis aliquam facilis incidunt esse pariatur a.
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint iste itaque, amet a reprehenderit asperiores dignissimos eos quaerat vitae sunt optio, assumenda, doloribus quidem architecto illum autem magni! Dolorum!
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam ab consequuntur amet molestias, quod cumque, magni beatae nam et, mollitia rem. Maxime, nulla distinctio officia ducimus dolore quod? Voluptatem, error.</p>
+      <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-xl mt-8">
+        <h2 className="text-3xl font-semibold mb-4 text-yellow-700">Event Description</h2>
+        <div
+          className="text-lg text-gray-700 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: event.description }}
+        />
+      </div>
+
+      <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+        <div className="bg-yellow-50 p-6 rounded-lg shadow-lg">
+          <h3 className="text-2xl font-semibold text-yellow-700">Event Mode & Venue</h3>
+          <p className="mt-4 text-lg">Mode: <span className="font-semibold">{event.mode}</span></p>
+          <p className="mt-2 text-lg">Venue: <span className="font-semibold">{event.venue}</span></p>
         </div>
-
-        {/* Event Description */}
-        <div className={`${isFooterVisible ? 'absolute bottom-0' : 'fixed bottom-0'} 
-        bottom-6 right-5 left-5 bg-gray-300 h-24 shadow-lg py-4 flex justify-between 
-        items-center px-6 rounded-xl`}
-        >
-            {events.map((event,index) => (
-                <div className="text-black text-3xl">
-                <p>{event.name}</p>
-                </div>
-            ))}
-            <button className="bg-indigo-500 h-12 text-white py-2 px-4 rounded-lg">Register for Event</button>
+        <div className="bg-yellow-50 p-6 rounded-lg shadow-lg">
+          <h3 className="text-2xl font-semibold text-yellow-700">Registration Details</h3>
+          <p className="mt-4 text-lg">
+            Registration Starts:{" "}
+            <span className="font-semibold">{new Date(event.registrationStartDate).toLocaleDateString()}</span>
+          </p>
+          <p className="mt-2 text-lg">
+            Registration Ends:{" "}
+            <span className="font-semibold">{new Date(event.registrationEndDate).toLocaleDateString()}</span>
+          </p>
+          <p className="mt-2 text-lg">
+            Price: <span className="font-semibold">{event.price} INR</span>
+          </p>
         </div>
+      </div>
 
-        <footer id="footer">
-            <Footer/>
-        </footer>
+      <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-xl mt-8">
+        <h3 className="text-2xl font-semibold text-yellow-700 mb-4">Tags</h3>
+        <div className="flex flex-wrap gap-3">
+          {event.tags.map((tag, index) => (
+            <span
+              key={index}
+              className="bg-yellow-200 text-yellow-700 text-sm px-4 py-2 rounded-full shadow-md"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+        <div className="bg-yellow-50 p-6 rounded-lg shadow-lg">
+          <h3 className="text-2xl font-semibold text-yellow-700">Timings</h3>
+          <p className="mt-4 text-lg">Start Time: <span className="font-semibold">{event.startTime}</span></p>
+          <p className="mt-2 text-lg">End Time: <span className="font-semibold">{event.endTime}</span></p>
+        </div>
+        <div className="bg-yellow-50 p-6 rounded-lg shadow-lg">
+          <h3 className="text-2xl font-semibold text-yellow-700">Contacts</h3>
+          <p className="mt-4 text-lg">
+            Email: <span className="font-semibold">{event.contactPersonEmail}</span>
+          </p>
+          <p className="mt-2 text-lg">
+            Phone Number: <span className="font-semibold">{event.contactPersonPhone}</span>
+          </p>
+        </div>
+      </div>
+
+      <div className="flex justify-center mt-5 mb-6">
+        <button className="bg-blue-500 text-white py-3 px-8 rounded-lg shadow-md hover:bg-blue-400 transition-all">
+          Register for Event
+        </button>
+      </div>
+
+      <footer id="footer">
+        <Footer />
+      </footer>
     </div>
   );
 };

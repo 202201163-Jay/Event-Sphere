@@ -1,13 +1,11 @@
 const express = require('express');
 const multer = require('multer');
-const { upload } = require("../middleware/multer");
+const { upload } = require("../middleware/multer"); 
 const authMiddleware = require('../middleware/auth');
 const eventListing = require('../Controller/eventListing');
-const registerForEvent = require('../Controller/regcontroller');
 const router = express.Router();
 
 router.post("/listing", eventListing.createEvent);
-router.post("/register", authMiddleware, registerForEvent.registerForEvent);
 
 router.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
@@ -18,6 +16,9 @@ router.use((err, req, res, next) => {
   }
   next();
 });
+
+router.get("/concerts", eventListing.getcontests);
+router.get("/:id", eventListing.getEvent);
 
 
 module.exports = router;

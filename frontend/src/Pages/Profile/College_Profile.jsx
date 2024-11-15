@@ -124,8 +124,6 @@ export const CollegeProfile = () => {
                 />
                 <div>
                   <h3 className="text-xl font-semibold text-yellow-500">{collegeData?.name || ''}</h3>
-                  <p className="text-sm text-gray-400">Team Manager</p>
-                  <p className="text-sm text-gray-500">Leeds, United Kingdom</p>
                 </div>
               </div>
             </div>

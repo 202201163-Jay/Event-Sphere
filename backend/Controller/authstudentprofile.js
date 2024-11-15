@@ -163,7 +163,7 @@ module.exports.getUserprofileById = async (req, res) => {
     try {
       const { id } = req.params; 
     //   console.log(id);
-      const user = await UserProfile.findOne({ _id: id });
+      const user = await UserProfile.findOne({ _id: id }).populate('participated');
   
       if (!user) {
         return res.status(404).json({ message: "User not found" });

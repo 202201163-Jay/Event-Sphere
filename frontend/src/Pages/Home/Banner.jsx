@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react';
-
-const banners = [
-  "https://via.placeholder.com/1200x400?text=Featured+Event+1",
-  "https://via.placeholder.com/1200x400?text=Featured+Event+2",
-  "https://via.placeholder.com/1200x400?text=Featured+Event+3",
-];
+import { useNavigate } from 'react-router-dom';
 
 const Banner = () => {
+  const [banners, setBanners] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isManual, setIsManual] = useState(false); // Track if the slide is manual
+  const [isManual, setIsManual] = useState(false);
+  const navigate = useNavigate();
 
-  // Automatically switch banners every 3 seconds
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/event/concerts'); // Replace with your API URL
+        const data = await response.json();
+        setBanners(data);
+      } catch (error) {
+        console.error('Failed to fetch banners', error);
+      }
+    };
+    fetchBanners();
+  }, []);
+
+  console.log(banners);
+
   useEffect(() => {
     if (isManual) {
       // Do not auto-slide when manually changing the banner
@@ -47,6 +58,10 @@ const Banner = () => {
     }, 3000);
   };
 
+  const handleImageClick = (id) => {
+    navigate(`/event/${id}`);
+  };
+
   return (
     <div className="relative w-full overflow-hidden mr-8 mt-[120px]">
       {/* Slides */}
@@ -58,9 +73,10 @@ const Banner = () => {
           <div className="min-w-full box-border p-1" key={index}>
             <a href="#" className="link">
               <img
-                src={banner}
+                src={banner.poster}
                 alt={`Banner ${index + 1}`}
-                className="w-full block rounded-xl"
+                className="w-full block rounded-xl h-[480px]"
+                onClick={() => handleImageClick(banner._id)}
               />
             </a>
           </div>

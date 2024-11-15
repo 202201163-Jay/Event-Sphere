@@ -203,6 +203,8 @@ export const ProfilePage = () => {
     }
   }
 
+  console.log(editData);
+
   const renderContent = () => {
     switch (activeSection) {
       case 'profile':
@@ -218,8 +220,6 @@ export const ProfilePage = () => {
                 />
                 <div>
                   <h3 className="text-xl font-semibold text-yellow-500">{userData?.firstName} {userData?.lastName}</h3>
-                  <p className="text-sm text-gray-400">Team Manager</p>
-                  <p className="text-sm text-gray-500">Leeds, United Kingdom</p>
                 </div>
               </div>
             </div>
@@ -377,8 +377,8 @@ export const ProfilePage = () => {
             editData.participated.map((event, index) => (
               <li key={index} className="bg-gray-700 p-4 rounded-lg shadow-lg">
                 <div className="flex justify-between items-center">
-                  <span className="font-semibold text-xl text-yellow-500">{event.name}</span>
-                  <span className="text-sm text-gray-400">{event.time}</span>
+                  <span className="font-semibold text-md text-gray-400">{event.eventName}</span>
+                  <span className="text-sm text-gray-400">{event.startTime} - {event.endTime}</span>
                 </div>
               </li>
               ))
