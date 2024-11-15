@@ -4,6 +4,7 @@ import Navbar from "../Home/Navbar.jsx";
 import Footer from "../Home/Footer.jsx";
 import EventCard from "../Home/Event_Card.jsx";
 import Banner from "../Home/Banner.jsx";
+import axios from "axios";
 
 
 export const Events_Page = () => {
@@ -12,43 +13,62 @@ export const Events_Page = () => {
     const [isTagOpen, setIsTagOpen] = useState(false);
     const [isTypeOpen, setIsTypeOpen] = useState(false);
 
-    const events = [
-        {
-            name: 'Synapse',
-            posterUrl: '/maxresdefault.jpg',
-            rating: '9/10',
-            college: 'DAIICT',
-            date: '10 Nov, 2024',
-        },
-        {
-            name: 'I-Fest',
-            posterUrl: '/maxresdefault.jpg',
-            rating: '9/10',
-            college: 'DAIICT',
-            date: '10 Nov, 2024',
-        },
-        {
-            name: 'Concours',
-            posterUrl: '/maxresdefault.jpg',
-            rating: '9/10',
-            college: 'DAIICT',
-            date: '10 Nov, 2024',
-        },
-        {
-            name: 'Youth Run',
-            posterUrl: '/maxresdefault.jpg',
-            rating: '9/10',
-            college: 'DAIICT',
-            date: '10 Nov, 2024',
-        },
-        {
-            name: 'Tarang',
-            posterUrl: '/maxresdefault.jpg',
-            rating: '9/10',
-            college: 'DAIICT',
-            date: '10 Nov, 2024',
-        },
-    ];
+    const [events, setEvents] = useState([]);
+
+    useEffect(()=>{
+        console.log("first")
+        const getAllEvents = async () => {
+            try {
+                const results = await axios.get("http://localhost:3000/api/home/trending");
+                console.log("results", results);
+                setEvents(results.data.trendingEvents);
+            } catch (error) {
+                console.log(error);
+            }
+        }; 
+
+        getAllEvents();
+    },[]);
+
+
+
+    // const events = [
+    //     {
+    //         name: 'Synapse',
+    //         posterUrl: '/maxresdefault.jpg',
+    //         rating: '9/10',
+    //         college: 'DAIICT',
+    //         date: '10 Nov, 2024',
+    //     },
+    //     {
+    //         name: 'I-Fest',
+    //         posterUrl: '/maxresdefault.jpg',
+    //         rating: '9/10',
+    //         college: 'DAIICT',
+    //         date: '10 Nov, 2024',
+    //     },
+    //     {
+    //         name: 'Concours',
+    //         posterUrl: '/maxresdefault.jpg',
+    //         rating: '9/10',
+    //         college: 'DAIICT',
+    //         date: '10 Nov, 2024',
+    //     },
+    //     {
+    //         name: 'Youth Run',
+    //         posterUrl: '/maxresdefault.jpg',
+    //         rating: '9/10',
+    //         college: 'DAIICT',
+    //         date: '10 Nov, 2024',
+    //     },
+    //     {
+    //         name: 'Tarang',
+    //         posterUrl: '/maxresdefault.jpg',
+    //         rating: '9/10',
+    //         college: 'DAIICT',
+    //         date: '10 Nov, 2024',
+    //     },
+    // ];
 
     const tags = [{ label: 'DAIICT' }, { label: 'NIFT' }, { label: 'PDEU' }, { label: 'Nirma' }, { label: 'Nirma' }, { label: 'Nirma' }, { label: 'Nsahckacioehne' }, { label: 'Nirma' }];
     const types = [{ label: 'Concert' }, { label: 'Coding' }, { label: 'Sports' }];
@@ -67,6 +87,10 @@ export const Events_Page = () => {
         setSelectedTags([]);
         setSelectedTypes([]);
     };
+
+    useEffect(()=>{
+        console.log("events", events);
+    },[events])
 
 
     return (
@@ -178,7 +202,7 @@ export const Events_Page = () => {
                             <Link to="/register-for-event">
                                 <img
                                     className="w-full h-72 object-cover"
-                                    src={event.posterUrl}
+                                    src={event.poster}
                                     alt={`${event.name} Poster`}
                                 />
                                 <div className="p-4">

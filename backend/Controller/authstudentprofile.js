@@ -140,8 +140,9 @@ const sendotpVerificationEmail = async ({ userId, email }, res) => {
 module.exports.getUserById = async (req, res) => {
   try {
     const { userId } = req.params; 
-    // console.log(userId);
+    console.log(userId);
     const user = await User.findOne({ _id: userId });
+    console.log("user fetched",user)
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

@@ -1,12 +1,34 @@
 import { Link } from 'react-router-dom';
 
-import {React} from "react";
+import { useState, useEffect } from 'react';
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Banner from "./Banner";
 import EventCard from "./Event_Card";
+import axios from 'axios';
 
 export const Home = () => {
+  const [events, setEvents] = useState([]);
+
+    useEffect(()=>{
+        console.log("first")
+        const getAllEvents = async () => {
+            try {
+                const results = await axios.get("http://localhost:3000/api/home/trending");
+                console.log("results", results);
+                setEvents(results.data.trendingEvents);
+            } catch (error) {
+                console.log(error);
+            }
+        }; 
+
+        getAllEvents();
+    },[]);
+
+    useEffect(()=>{
+      console.log("events", events);
+  },[events])
+
   return (
     <>
       <Navbar/>
