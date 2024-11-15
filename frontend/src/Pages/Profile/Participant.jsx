@@ -1,16 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const userId = localStorage.getItem("userId");
 
 export const Participants = () => {
+    const { eventId } = useParams();
   const [participants, setParticipants] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchParticipants = async () => {
-      
+      try {
+        console.log(eventId)
+        const response = await fetch(`http://localhost:3000/api/event/participants/${eventId}`);
+        const data = await response.json();
+        if (response.ok) {
+          setParticipants(data.participants);
+        } else {
+          toast.error(data.message || "Failed to fetch participant data");
+        }
+      } catch (error) {
+        toast.error("Error fetching participant data");
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchParticipants();
