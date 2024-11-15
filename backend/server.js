@@ -9,6 +9,7 @@ const {cloudinaryConnect }= require("../backend/config/cloudinary")
 require("dotenv").config();
 const eventRoutes = require("./routes/eventRoutes")
 const homepageRoutes = require("./routes/homepageRoutes")
+const collegeRep=require('./routes/collegeRep')
 
 
 const corsOptions = {
@@ -31,6 +32,7 @@ app.use("/api/users", crud);
 app.use("/api/college",college)
 app.use("/api/event",eventRoutes);
 app.use("/api/home",homepageRoutes);
+app.use("/api/collegeRep",collegeRep)
 
 connectDb().then(() => {
     app.listen(PORT, () => {
