@@ -1,7 +1,6 @@
-body {
+.page-container {
     font-family: 'Arial', sans-serif;
-    background-color: #1a1a1a; // Dark background
-    color: #fbfbf9; // Yellow text
+    background-color: #E0F7FA;
     margin: 0;
     padding: 0;
 }
@@ -9,10 +8,11 @@ body {
 .event-form-container {
     max-width: 800px;
     margin: 2rem auto;
+    margin-top: 8vh;
     padding: 2rem;
-    background-color: #2c2c2c; // Dark gray background for contrast
+    background-color: #2c2c2c;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 35px rgba(0, 0, 0, 0.5);
 }
 
 .event-form {
@@ -145,4 +145,13 @@ input::placeholder {
     .form-header {
         font-size: 1.8rem;
     }
+}
+
+.footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #1F2937;
+    color: whitesmoke;
 }
