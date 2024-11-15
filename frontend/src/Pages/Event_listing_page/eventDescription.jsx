@@ -7,9 +7,6 @@ import 'react-quill/dist/quill.snow.css';
 const EventDescription = ({ description, onDescriptionChange }) => {
   return (
     <div className='event-description'>
-      <label htmlFor="EventDescription">
-        <strong>About Event</strong> <span style={{ color: 'red' }}>*</span>
-      </label>
       <ReactQuill
         id="EventDescription"
         value={description}

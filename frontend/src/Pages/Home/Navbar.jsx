@@ -100,42 +100,23 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="navbar-end space-x-6">
-            <div className="left-6 navbar-center lg:flex">
+            <div className="navbar-center lg:flex">
               <ul className="menu menu-horizontal mr-4 space-x-6 font-medium">
                 {navItems}
               </ul>
             </div>
             <div className="hidden md:block">
-              <label className="px-3 py-2 mr-6 border rounded-md flex items-center gap-2 bg-gray-700 text-white">
-                <input
-                  type="search"
-                  className="w-full px-4 py-2 h-6 border-none bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  placeholder="Search"
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  className="w-4 h-4 opacity-70"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </label>
             </div>
 
             {isLoggedIn ? (
               <div className="relative">
 
-                <div className="flex items-center space-x-2 h-20">
+                <div className="flex rounded-full items-center space-x-2 h-20">
                   <Link to={`/profile/${userId}`}>
                     <img
                       src={image || `https://api.dicebear.com/5.x/initials/svg?seed=${name}`}
                       alt="Profile"
-                      className="w-11 h-11 rounded-full shadow-md"
+                      className={`${type === "club" ? "w-full h-full" : "w-14 h-14"} rounded-full shadow-md`}
                     />
                   </Link>
                   <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${name}`}</span>

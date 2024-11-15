@@ -33,18 +33,6 @@ export const CollegeProfile = () => {
     }
   }, [userId]);
 
-
-  const [userData, setUserData] = useState({
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    image: 'https://via.placeholder.com/80', // Placeholder image
-  });
-  const [userprofileData, setUserprofileData] = useState({
-    gender: 'Male',
-    dateOfBirth: '1995-08-20',
-    about: 'I am a passionate student at Leeds University.',
-  });
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -67,7 +55,6 @@ export const CollegeProfile = () => {
 
   const handleSubmit = async (e) => {
       e.preventDefault()
-      console.log(formData)
       if (formData.password !== formData.confirmPassword) {
         toast.error('Passwords do not match');
         return;
@@ -162,6 +149,8 @@ export const CollegeProfile = () => {
               </div>
             </div>
 
+
+
             <div className="relative border border-gray-700 rounded-lg p-4 bg-gray-800">
               <h4 className="text-lg font-semibold text-yellow-500 mb-2">Clubs and Committees</h4>
               <ul className="list-none pl-0 space-y-4">
@@ -171,7 +160,7 @@ export const CollegeProfile = () => {
                     <li key={club._id} className="bg-gray-700 p-4 rounded-lg shadow-lg">
                       <div className="flex justify-between items-center">
                         <span className="font-semibold text-lg text-gray-400">{club.clubName}</span>
-                        <span className="text-sm text-gray-400">{club.clubemail}</span>
+                        <span className="text-sm text-gray-400">{club.email}</span>
                       </div>
                     </li>
                   ))
