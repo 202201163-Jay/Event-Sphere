@@ -14,6 +14,7 @@ import { Otp } from './Pages/Student/Otp';
 import { BlogDetail } from './Pages/BlogJ/BlogDetail';
 import { BlogPage } from './Pages/BlogJ/BlogPage';
 import {AddBlog} from  './Pages/BlogJ/addBlog';
+import {Participants} from './Pages/Profile/Participant'
 // import BlogHome from './Pages/BlogPage/pages/Blogs';
 // import Blog from './Pages/BlogPage/pages/Blog';
 import {EventForm} from './Pages/Event_listing_page/EventListingForm';
@@ -54,6 +55,8 @@ export const App = () => {
             <Route path='/forgot-password-stu' element={<Forgot_Pass_Stu/>} />
             <Route path='/events-page' element={<Events_Page/>} />
             <Route path='/register-for-event' element={<Register_For_Event/>} />
+            <Route path='/participants/:eventId' element={<Participants/>} />
+            
             <Route path="/" element={<Home />} />
             {type === "user" && (
               <Route path="/student-profile" element={<ProfilePage />} />
