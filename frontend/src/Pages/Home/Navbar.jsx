@@ -23,22 +23,22 @@ const Navbar = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchUserById = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/users/${userId}`);
-        const data = await response.json();
+  // useEffect(() => {
+  //   const fetchUserById = async () => {
+  //     try {
+  //       const response = await fetch(`http://localhost:3000/api/users/${userId}`);
+  //       const data = await response.json();
 
-        setUserData(data.data);
+  //       setUserData(data.data);
 
-      } catch (error) {
-        toast.error('Error fetching user data');
-      }
-    };
-    if (userId) {
-      fetchUserById();
-    }
-  }, [userId]);
+  //     } catch (error) {
+  //       toast.error('Error fetching user data');
+  //     }
+  //   };
+  //   if (userId) {
+  //     fetchUserById();
+  //   }
+  // }, [userId]);
 
   const navItems = (
     <>

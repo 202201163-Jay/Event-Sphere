@@ -1,37 +1,44 @@
 import React from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
+import Card from '../../components/Card';
 
 const EventCard = ({ title }) => {
+
+    const [events, setEvents] = useState([]);
+
+
+    useEffect(()=>{
+        console.log("first")
+        const getAllEvents = async () => {
+            try {
+                const results = await axios.get("http://localhost:3000/api/home/trending");
+                console.log("results", results);
+                setEvents(results.data.trendingEvents);
+            } catch (error) {
+                console.log(error);
+            }
+        }; 
+
+        getAllEvents();
+    },[]);
+
+    useEffect(()=>{
+      console.log("events", events);
+  },[events])
+
+
   return (
+
     <section className="p-5">
-      <h2 className="text-3xl font-semibold  mt-12 mb-5 ml-2 text-left text-white">{title}</h2>
+      <h2 className="text-3xl font-semibold  mt-12 mb-5 ml-2 text-left text-white">Hello</h2>
       <div className="flex justify-between" style={{ gap: '15px' }}>
-        <div className="w-[30%] bg-gray-200 rounded-lg overflow-hidden shadow-md">
-          <a href="#" className="link">
-            <img src="#" alt="Event 1" className="w-full h-[400px] object-cover" />
-          </a>
-          <div className="p-3 bg-gray-200">
-            <h3 className="text-xl mb-2">Event Title 1</h3>
-            <p className="text-sm text-gray-500">Location</p>
-          </div>
+      {events?.map((event, index)=>(
+        <div key={index}>
+          <Card event={event}/>
         </div>
-        <div className="w-[30%] bg-gray-200 rounded-lg overflow-hidden shadow-md">
-          <a href="#" className="link">
-            <img src="#" alt="Event 2" className="w-full h-[400px] object-cover" />
-          </a>
-          <div className="p-3 bg-gray-200">
-            <h3 className="text-xl mb-2">Event Title 2</h3>
-            <p className="text-sm text-gray-500">Location</p>
-          </div>
-        </div>
-        <div className="w-[30%] bg-gray-200 rounded-lg overflow-hidden shadow-md">
-          <a href="#" className="link">
-            <img src="#" alt="Event 3" className="w-full h-[400px] object-cover" />
-          </a>
-          <div className="p-3 bg-gray-200">
-            <h3 className="text-xl mb-2">Event Title 3</h3>
-            <p className="text-sm text-gray-500">Location</p>
-          </div>
-        </div>
+      ))}
       </div>
     </section>
   );
