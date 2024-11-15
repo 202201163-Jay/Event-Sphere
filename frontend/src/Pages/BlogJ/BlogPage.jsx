@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Navbar from "../Home/Navbar";
+import Footer from "../Home/Footer";
 
 export const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -66,7 +68,10 @@ export const BlogPage = () => {
   return (
 
   <div className="container mx-auto my-8 p-4">
-    <div className="relative flex justify-between items-center mb-8">
+
+    <Navbar></Navbar>
+
+    <div className="relative flex justify-between items-center mb-8 mt-20">
       <div className="w-full max-w-md relative">
         <input
           type="text"
@@ -149,8 +154,12 @@ export const BlogPage = () => {
         <p className="col-span-full text-center text-gray-500">No blogs found</p>
       )}
     </div>
-  </div>
 
+      <div className="mt-4">
+        <Footer></Footer>
+      </div>
+
+  </div>
 
   );
 };

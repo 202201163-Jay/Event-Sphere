@@ -33,9 +33,10 @@ export const AddBlog = () => {
     <>
 
       <div className="bg-cyan-100">
+        
           <Navbar></Navbar>
 
-        <div className="container w-10/12 mx-auto my-8 mt-[7.5rem] p-6 shadow-lg border rounded-lg bg-gray-900">
+        <div className="container w-10/12 mx-auto my-8 mt-24 p-6 shadow-lg border rounded-lg bg-gray-900">
           <h1 className="text-4xl font-bold mb-6 text-center text-yellow-400">Add New Blog</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="mb-4">
@@ -44,16 +45,6 @@ export const AddBlog = () => {
                 type="text"
                 name="title"
                 className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
-                required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-yellow-400">Content</label>
-              <textarea
-                name="content"
-                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
-                rows="5"
                 required
               />
             </div>
@@ -74,6 +65,16 @@ export const AddBlog = () => {
                 type="text"
                 name="college"
                 className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-yellow-400">Content</label>
+              <textarea
+                name="content"
+                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
+                rows="5"
                 required
               />
             </div>
