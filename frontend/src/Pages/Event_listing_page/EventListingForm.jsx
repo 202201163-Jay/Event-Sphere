@@ -1,26 +1,31 @@
 import { useState } from 'react';
-import './EventListing.scss';
+import './EventListing.scss'; // Ensure this file has updated styles for modern design.
 import TagSelector from './tagSelector';
 import EventDescription from './eventDescription';
 
 export const EventForm = () => {
   const [events, setEvents] = useState([]);
 
- const [formInput, setFormInput] = useState({
-    type: '',
+  const [formInput, setFormInput] = useState({
     eventName: '',
-    organizer: '',
-    occasion: '',
-    mode: '',
-    tags: [],
     description: '',
+    price: '',
     registrationStartDate: '',
     registrationEndDate: '',
     startTime: '',
     endTime: '',
+    type: '',
+    tags: [],
+    createdBy: '',
+    occasion: '',
+    mode: '',
     venue: '',
-    price: '',
-    poster: null
+    pointOfContact: '',
+    poster: null,
+    contactPerson1Email: '',
+    contactPerson1Phone: '',
+    contactPerson2Email: '',
+    contactPerson2Phone: '',
   });
 
   const handleModeChange = (mode) => {
@@ -43,57 +48,27 @@ export const EventForm = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormInput((prevInput) => ({ ...prevInput, poster: file }));
-  }; 
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newEvent = {
-      type: e.target.elements["event-type"].value,
-      eventName: e.target.elements.eventName.value,
-      organizer: e.target.elements.organizer.value,
-      occasion: e.target.elements.occasion.value,
-      mode: formInput.mode,
-      tags: formInput.tags,
-      description: formInput.description,
-      registrationStartDate: formInput.registrationStartDate,
-      registrationEndDate: formInput.registrationEndDate,
-      startTime: formInput.startTime,
-      endTime: formInput.endTime,
-      venue: formInput.venue,
-      price: formInput.price,
-      poster: formInput.poster
-    };
-
+    const newEvent = { ...formInput };
     setEvents((prevEvents) => [...prevEvents, newEvent]);
 
-    const formData = new FormData(); // Collect form data from the target (the form itself)
-    formData.append('type', formInput.type);
-    formData.append('eventName', formInput.eventName);
-    formData.append('organizer', formInput.organizer);
-    formData.append('occasion', formInput.occasion);
-    formData.append('mode', formInput.mode);
-    formData.append('tags', JSON.stringify(formInput.tags)); // Converting tags array to a string
-    formData.append('description', formInput.description);
-    formData.append('registrationStartDate', formInput.registrationStartDate);
-    formData.append('registrationEndDate', formInput.registrationEndDate);
-    formData.append('startTime', formInput.startTime);
-    formData.append('endTime', formInput.endTime);
-    formData.append('venue', formInput.venue);
-    formData.append('price', formInput.price);
-    if (formInput.poster) {
-      formData.append('poster', formInput.poster);
-    }
+    const formData = new FormData();
+    Object.keys(formInput).forEach((key) => {
+      formData.append(key, key === 'tags' ? JSON.stringify(formInput[key]) : formInput[key]);
+    });
 
     try {
       const response = await fetch("http://localhost:3000/api/event/listing", {
         method: "POST",
-        body: formData, // Send the form data as multipart/form-data
+        body: formData,
       });
 
       if (response.ok) {
-        const responsedata = await response.json();
-        console.log(responsedata);
+        console.log('Event submitted successfully');
       } else {
         console.error('Failed to submit form');
       }
@@ -101,38 +76,120 @@ export const EventForm = () => {
       console.error("Error during event listing", error);
     }
 
-    console.log([...events,newEvent]);
-
-    // Reset the form and state
     setFormInput({
-      type: '',
       eventName: '',
-      organizer: '',
-      occasion: '',
-      mode: '',
-      tags: [],
       description: '',
+      price: '',
       registrationStartDate: '',
       registrationEndDate: '',
       startTime: '',
       endTime: '',
+      type: '',
+      tags: [],
+      createdBy: '',
+      occasion: '',
+      mode: '',
       venue: '',
-      price: '',
-      poster: null
+      pointOfContact: '',
+      poster: null,
+      contactPerson1Email: '',
+      contactPerson1Phone: '',
+      contactPerson2Email: '',
+      contactPerson2Phone: '',
     });
+
+    console.log([...events,newEvent]);
 
     e.target.reset();
   };
 
   return (
-    <div className="event-form-main-container">
-      <form onSubmit={handleSubmit}>
-        <h1>Event Details</h1>
-        <div className="event-input">
+    <div className="event-form-container">
+      <form onSubmit={handleSubmit} className="event-form">
+        <h1 className="form-header">Create a New Event</h1>
 
-          <div className="event-type">
-            <h4>Event Type</h4>
-            <select name="type" id="event-type" required>
+        <div className="form-section">
+          <h2>Basic Details</h2>
+          <div className="form-group">
+            <label>Event Title</label>
+            <input
+              type="text"
+              name="eventName"
+              placeholder="Enter Event Title"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Event Description</label>
+            <EventDescription
+              description={formInput.description}
+              onDescriptionChange={handleDescriptionChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Price (₹)</label>
+            <input
+              type="number"
+              name="price"
+              placeholder="0 for Free"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h2>Registration & Timing</h2>
+          <div className="form-group">
+            <label>Registration Start Date</label>
+            <input
+              type="date"
+              name="registrationStartDate"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Registration End Date</label>
+            <input
+              type="date"
+              name="registrationEndDate"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Event Start Time</label>
+            <input
+              type="time"
+              name="startTime"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Event End Time</label>
+            <input
+              type="time"
+              name="endTime"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h2>Event Details</h2>
+          <div className="form-group">
+            <label>Event Type</label>
+            <select name="type" onChange={handleInputChange} required>
+              <option value="">Select Type</option>
               <option value="Cultural Event">Cultural Event</option>
               <option value="Technical Event">Technical Event</option>
               <option value="Sports Event">Sports Event</option>
@@ -141,78 +198,174 @@ export const EventForm = () => {
             </select>
           </div>
 
-          <div className="event-poster">
-            <h4>Event Poster</h4>
-            <input type="file" name="poster" accept="image/*" onChange={handleFileChange}/>
-          </div>
-
-          <div className="event-name">
-            <h4>Event Title</h4>
-            <input type="text" name="eventName" placeholder="Enter Event Title (max 100 characters)" required />
-          </div>
-
-          <div className="event-organizer">
-            <h4>Enter Your Organization name</h4>
-            <input type="text" name="organizer" placeholder="Enter Organizer Name" required />
-          </div>
-
-          <div className="event-occasion">
-            <h4>Festival (optional)</h4>
-            <input type="text" name="occasion" placeholder="Enter Festival Name" />
-          </div>
-
-          <div className="registration-start-date">
-            <h4>Registration Start Date</h4>
-            <input type="date" name="registrationStartDate" onChange={handleInputChange} required />
-          </div>
-
-          <div className="registration-end-date">
-            <h4>Registration End Date</h4>
-            <input type="date" name="registrationEndDate" onChange={handleInputChange} required />
-          </div>
-
-          <div className="event-start-time">
-            <h4>Event Start Time</h4>
-            <input type="time" name="startTime" onChange={handleInputChange} required />
-          </div>
-
-          <div className="event-end-time">
-            <h4>Event End Time</h4>
-            <input type="time" name="endTime" onChange={handleInputChange} required />
-          </div>
-
-          <div className="event-price">
-            <h4>Event Price</h4>
-            <input type="number" name="price" placeholder="Enter Price (0 if free)" onChange={handleInputChange} required />
-          </div>
-
-          <div className="event-venue">
-            <h4>Event Venue</h4>
-            <input type="text" name="venue" placeholder="Enter Venue Location" onChange={handleInputChange} required />
-          </div>
-
-          <div className="mode-of-event">
-            <h4>Mode of Event</h4>
-            <div className="mode-buttons">
-              <button type="button" onClick={() => handleModeChange('Online')}>Online Mode</button>
-              <button type="button" onClick={() => handleModeChange('Offline')}>Offline Mode</button>
-            </div>
-          </div>
-
-          <div className="event-category">
-            <h4>Tags For Event</h4>
+          <div className="form-group">
+            <label>Tags</label>
             <TagSelector selectedTags={formInput.tags} onTagChange={handleTagChange} />
           </div>
 
-          <div className="event-description">
-            <EventDescription description={formInput.description} onDescriptionChange={handleDescriptionChange} />
+          <div className="form-group">
+            <label>Created By</label>
+            <input
+              type="text"
+              name="createdBy"
+              placeholder="Enter Your Name"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h2>Contact Details</h2>
+          <div className="form-group">
+            <label>Contact Person 1 Email</label>
+            <input
+              type="email"
+              name="contactPerson1Email"
+              placeholder="Enter Email"
+              onChange={handleInputChange}
+              required
+            />
           </div>
 
-          <div className="submit-button">
-            <button type="submit">Create Event</button>
+          <div className="form-group">
+            <label>Contact Person 1 Phone</label>
+            <input
+              type="tel"
+              name="contactPerson1Phone"
+              placeholder="Enter Phone Number"
+              onChange={handleInputChange}
+              required
+            />
           </div>
+
+          <div className="form-group">
+            <label>Contact Person 2 Email</label>
+            <input
+              type="email"
+              name="contactPerson2Email"
+              placeholder="Enter Email"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Contact Person 2 Phone</label>
+            <input
+              type="tel"
+              name="contactPerson2Phone"
+              placeholder="Enter Phone Number"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h2>Additional Information</h2>
+          <div className="form-group">
+            <label>Mode of Event</label>
+            <div className="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  name="mode"
+                  value="Online"
+                  onChange={() => handleModeChange('Online')}
+                />
+                Online
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="mode"
+                  value="Offline"
+                  onChange={() => handleModeChange('Offline')}
+                />
+                Offline
+              </label>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Event Venue</label>
+            <input
+              type="text"
+              name="venue"
+              placeholder="Enter Venue"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Point of Contact</label>
+            <input
+              type="text"
+              name="pointOfContact"
+              placeholder="Main Point of Contact Name"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Contact Person 1 Email</label>
+            <input
+              type="email"
+              name="contactPerson1Email"
+              placeholder="Enter Email"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Contact Person 1 Phone</label>
+            <input
+              type="tel"
+              name="contactPerson1Phone"
+              placeholder="Enter Phone Number"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Contact Person 2 Email</label>
+            <input
+              type="email"
+              name="contactPerson2Email"
+              placeholder="Enter Email"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Contact Person 2 Phone</label>
+            <input
+              type="tel"
+              name="contactPerson2Phone"
+              placeholder="Enter Phone Number"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+
+          <div className="form-group">
+            <label>Upload Event Poster</label>
+            <input type="file" name="poster" accept="image/*" onChange={handleFileChange} />
+          </div>
+        </div>
+
+        <div className="form-actions">
+          <button type="submit" className="submit-btn">
+            Submit Event
+          </button>
         </div>
       </form>
     </div>
   );
-}
+};
