@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import EventDescription from "../Event_listing_page/eventDescription";
 const userId = localStorage.getItem("userId");
 
 export const AddBlog = () => {
@@ -25,24 +26,23 @@ export const AddBlog = () => {
       console.error("Error adding blog:", error);
     }
   };  
-  
 
   return (
-    <div className="container mx-auto my-8 p-6 shadow-lg border rounded-lg bg-white">
+    <div className="container w-[1100px] mx-auto my-8 p-6 shadow-lg border rounded-lg bg-black">
       <h1 className="text-4xl font-bold mb-6 text-center text-blue-600">Add New Blog</h1>
       <form onSubmit={handleSubmit}
       className="space-y-4">
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Title</label>
+          <label className="block text-sm font-medium text-gray-200">Title</label>
           <input
             type="text"
             name="title"
-            className="w-full p-3 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200"
+            className="w-full p-3 border bg-gray-400 border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200"
             required
           />
         </div>
 
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Content</label>
           <textarea
             name="content"
@@ -50,9 +50,9 @@ export const AddBlog = () => {
             rows="5"
             required
           />
-        </div>
+        </div> */}
 
-        <div className="mb-4">
+        <div className="mb-4 w-[500px]">
           <label className="block text-sm font-medium text-gray-700">Date</label>
           <input
             type="date"
@@ -62,7 +62,7 @@ export const AddBlog = () => {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 w-[500px]">
           <label className="block text-sm font-medium text-gray-700">College</label>
           <input
             type="text"
@@ -71,6 +71,9 @@ export const AddBlog = () => {
             required
           />
         </div>
+
+        <label className="block text-sm font-medium text-gray-700">Content</label>
+        <EventDescription/>
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Images</label>
