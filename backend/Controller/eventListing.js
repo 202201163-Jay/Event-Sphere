@@ -3,9 +3,44 @@ const Event = require('../Models/Event');
 const User = require('../Models/User'); 
 const { uploadOnCloudinary } = require("../config/cloudinary");
 const { upload2 } = require("../middleware/multer");
-const { get } = require('mongoose');
 
-const createEvent = async (req, res) => {
+exports.getParticipants=async(req,res)=>{
+  try{
+    console.log("Participants page",req.params.eventId)
+    const participants = await Event.findOne({_id:req.params.eventId}).populate({
+      path: 'registrations', // Populate 'registrations' array
+      populate: {
+        path: 'additionalDetails', // For each user, populate 'additionalDetails'
+        model: 'UserProfile', // Specify the model for nested population
+      },
+    });
+
+    console.log("Participants",participants)
+    // participants.registrations.populate('additionalDetails')
+
+    console.log("Participants fetched")
+
+    if (!participants) {
+      return res
+      .status(404)
+      .json({ error: "Partcipant not found" });
+  }
+  console.log("Hyeyyy")
+  res
+  .status(200)
+  .json({participants});
+
+
+  }
+  catch(err){
+    res
+    .status(500)
+    .json({ error: "Failed to retrieve participants" });
+
+  }
+}
+
+exports.createEvent = async (req, res) => {
   upload2(req, res, async (err) => {
     if (err) {
       return res.status(500).json({ message: 'File upload error', error: err });
@@ -77,29 +112,6 @@ const createEvent = async (req, res) => {
   });
 };
 
-const getcontests = async (req, res) => {
-  try {
-    const concerts = await Event.find({ type: "Concert" }, 'poster');
-    res.status(200).json(concerts);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch concert events" });
-  }
-}
-
-const getEvent = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const event = await Event.findById(id);
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
-    }
-    res.status(200).json(event);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-}
-
 // Helper functions for default times
 const getDefaultStartTime = () => {
   const now = new Date();
@@ -112,5 +124,3 @@ const getDefaultEndTime = () => {
   now.setHours(17, 0, 0, 0); // Default end time at 5:00 PM
   return now;
 };
-
-module.exports = { createEvent, getcontests, getEvent};

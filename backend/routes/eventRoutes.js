@@ -6,6 +6,7 @@ const eventListing = require('../Controller/eventListing');
 const router = express.Router();
 
 router.post("/listing", eventListing.createEvent);
+router.get("/participants/:eventId",eventListing.getParticipants)
 
 router.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
@@ -16,9 +17,6 @@ router.use((err, req, res, next) => {
   }
   next();
 });
-
-router.get("/concerts", eventListing.getcontests);
-router.get("/:id", eventListing.getEvent);
 
 
 module.exports = router;
