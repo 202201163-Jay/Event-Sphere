@@ -1,7 +1,9 @@
-// src/Pages/BlogJ/AddBlog.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../Home/Navbar";
+import Footer from "../Home/Footer";
+
 const userId = localStorage.getItem("userId");
 
 export const AddBlog = () => {
@@ -28,68 +30,80 @@ export const AddBlog = () => {
   
 
   return (
-    <div className="container mx-auto my-8 p-6 shadow-lg border rounded-lg bg-white">
-      <h1 className="text-4xl font-bold mb-6 text-center text-blue-600">Add New Blog</h1>
-      <form onSubmit={handleSubmit}
-      className="space-y-4">
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Title</label>
-          <input
-            type="text"
-            name="title"
-            className="w-full p-3 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200"
-            required
-          />
+    <>
+
+      <div className="bg-cyan-100">
+        {/* <div className=""> */}
+          <Navbar></Navbar>
+        {/* </div> */}
+
+        <div className="container w-10/12 mx-auto my-8 mt-[7.5rem] p-6 shadow-lg border rounded-lg bg-gray-900">
+          <h1 className="text-4xl font-bold mb-6 text-center text-yellow-400">Add New Blog</h1>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-yellow-400">Title</label>
+              <input
+                type="text"
+                name="title"
+                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-yellow-400">Content</label>
+              <textarea
+                name="content"
+                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
+                rows="5"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-yellow-400">Date</label>
+              <input
+                type="date"
+                name="date"
+                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-yellow-400">College</label>
+              <input
+                type="text"
+                name="college"
+                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-yellow-400">Images</label>
+              <input
+                name="posters"
+                type="file"
+                multiple
+                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold p-3 rounded-md shadow-md transition duration-300"
+            >
+              Submit Blog
+            </button>
+          </form>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Content</label>
-          <textarea
-            name="content"
-            className="w-full p-3 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200"
-            rows="5"
-            required
-          />
+        <div className="footer-addblog">
+          <Footer></Footer>
         </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Date</label>
-          <input
-            type="date"
-            name="date"
-            className="w-full p-3 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">College</label>
-          <input
-            type="text"
-            name="college"
-            className="w-full p-3 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Images</label>
-          <input
-          name="posters"
-            type="file"
-            multiple
-            className="w-full p-3 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold p-3 rounded-md shadow-md transition duration-300"
-        >
-          Submit Blog
-        </button>
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 

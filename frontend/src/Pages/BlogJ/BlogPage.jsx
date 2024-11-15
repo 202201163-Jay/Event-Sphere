@@ -64,79 +64,94 @@ export const BlogPage = () => {
     : [];
 
   return (
-    <div className="container mx-auto my-8 p-4">
-      <div className="relative flex justify-between items-center mb-8">
-        <div className="w-full max-w-md relative">
-          <input
-            type="text"
-            placeholder="Search blog by title..."
-            className="p-3 border rounded-md w-full shadow-sm"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => setShowSuggestions(true)}
-            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-          />
-          {showSuggestions && suggestions.length > 0 && (
-            <ul className="absolute top-full left-0 w-full bg-white shadow-lg border rounded-md z-10">
-              {suggestions.map((suggestion) => (
-                <li
-                  key={suggestion._id}
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => {
-                    setSearchQuery(suggestion.title);
-                    setShowSuggestions(false);
-                  }}
-                >
-                  <strong>{suggestion.title}</strong>
-                  <div className="text-sm text-gray-500">
-                    {suggestion.college || "Unknown College"}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <Link
-          to="/add-blog"
-          className="bg-blue-600 text-white px-5 py-3 rounded-md shadow-md ml-4 hover:bg-blue-700"
-        >
-          Add Blog
-        </Link>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {filteredBlogs.length > 0 ? (
-          filteredBlogs.map((blog) => (
-            <div key={blog._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <Link to={`/blogs/${blog._id}`}>
+  <div className="container mx-auto my-8 p-4">
+    <div className="relative flex justify-between items-center mb-8">
+      <div className="w-full max-w-md relative">
+        <input
+          type="text"
+          placeholder="Search blog by title..."
+          className="p-3 border rounded-md w-full shadow-sm"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onFocus={() => setShowSuggestions(true)}
+          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+        />
+        {showSuggestions && suggestions.length > 0 && (
+          <ul className="absolute top-full left-0 w-full bg-white shadow-lg border rounded-md z-10">
+            {suggestions.map((suggestion) => (
+              <li
+                key={suggestion._id}
+                className="p-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  setSearchQuery(suggestion.title);
+                  setShowSuggestions(false);
+                }}
+              >
+                <strong>{suggestion.title}</strong>
+                <div className="text-sm text-gray-500">
+                  {suggestion.college || "Unknown College"}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <Link
+        to="/add-blog"
+        className="bg-blue-600 text-white px-5 py-3 rounded-md shadow-md ml-4 hover:bg-blue-700"
+      >
+        Add Blog
+      </Link>
+    </div>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {filteredBlogs.length > 0 ? (
+        filteredBlogs.map((blog) => (
+          <div
+            key={blog._id}
+            className="bg-white rounded-lg shadow-md overflow-hidden transition transform hover:scale-105"
+          >
+            <Link to={`/blogs/${blog._id}`}>
+              <div className="relative">
                 <img
                   src={blog.images?.[0] || "https://via.placeholder.com/600x300"}
                   alt={blog.title}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-56 object-cover"
                 />
-                <div className="p-4">
-                  <h2 className="text-xl font-bold text-gray-800">{blog.title}</h2>
-                  <p className="text-sm text-gray-500">
-                    By: {blog.college || "Unknown College"}
-                  </p>
-                  <p className="text-gray-600 mt-3">{blog.content.substring(0, 100)}...</p>
+                <div className="absolute top-2 left-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-full">
+                  {blog.category || "General"}
                 </div>
-              </Link>
-              <div className="p-4 border-t text-right">
-                <Link
-                  to={`/blogs/${blog._id}`}
-                  className="text-blue-500 hover:underline"
-                >
-                  Read More
-                </Link>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="col-span-full text-center text-gray-500">No blogs found</p>
-        )}
-      </div>
+              <div className="p-4">
+                <div className="flex items-center text-gray-500 text-sm mb-2">
+                  <span>{new Date(blog.date).toLocaleDateString()}</span>
+                  <span className="mx-2">•</span>
+                  <span>{blog.readTime || "5"} mins read</span>
+                </div>
+                <h2 className="text-lg font-semibold text-gray-800 mb-3">{blog.title}</h2>
+                <p className="text-gray-600 mb-4">
+                  {blog.content.substring(0, 80)}...
+                </p>
+                <div className="flex items-center mt-4">
+                  <img
+                    src={blog.authorImage || "https://via.placeholder.com/40"}
+                    alt={blog.author || "Author"}
+                    className="w-10 h-10 rounded-full mr-3"
+                  />
+                  <p className="text-sm text-gray-800">{blog.author || "Anonymous"}</p>
+                </div>
+              </div>
+            </Link>
+          </div>
+        ))
+      ) : (
+        <p className="col-span-full text-center text-gray-500">No blogs found</p>
+      )}
     </div>
+  </div>
+
+
   );
 };
 

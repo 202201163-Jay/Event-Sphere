@@ -2,6 +2,8 @@ import { useState } from 'react';
 import './EventListing.scss'; // Ensure this file has updated styles for modern design.
 import TagSelector from './tagSelector';
 import EventDescription from './eventDescription';
+import Navbar from '../Home/Navbar';
+import Footer from '../Home/Footer';
 
 export const EventForm = () => {
   const [events, setEvents] = useState([]);
@@ -104,6 +106,14 @@ export const EventForm = () => {
   };
 
   return (
+    <>
+
+    <div className="page-container">
+
+    <div className="navbar">
+    <Navbar></Navbar>
+    </div>
+
     <div className="event-form-container">
       <form onSubmit={handleSubmit} className="event-form">
         <h1 className="form-header">Create a New Event</h1>
@@ -367,5 +377,12 @@ export const EventForm = () => {
         </div>
       </form>
     </div>
+
+    <div className="footer">
+      <Footer></Footer>
+    </div>
+
+    </div>
+    </>
   );
 };
