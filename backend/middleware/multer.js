@@ -14,4 +14,8 @@ const upload = multer({
   storage: storage,
 }).array('posters', 10);
 
-module.exports = { upload };
+const upload2 = multer({
+  storage: storage,
+}).single('poster', 1);
+
+module.exports = { upload , upload2};

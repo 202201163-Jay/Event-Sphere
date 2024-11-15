@@ -7,6 +7,7 @@ const crud = require('./routes/crud')
 const college = require('./routes/college')
 const {cloudinaryConnect }= require("../backend/config/cloudinary")
 require("dotenv").config();
+const eventRoutes = require("./routes/eventRoutes")
 
 const corsOptions = {
     origin: "http://localhost:5173",
@@ -26,6 +27,8 @@ app.use("/api/auth", user);
 app.use("/api/blog", blogRoutes);
 app.use("/api/users", crud);
 app.use("/api/college",college)
+app.use("/api/event",eventRoutes);
+
 
 connectDb().then(() => {
     app.listen(PORT, () => {
