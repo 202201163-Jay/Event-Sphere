@@ -3,6 +3,7 @@ const Event = require('../Models/Event');
 const User = require('../Models/User'); 
 const { uploadOnCloudinary } = require("../config/cloudinary");
 const { upload2 } = require("../middleware/multer");
+const { get } = require('mongoose');
 
 const createEvent = async (req, res) => {
   upload2(req, res, async (err) => {
@@ -76,6 +77,29 @@ const createEvent = async (req, res) => {
   });
 };
 
+const getcontests = async (req, res) => {
+  try {
+    const concerts = await Event.find({ type: "Concert" }, 'poster');
+    res.status(200).json(concerts);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch concert events" });
+  }
+}
+
+const getEvent = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const event = await Event.findById(id);
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    res.status(200).json(event);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+}
+
 // Helper functions for default times
 const getDefaultStartTime = () => {
   const now = new Date();
@@ -89,4 +113,4 @@ const getDefaultEndTime = () => {
   return now;
 };
 
-module.exports = { createEvent };
+module.exports = { createEvent, getcontests, getEvent};

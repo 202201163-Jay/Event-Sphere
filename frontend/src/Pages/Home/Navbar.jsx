@@ -68,7 +68,7 @@ const Navbar = () => {
     <>
       <div
         className={`max-w-screen-2xl container mx-auto md:px-6 px-4 fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${sticky
-          ? "sticky-navbar shadow-lg bg-black text-white"
+          ? "sticky-navbar shadow-lg bg-gray-800 text-white"
           : "bg-gray-800 text-white"
           }`}
       >

@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../../context/AuthProvider';
 
 const userId = localStorage.getItem("userId");
+const image = localStorage.getItem("image");
 
 export const ClubProfile = () => {
   const [activeSection, setActiveSection] = useState('profile');
@@ -96,7 +97,7 @@ export const ClubProfile = () => {
             <div className="relative border border-gray-700 rounded-lg p-4 mb-8 bg-gray-800">
               <div className="flex items-center space-x-4">
                 <img
-                  src={clubData?.image || "https://via.placeholder.com/80"}
+                  src={image || "https://via.placeholder.com/80"}
                   alt="Profile"
                   className="w-20 h-20 rounded-full shadow-md"
                 />
