@@ -1,14 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { PencilIcon } from '@heroicons/react/24/solid';
-import { ToastContainer, toast } from 'react-toastify';
+import { PencilIcon, TrashIcon, PlusIcon} from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import { Link } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../../context/AuthProvider';
+// let ifParticipant=0
 
 const userId = localStorage.getItem("userId");
 
 export const ClubProfile = () => {
   const [activeSection, setActiveSection] = useState('profile');
   const [clubData, setClubData] = useState(null);
+  const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
+
+
+
+  useEffect(() => {
+    if (activeSection === 'event-details') {
+      const fetchEventDetails = async () => {
+        try {
+          const response = await fetch(`http://localhost:3000/api/collegeRep/events/${userId}`);
+          console.log(response)
+          const data = await response.json();
+          console.log("Data ",data)
+          if (response.ok) {
+            setEvents(data);
+          } else {
+            toast.error(data.message || 'Failed to fetch event data');
+          }
+        } catch (error) {
+          toast.error('Error fetching event data');
+        }
+      };
+      fetchEventDetails();
+    }
+  }, [activeSection, userId]);
+  
 
   useEffect(() => {
     const fetchClubById = async () => {
@@ -18,9 +47,11 @@ export const ClubProfile = () => {
         const response = await fetch(`http://localhost:3000/api/collegeRep/${userId}`);
         console.log(response)
         const data = await response.json();
+        console.log(data)
+
 
         if (response.ok) {
-          setClubData(data.data);
+          setClubData(data);
         } else {
           toast.error(data.message || 'Failed to fetch club data');
         }
@@ -47,6 +78,28 @@ export const ClubProfile = () => {
       }
     } catch (error) {
       toast.error("Error deleting profile");
+    }
+  }
+  const handleDeleteEvent= async(eventId) => {
+    try {
+      console.log("Heyyyy")
+      console.log(eventId);
+      const response = await fetch(`http://localhost:3000/api/collegeRep/delete/${eventId}`, {
+        method: "DELETE",
+      });
+      const data = await response.json()
+      console.log(data)
+      if (data.res==="ok") {
+        toast.success("Event deleted successfully");
+        console.log("SUCCC")  
+        window.location.reload();
+      } else {
+        console.log("Kem")
+        toast.error("Error deleting event");
+      }
+    } catch (error) {
+      console.log("H")
+      toast.error("Error deleting event");
     }
   }
 
@@ -83,7 +136,7 @@ export const ClubProfile = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Affiliated College</p>
-                  <p className="text-gray-200">{clubData?.collegeName || ''}</p>
+                  <p className="text-gray-200">{clubData?.collegeId.name || ''}</p>
                 </div>
               </div>
             </div>
@@ -101,6 +154,38 @@ export const ClubProfile = () => {
             </button>
           </div>
         );
+        case 'event-details':
+  return (
+    <div 
+      className="p-6 gap-4 space-y-4 overflow-y-scroll" 
+      style={{ height: 'calc(2.5 * 160px)', scrollSnapType: 'y mandatory' }} 
+    >
+      {events.events ? (
+        events.events.map((event) => (
+          <div 
+
+            className="border border-gray-600 rounded-lg p-4 bg-gray-900" 
+            style={{ scrollSnapAlign: 'start', height: '120px' }} 
+          >
+            {console.log(event)}
+            <h3 className="text-xl font-semibold text-white mb-4">{event.eventName}</h3>
+            <div className="flex justify-between">
+              <button className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-400">Edit</button>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-400" onClick={()=> navigate('/participants')}>Participants</button>
+              {/* <Link to="club-profile"> */}
+                <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-4000 " onClick={()=>handleDeleteEvent(event._id)}>Delete</button>
+                {/* </Link> */}
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="text-gray-400">No events available.</p>
+      )}
+    </div>
+  );
+
+        
+
       default:
         return null;
     }
@@ -114,19 +199,19 @@ export const ClubProfile = () => {
         <div className="flex">
           <aside className="w-1/4 space-y-6 pr-4 border-r border-gray-700">
             <button
-              className={`w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'profile' ? 'text-yellow-500 bg-gray-700' : 'text-gray-300 hover:bg-gray-700'}`}
+              className={"w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'profile' ? 'text-yellow-500 bg-gray-700' : 'text-gray-300 hover:bg-gray-700'}"}
               onClick={() => setActiveSection('profile')}
             >
               Profile
             </button>
             <button
-              className={`w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'event-details' ? 'text-yellow-500 bg-gray-700' : 'text-gray-300 hover:bg-gray-700'}`}
+              className={"w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'event-details' ? 'text-yellow-500 bg-gray-700' : 'text-gray-300 hover:bg-gray-700'}"}
               onClick={() => setActiveSection('event-details')}
             >
               All Event
             </button>
             <button
-              className={`w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'delete' ? 'text-yellow-500 bg-gray-700' : 'text-gray-300 hover:bg-gray-700'}`}
+              className={"w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'delete' ? 'text-yellow-500 bg-gray-700' : 'text-gray-300 hover:bg-gray-700'}"}
               onClick={() => setActiveSection('delete')}
             >
               Delete Account
