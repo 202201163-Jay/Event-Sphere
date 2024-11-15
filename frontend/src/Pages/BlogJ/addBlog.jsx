@@ -33,9 +33,7 @@ export const AddBlog = () => {
     <>
 
       <div className="bg-cyan-100">
-        {/* <div className=""> */}
           <Navbar></Navbar>
-        {/* </div> */}
 
         <div className="container w-10/12 mx-auto my-8 mt-[7.5rem] p-6 shadow-lg border rounded-lg bg-gray-900">
           <h1 className="text-4xl font-bold mb-6 text-center text-yellow-400">Add New Blog</h1>
