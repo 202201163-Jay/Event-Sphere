@@ -1,5 +1,6 @@
 // Import Mongoose 
 const mongoose = require('mongoose');
+const CollegeRep = require("./CollegeRep")
 
 // Helper functions for default start and end times
 function getDefaultStartTime() {
@@ -73,8 +74,7 @@ const eventSchema = new mongoose.Schema({
     }],
        
     createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "CollegeRep",
+        type: String,
         required: true,
     },
        
@@ -83,13 +83,9 @@ const eventSchema = new mongoose.Schema({
         ref: 'User' 
     }],
 
-    occasion: {
-        type: String
-    },
-
     mode: {
         type: String,
-        enum: ['online', 'offline'], 
+        enum: ['Online', 'Offline'], 
         required: true
     },
 
@@ -98,16 +94,18 @@ const eventSchema = new mongoose.Schema({
         required: function() { return this.mode === 'offline'; }, // Required only if mode is 'offline'
     },
 
-    pointOfContact: [{
-        email: {
-            type: String,
-            required: true
-        },
-        contact: {
-            type: String, 
-            required: true,
-        }
-    }]
+    contactPersonEmail:{
+        type: String,
+        required: true,
+    },
+    contactPersonPhone: {
+        type: String,
+        required: true,
+    },
+    clubId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "CollegeRep"
+    },
 });
 
 module.exports = mongoose.model("Event", eventSchema);

@@ -2,10 +2,10 @@ const cloudinary = require('../config/cloudinary');
 const Event = require('../Models/Event'); 
 const User = require('../Models/User'); 
 const { uploadOnCloudinary } = require("../config/cloudinary");
-const { upload } = require("../middleware/multer");
+const { upload2 } = require("../middleware/multer");
 
 const createEvent = async (req, res) => {
-  upload(req, res, async (err) => {
+  upload2(req, res, async (err) => {
     if (err) {
       return res.status(500).json({ message: 'File upload error', error: err });
     }
@@ -22,13 +22,12 @@ const createEvent = async (req, res) => {
         type,
         tags,
         createdBy,
-        occasion,
         mode,
         venue,
-        pointOfContact,
+        contactPersonEmail,
+        contactPersonPhone,
+        clubId,
       } = req.body;
-
-      
 
       // Access uploaded poster file
       const posterFile = req.file;
@@ -46,19 +45,19 @@ const createEvent = async (req, res) => {
         description,
         price,
         poster: posterUrl,
-        listedAt: listedAt ? new Date(listedAt) : new Date(), // Default to current date if not provided
+        listedAt: new Date(), // Default to current date if not provided
         registrationStartDate: new Date(registrationStartDate),
         registrationEndDate: new Date(registrationEndDate),
         startTime: startTime || getDefaultStartTime(), // Use default function if not provided
         endTime: endTime || getDefaultEndTime(),       // Use default function if not provided
         type,
         tags: JSON.parse(tags), // Ensure tags is parsed to array
-        createdBy, // Assuming `createdBy` is a valid `ObjectId` reference to `CollegeRep`
-        occasion,
+        createdBy, // Assuming createdBy is a valid ObjectId reference to CollegeRep
         mode,
         venue,
-        pointOfContact: JSON.parse(pointOfContact), // Ensure pointOfContact is parsed to array
-        
+        contactPersonEmail,
+        contactPersonPhone,
+        clubId,
       });
 
       await newEvent.save();
@@ -68,13 +67,26 @@ const createEvent = async (req, res) => {
         event: newEvent,
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error creating event:", error);
       res.status(500).json({
         message: 'An error occurred while creating the event',
         error: error.message,
       });
     }
   });
+};
+
+// Helper functions for default times
+const getDefaultStartTime = () => {
+  const now = new Date();
+  now.setHours(9, 0, 0, 0); // Default start time at 9:00 AM
+  return now;
+};
+
+const getDefaultEndTime = () => {
+  const now = new Date();
+  now.setHours(17, 0, 0, 0); // Default end time at 5:00 PM
+  return now;
 };
 
 module.exports = { createEvent };

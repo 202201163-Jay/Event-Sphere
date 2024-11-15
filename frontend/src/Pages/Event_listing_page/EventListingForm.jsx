@@ -1,120 +1,52 @@
-import { useState } from 'react';
-import './EventListing.scss'; // Ensure this file has updated styles for modern design.
+import React, { useState } from 'react';
+import './EventListing.scss';
 import TagSelector from './tagSelector';
 import EventDescription from './eventDescription';
-import Navbar from '../Home/Navbar';
-import Footer from '../Home/Footer';
+import axios from "axios";
+const userId = localStorage.getItem("userId");
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export const EventForm = () => {
-  const [events, setEvents] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [description, setDescription] = useState('');
+  const [mode, setMode] = useState(''); // Added state for mode
+  const navigate = useNavigate()
 
-  const [formInput, setFormInput] = useState({
-    eventName: '',
-    description: '',
-    price: '',
-    registrationStartDate: '',
-    registrationEndDate: '',
-    startTime: '',
-    endTime: '',
-    type: '',
-    tags: [],
-    createdBy: '',
-    occasion: '',
-    mode: '',
-    venue: '',
-    pointOfContact: '',
-    poster: null,
-    contactPerson1Email: '',
-    contactPerson1Phone: '',
-    contactPerson2Email: '',
-    contactPerson2Phone: '',
-  });
+  const handleTagChange = (selectedTags) => setTags(selectedTags);
+  const handleDescriptionChange = (desc) => setDescription(desc);
 
-  const handleModeChange = (mode) => {
-    setFormInput((prevInput) => ({ ...prevInput, mode }));
-  };
-
-  const handleTagChange = (tags) => {
-    setFormInput((prevInput) => ({ ...prevInput, tags }));
-  };
-
-  const handleDescriptionChange = (description) => {
-    setFormInput((prevInput) => ({ ...prevInput, description }));
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormInput((prevInput) => ({ ...prevInput, [name]: value }));
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFormInput((prevInput) => ({ ...prevInput, poster: file }));
+  const handleModeChange = (event) => {
+    setMode(event.target.value); // Update mode based on selected radio button
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const newEvent = { ...formInput };
-    setEvents((prevEvents) => [...prevEvents, newEvent]);
-
-    const formData = new FormData();
-    Object.keys(formInput).forEach((key) => {
-      formData.append(key, key === 'tags' ? JSON.stringify(formInput[key]) : formInput[key]);
-    });
-
+    
+    const formData = new FormData(e.target);
+    formData.append("tags", JSON.stringify(tags)); 
+    formData.append("description", description); 
+    formData.append("clubId", userId);
+    
     try {
-      const response = await fetch("http://localhost:3000/api/event/listing", {
-        method: "POST",
-        body: formData,
+      await axios.post("http://localhost:3000/api/event/listing", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-
-      if (response.ok) {
-        console.log('Event submitted successfully');
-      } else {
-        console.error('Failed to submit form');
-      }
+      toast.success("Event submitted successfully");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (error) {
       console.error("Error during event listing", error);
     }
-
-    setFormInput({
-      eventName: '',
-      description: '',
-      price: '',
-      registrationStartDate: '',
-      registrationEndDate: '',
-      startTime: '',
-      endTime: '',
-      type: '',
-      tags: [],
-      createdBy: '',
-      occasion: '',
-      mode: '',
-      venue: '',
-      pointOfContact: '',
-      poster: null,
-      contactPerson1Email: '',
-      contactPerson1Phone: '',
-      contactPerson2Email: '',
-      contactPerson2Phone: '',
-    });
-
-    console.log([...events,newEvent]);
-
-    e.target.reset();
   };
 
   return (
-    <>
-
-    <div className="page-container">
-
-    <div className="navbar">
-    <Navbar></Navbar>
-    </div>
-
     <div className="event-form-container">
+      <ToastContainer/>
       <form onSubmit={handleSubmit} className="event-form">
         <h1 className="form-header">Create a New Event</h1>
 
@@ -126,17 +58,13 @@ export const EventForm = () => {
               type="text"
               name="eventName"
               placeholder="Enter Event Title"
-              onChange={handleInputChange}
               required
             />
           </div>
 
           <div className="form-group">
             <label>Event Description</label>
-            <EventDescription
-              description={formInput.description}
-              onDescriptionChange={handleDescriptionChange}
-            />
+            <EventDescription onDescriptionChange={handleDescriptionChange} />
           </div>
 
           <div className="form-group">
@@ -145,7 +73,6 @@ export const EventForm = () => {
               type="number"
               name="price"
               placeholder="0 for Free"
-              onChange={handleInputChange}
               required
             />
           </div>
@@ -155,42 +82,22 @@ export const EventForm = () => {
           <h2>Registration & Timing</h2>
           <div className="form-group">
             <label>Registration Start Date</label>
-            <input
-              type="date"
-              name="registrationStartDate"
-              onChange={handleInputChange}
-              required
-            />
+            <input type="date" name="registrationStartDate" required />
           </div>
 
           <div className="form-group">
             <label>Registration End Date</label>
-            <input
-              type="date"
-              name="registrationEndDate"
-              onChange={handleInputChange}
-              required
-            />
+            <input type="date" name="registrationEndDate" required />
           </div>
 
           <div className="form-group">
             <label>Event Start Time</label>
-            <input
-              type="time"
-              name="startTime"
-              onChange={handleInputChange}
-              required
-            />
+            <input type="time" name="startTime" required />
           </div>
 
           <div className="form-group">
             <label>Event End Time</label>
-            <input
-              type="time"
-              name="endTime"
-              onChange={handleInputChange}
-              required
-            />
+            <input type="time" name="endTime" required />
           </div>
         </div>
 
@@ -198,104 +105,12 @@ export const EventForm = () => {
           <h2>Event Details</h2>
           <div className="form-group">
             <label>Event Type</label>
-            <select name="type" onChange={handleInputChange} required>
+            <select name="type" required>
               <option value="">Select Type</option>
-              <option value="Cultural Event">Cultural Event</option>
-              <option value="Technical Event">Technical Event</option>
-              <option value="Sports Event">Sports Event</option>
-              <option value="Social Event">Social Event</option>
+              <option value="Competition">Competition</option>
               <option value="Concert">Concert</option>
+              <option value="Other">Other</option>
             </select>
-          </div>
-
-          <div className="form-group">
-            <label>Tags</label>
-            <TagSelector selectedTags={formInput.tags} onTagChange={handleTagChange} />
-          </div>
-
-          <div className="form-group">
-            <label>Created By</label>
-            <input
-              type="text"
-              name="createdBy"
-              placeholder="Enter Your Name"
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-        </div>
-
-        <div className="form-section">
-          <h2>Contact Details</h2>
-          <div className="form-group">
-            <label>Contact Person 1 Email</label>
-            <input
-              type="email"
-              name="contactPerson1Email"
-              placeholder="Enter Email"
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Contact Person 1 Phone</label>
-            <input
-              type="tel"
-              name="contactPerson1Phone"
-              placeholder="Enter Phone Number"
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Contact Person 2 Email</label>
-            <input
-              type="email"
-              name="contactPerson2Email"
-              placeholder="Enter Email"
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Contact Person 2 Phone</label>
-            <input
-              type="tel"
-              name="contactPerson2Phone"
-              placeholder="Enter Phone Number"
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-        </div>
-
-        <div className="form-section">
-          <h2>Additional Information</h2>
-          <div className="form-group">
-            <label>Mode of Event</label>
-            <div className="radio-group">
-              <label>
-                <input
-                  type="radio"
-                  name="mode"
-                  value="Online"
-                  onChange={() => handleModeChange('Online')}
-                />
-                Online
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="mode"
-                  value="Offline"
-                  onChange={() => handleModeChange('Offline')}
-                />
-                Offline
-              </label>
-            </div>
           </div>
 
           <div className="form-group">
@@ -304,69 +119,62 @@ export const EventForm = () => {
               type="text"
               name="venue"
               placeholder="Enter Venue"
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Point of Contact</label>
-            <input
-              type="text"
-              name="pointOfContact"
-              placeholder="Main Point of Contact Name"
-              onChange={handleInputChange}
               required
             />
           </div>
 
           <div className="form-group">
+            <label>Tags</label>
+            <TagSelector selectedTags={tags} onTagChange={handleTagChange} />
+          </div>
+
+          <div className="form-group">
+            <label>Mode of Event</label>
+            <div className="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  name="mode"
+                  value="Online"
+                  checked={mode === "Online"}
+                  onChange={handleModeChange}
+                />
+                Online
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="mode"
+                  value="Offline"
+                  checked={mode === "Offline"}
+                  onChange={handleModeChange}
+                />
+                Offline
+              </label>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Created By</label>
+            <input type="text" name="createdBy" placeholder="Enter Your Name" required />
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h2>Contact Details</h2>
+          <div className="form-group">
             <label>Contact Person 1 Email</label>
-            <input
-              type="email"
-              name="contactPerson1Email"
-              placeholder="Enter Email"
-              onChange={handleInputChange}
-              required
-            />
+            <input className="text-black" type="email" name="contactPersonEmail" placeholder="Enter Email" required />
           </div>
 
           <div className="form-group">
             <label>Contact Person 1 Phone</label>
-            <input
-              type="tel"
-              name="contactPerson1Phone"
-              placeholder="Enter Phone Number"
-              onChange={handleInputChange}
-              required
-            />
+            <input className="text-black" type="tel" name="contactPersonPhone" placeholder="Enter Phone Number" required />
           </div>
-
-          <div className="form-group">
-            <label>Contact Person 2 Email</label>
-            <input
-              type="email"
-              name="contactPerson2Email"
-              placeholder="Enter Email"
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Contact Person 2 Phone</label>
-            <input
-              type="tel"
-              name="contactPerson2Phone"
-              placeholder="Enter Phone Number"
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-
 
           <div className="form-group">
             <label>Upload Event Poster</label>
-            <input type="file" name="poster" accept="image/*" onChange={handleFileChange} />
+            <input type="file" name="poster" accept="image/*" />
           </div>
         </div>
 
@@ -377,12 +185,5 @@ export const EventForm = () => {
         </div>
       </form>
     </div>
-
-    <div className="footer">
-      <Footer></Footer>
-    </div>
-
-    </div>
-    </>
   );
 };
