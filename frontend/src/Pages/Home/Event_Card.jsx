@@ -3,7 +3,7 @@ import React from 'react';
 const EventCard = ({ title }) => {
   return (
     <section className="p-5">
-      <h2 className="text-2xl mb-5 font-bold text-center text-indigo-500">{title}</h2>
+      <h2 className="text-3xl font-semibold  mt-12 mb-5 ml-2 text-left text-white">{title}</h2>
       <div className="flex justify-between" style={{ gap: '15px' }}>
         <div className="w-[30%] bg-gray-200 rounded-lg overflow-hidden shadow-md">
           <a href="#" className="link">
