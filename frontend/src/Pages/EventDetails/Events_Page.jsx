@@ -19,8 +19,8 @@ export const Events_Page = () => {
         console.log("first")
         const getAllEvents = async () => {
             try {
-                const results = await axios.get("http://localhost:3000/api/home/trending");
-                console.log("results", results);
+                const results = await axios.get("http://localhost:3000/api/home/latestevent");
+                // console.log("results", results);
                 setEvents(results.data.trendingEvents);
             } catch (error) {
                 console.log(error);

@@ -4,20 +4,33 @@ const Event = require('../Models/Event');
 
 
 // Fetch trending events
-exports.getTrendingEvents = async (req, res) => {
+exports.getLatest = async (req, res) => {
     try {
         console.log("vgoroeee");
         // Adjust criteria as per your trending logic, e.g., events with high registration or recent listing
-        const trendingEvents = await Event.find({ /* your criteria for trending */ })
+        const latestevent = await Event.find({})
             .sort({ listedAt: -1 }) // Example: Sort by latest listed
-            .limit(3); // Limit the number of events
-        console.log("afaf");
-        res.status(200).json({trendingEvents,status:"ok"});
+            .limit(4); // Limit the number of events
+        // console.log("afaf");
+        res.status(200).json({latestevent,status:"ok"});
     } catch (error) {
         res.status(500).json({ error: 'Error fetching trending events' });
     }
 };
 
+exports.getTrending = async (req, res) => {
+    try {
+        console.log("ttrr");
+        // Fetch events and sort by the count of registrations in descending order
+        const trendingEvents = await Event.find({})
+            .sort({ 'registrations.length': 1 }) // Sort by number of registrations
+            .limit(4); // Limit the number of events returned
+
+        res.status(200).json({ trendingEvents, status: "ok" });
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching trending events' });
+    }
+};
 
 
 
