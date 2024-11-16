@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.post("/listing", eventListing.createEvent);
 router.get("/participants/:eventId",eventListing.getParticipants)
+router.get("/concerts", eventListing.getcontests);
+router.get("/:id", eventListing.getEvent);
 
 router.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {

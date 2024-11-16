@@ -8,24 +8,22 @@ exports.getParticipants=async(req,res)=>{
   try{
     console.log("Participants page",req.params.eventId)
     const participants = await Event.findOne({_id:req.params.eventId}).populate({
-      path: 'registrations', // Populate 'registrations' array
+      path: 'registrations', 
       populate: {
-        path: 'additionalDetails', // For each user, populate 'additionalDetails'
-        model: 'UserProfile', // Specify the model for nested population
+        path: 'additionalDetails', 
+        model: 'UserProfile', 
       },
     });
 
-    console.log("Participants",participants)
-    // participants.registrations.populate('additionalDetails')
 
-    console.log("Participants fetched")
+    // console.log("Test console 1")
 
     if (!participants) {
       return res
       .status(404)
       .json({ error: "Partcipant not found" });
   }
-  console.log("Hyeyyy")
+  // console.log("Test console 2")
   res
   .status(200)
   .json({participants});
@@ -124,3 +122,25 @@ const getDefaultEndTime = () => {
   now.setHours(17, 0, 0, 0); // Default end time at 5:00 PM
   return now;
 };
+
+exports.getcontests = async (req, res) => {
+  try {
+    const concerts = await Event.find({ type: "Concert" }, 'poster');
+    res.status(200).json(concerts);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch concert events" });
+  }
+}
+exports.getEvent = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const event = await Event.findById(id);
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    res.status(200).json(event);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+}
