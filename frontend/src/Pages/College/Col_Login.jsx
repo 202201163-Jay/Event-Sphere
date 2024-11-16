@@ -67,12 +67,9 @@ export const Col_Login = () => {
             />
           </div>
           <div>
-            <span className="text-center mt-4">
               <label className="text-sm font-semibold text-gray-400">Password * </label>
-            </span>
-            <span className="text-right mt-4">
-              <Link className="text-indigo-500 hover:underline" to="/forgot-password-col">Forgot Password?</Link>
-            </span>
+            
+            
             <input
               className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
               type="password"

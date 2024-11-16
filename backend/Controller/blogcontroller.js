@@ -49,7 +49,7 @@ const createBlog = async (req, res) => {
 // Function to get all blogs
 const getBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find(); // Retrieve all blog posts
+    const blogs = await Blog.find().populate('clubId'); // Retrieve all blog posts
     // console.log(`${blogs}`);
     res.status(200).json(blogs);
   } catch (error) {

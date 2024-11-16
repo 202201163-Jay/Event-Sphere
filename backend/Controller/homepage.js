@@ -3,6 +3,7 @@ const Event = require('../Models/Event');
 
 
 exports.getLatest = async (req, res) => {
+
     try {
         const latestevent = await Event.find({})
             .sort({ listedAt: -1 })
@@ -26,3 +27,5 @@ exports.getTrending = async (req, res) => {
         res.status(500).json({ error: 'Error fetching trending events' });
     }
 };
+
+

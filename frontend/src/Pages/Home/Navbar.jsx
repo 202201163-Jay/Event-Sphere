@@ -54,13 +54,7 @@ const Navbar = () => {
       <li>
         <a className="text-yellow-500 hover:text-yellow-300">About</a>
       </li>
-      {type === "club" && (
-        <>
-          <li>
-            <Link to="/listing" className="text-yellow-500 hover:text-yellow-300">List Events</Link>
-          </li>
-        </>
-      )}
+
     </>
   );
 
@@ -114,9 +108,9 @@ const Navbar = () => {
                 <div className="flex rounded-full items-center space-x-2 h-20">
                   <Link to={`/profile/${userId}`}>
                     <img
-                      src={image || `https://api.dicebear.com/5.x/initials/svg?seed=${name}`}
+                      src={image || "https://via.placeholder.com/80"}
                       alt="Profile"
-                      className={`${type === "club" ? "w-full h-full" : "w-14 h-14"} rounded-full shadow-md`}
+                      className="w-14 h-14 rounded-full shadow-md"
                     />
                   </Link>
                   <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${name}`}</span>

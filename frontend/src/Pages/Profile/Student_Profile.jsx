@@ -103,6 +103,7 @@ export const ProfilePage = () => {
       const profileResult = await profileResponse.json();
   
       if (userResult.status === "SUCCESS" && profileResult.status === "SUCCESS") {
+        userResult.data.image = `https://api.dicebear.com/5.x/initials/svg?seed=${userResult.data?.firstName} ${userResult.data?.lastName}`
         setUserData(userResult.data);
         setUserprofileData(profileResult.data);
         toast.success("Profile updated successfully!");

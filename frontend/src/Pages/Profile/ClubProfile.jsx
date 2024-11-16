@@ -80,7 +80,13 @@ export const ClubProfile = () => {
       const data = await response.json();
       if (data.res === "ok") {
         toast.success("Event deleted successfully");
-        window.location.reload();
+        const updatedEvents = await fetch(`http://localhost:3000/api/collegeRep/events/${userId}`);
+        const updatedEventsData = await updatedEvents.json();
+        if (updatedEvents.ok) {
+          setEvents(updatedEventsData);
+        } else {
+          toast.error("Error fetching updated events");
+        }
       } else {
         toast.error("Error deleting event");
       }
@@ -103,8 +109,6 @@ export const ClubProfile = () => {
                 />
                 <div>
                   <h3 className="text-xl font-semibold text-yellow-500">{clubData?.clubName || ''}</h3>
-                  <p className="text-sm text-gray-400">Club Manager</p>
-                  <p className="text-sm text-gray-500">{clubData?.location || 'Unknown Location'}</p>
                 </div>
               </div>
             </div>

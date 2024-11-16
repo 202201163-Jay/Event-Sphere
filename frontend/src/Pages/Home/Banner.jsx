@@ -20,7 +20,7 @@ const Banner = () => {
     fetchBanners();
   }, []);
 
-  console.log(banners);
+  // console.log(banners);
 
   useEffect(() => {
     if (isManual) {

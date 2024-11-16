@@ -26,7 +26,7 @@ exports.getCollegeRepById = async (req, res) => {
 exports.getEvents = async (req, res) => {
 
     try{
-        const events=await event.find({createdBy:req.params.id})
+        const events=await event.find({clubId:req.params.id})
         if (!events) {
             return res.status(404).json({ error: "Event not",events });
         }
@@ -44,7 +44,7 @@ exports.deleteEvent = async (req, res) => {
     try {
 
         const deletedEvent=await eventModel.deleteOne({_id:req.params.id})
-
+        
         if (!deletedEvent) {
             return res.status(404).json({ error: "Event not found" });
         }
