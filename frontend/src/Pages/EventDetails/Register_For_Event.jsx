@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import Navbar from "../Home/Navbar.jsx";
 import Footer from "../Home/Footer.jsx";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Register_For_Event = () => {
   const { id } = useParams(); // Extract the event ID from the URL
   const [event, setEvent] = useState(null);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
+  const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -46,10 +50,37 @@ export const Register_For_Event = () => {
     );
   }
 
+  const handleClick = async () => {
+    try {
+      console.log("H");
+      const response = await fetch(`http://localhost:3000/api/event/hi/${id}/${userId}`);
+      console.log(response);
+      const data = await response.json();
+      if (response.ok) {
+        if (data.diffCollege === true) {
+          console.log("payment");
+          navigate(`/payment/${id}`);
+        } else {
+          toast.success("Registered Successfully!!");
+          console.log("Y");
+          navigate(`/payment/${id}`);
+        }
+      } else {
+        // Handle non-OK responses
+        console.log("Error response:", data);
+        toast.error(data.message || "Registration Unsuccessful");
+      }
+    } catch (err) {
+      console.error("Error during registration:", err);
+      toast.error(err.message || "An unexpected error occurred");
+    }
+  };
+
   return (
     <div className="bg-gray-50 text-gray-900 min-h-screen">
       <Navbar />
       <div className="h-[100px]"></div>
+      <ToastContainer />
 
       <div className="flex flex-col items-center p-4 space-y-6">
         <h1 className="text-4xl font-extrabold text-center text-yellow-600 mt-5">{event.eventName}</h1>
@@ -124,7 +155,8 @@ export const Register_For_Event = () => {
       </div>
 
       <div className="flex justify-center mt-5 mb-6">
-        <button className="bg-blue-500 text-white py-3 px-8 rounded-lg shadow-md hover:bg-blue-400 transition-all">
+        <button className="bg-blue-500 text-white py-3 px-8 rounded-lg shadow-md hover:bg-blue-400 transition-all"
+        onClick={()=>handleClick()}>
           Register for Event
         </button>
       </div>

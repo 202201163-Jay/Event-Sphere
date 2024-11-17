@@ -28,6 +28,7 @@ import { Club_Otp } from './Pages/Profile/Club_Otp';
 import { ClubProfile } from './Pages/Profile/ClubProfile';
 import { Events_Page } from './Pages/EventDetails/Events_Page';
 import { Register_For_Event } from './Pages/EventDetails/Register_For_Event';
+import { Payment } from './Pages/EventDetails/Payment';
 
 export const App = () => {
   const type = localStorage.getItem("type");
@@ -56,6 +57,7 @@ export const App = () => {
             <Route path='/events-page' element={<Events_Page/>} />
             <Route path='/event/:id' element={<Register_For_Event/>} />
             <Route path='/participants/:eventId' element={<Participants/>} />
+            <Route path='/payment/:id' element={<Payment/>} />
             
             <Route path="/" element={<Home />} />
             {type === "user" && (
