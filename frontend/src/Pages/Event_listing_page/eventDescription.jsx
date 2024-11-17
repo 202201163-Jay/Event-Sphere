@@ -17,9 +17,9 @@ const EventDescription = ({ description, onDescriptionChange }) => {
 
   return (
     <div className="event-description">
-      <label htmlFor="EventDescription">
+      {/* <label htmlFor="EventDescription">
         <strong>About Event</strong> <span style={{ color: 'red' }}>*</span>
-      </label>
+      </label> */}
       <ReactQuill
         id="EventDescription"
         value={text}
