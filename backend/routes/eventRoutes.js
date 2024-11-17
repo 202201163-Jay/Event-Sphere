@@ -11,6 +11,7 @@ router.get("/participants/:eventId",eventListing.getParticipants);
 router.get("/concerts", eventListing.getcontests);
 router.get("/:id", eventListing.getEvent);
 router.get('/filter', eventListing.getFilteredEvents);
+router.put('/update/:eventId',eventListing.updateEvent)
 router.get("/",temp);
 
 router.use((err, req, res, next) => {

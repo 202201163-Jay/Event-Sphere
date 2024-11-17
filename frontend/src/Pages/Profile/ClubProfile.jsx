@@ -204,8 +204,8 @@ export const ClubProfile = () => {
                   <h3 className="text-xl font-semibold text-white mb-4">{event.eventName}</h3>
                   </Link>
                   <div className="flex justify-between">
-                    <button className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-400">Edit</button>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-400" onClick={() => handleParticpant(event._id)}>Participants</button>
+                  <button className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-400" onClick={()=>{navigate(`/listing/${event._id}`)}}>Edit</button>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-400" onClick={() => handleParticpant(event._id)}>Participants</button>
                     <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-400" onClick={() => handleDeleteEvent(event._id)}>Delete</button>
                   </div>
                 </div>

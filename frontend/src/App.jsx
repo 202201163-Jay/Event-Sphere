@@ -43,7 +43,7 @@ export const App = () => {
             <Route path="/blogs" element={<BlogPage />} />
             <Route path="/blogs/:id" element={<BlogDetail />} />
             <Route path="/add-blog" element={<AddBlog/>} />
-            <Route path='/listing' element={<EventForm />} />
+            <Route path='/listing/:isEdit' element={<EventForm />} />
             <Route path="/college-login" element={<College_Login />} />
             <Route path="/college-register" element={<College_Register />} />
             <Route path="/student-login" element={<Student_Login />} />
