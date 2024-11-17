@@ -113,6 +113,56 @@ exports.createEvent = async (req, res) => {
   });
 };
 
+exports.updateEvent = async (req, res) => {
+  upload2(req, res, async (err) => {
+  try {
+      console.log("Edit carried out");
+      const { eventId } = req.params;
+      console.log(req.body)
+      const { tags, description, eventName, price, type, venue, createdBy, mode, registrationStartDate, registrationEndDate, startTime, endTime, contactPersonEmail, contactPersonPhone } = req.body;
+
+      // Parse tags if sent as JSON string
+      const parsedTags = tags ? JSON.parse(tags) : [];
+      console.log("Description:", description, eventId, tags, description, eventName, price, type, venue, createdBy, mode, registrationStartDate, registrationEndDate, startTime, endTime, contactPersonEmail, contactPersonPhone);
+
+      // Find the event to update and update fields
+      const updatedEvent = await Event.findOneAndUpdate(
+          { _id: eventId },
+          {
+              description: description,
+              eventName: eventName,
+              price: price,
+              type: type,
+              venue: venue,
+              createdBy: createdBy,
+              mode: mode,
+              registrationStartDate: registrationStartDate,
+              registrationEndDate: registrationEndDate,
+              startTime: startTime,
+              endTime: endTime,
+              contactPersonEmail: contactPersonEmail,
+              contactPersonPhone: contactPersonPhone,
+              tags: parsedTags
+          },
+          { new: true } // Return the updated document
+      );
+
+      console.log("Updated Event:", updatedEvent);
+      if (!updatedEvent) {
+          return res.status(404).json({ message: "Event not found" });
+      }
+
+      res.status(200).json({
+          message: "Event updated successfully",
+          event: updatedEvent,
+      });
+  } catch (error) {
+      console.error("Error updating event:", error);
+      res.status(500).json({ message: "Error updating event", error });
+  }
+})
+};
+
 exports.getcontests = async (req, res) => {
   try {
     const concerts = await Event.find({ type: "Concert" }, 'poster');

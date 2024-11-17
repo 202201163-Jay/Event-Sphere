@@ -1,55 +1,95 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './EventListing.scss';
 import TagSelector from './tagSelector';
 import EventDescription from './eventDescription';
 import axios from "axios";
-import Cookies from "js-cookie"
-const userId = Cookies.get("userId");
+const userId = localStorage.getItem("userId");
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+// import client from '../axioscalls/api'
 
 export const EventForm = () => {
   const [tags, setTags] = useState([]);
   const [description, setDescription] = useState('');
-  const [mode, setMode] = useState(''); // Added state for mode
-  const navigate = useNavigate()
+  const [mode, setMode] = useState('');
+  const [event, setEvent] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const { isEdit } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isEdit !== '0') {
+      const fetchEventDetails = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/api/event/${isEdit}`);
+          const eventData = response.data;
+          setEvent(eventData);
+          setTags(eventData.tags || []);
+          setDescription(eventData.description || '');
+          setMode(eventData.mode || '');
+          setImageUrl(eventData.poster || '');
+        } catch (error) {
+          toast.error('Error fetching event details');
+        }
+      };
+      fetchEventDetails();
+    }
+  }, [isEdit]);
 
   const handleTagChange = (selectedTags) => setTags(selectedTags);
   const handleDescriptionChange = (desc) => setDescription(desc);
 
   const handleModeChange = (event) => {
-    setMode(event.target.value); // Update mode based on selected radio button
+    setMode(event.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // const newdata={
+    //   id,tags,description,
+    // }
     
     const formData = new FormData(e.target);
     formData.append("tags", JSON.stringify(tags)); 
     formData.append("description", description); 
     formData.append("clubId", userId);
+    console.log(formData)
     
     try {
-      await axios.post("http://localhost:3000/api/event/listing", formData, {
+      const url = isEdit === '0' ? "http://localhost:3000/api/event/listing" : `http://localhost:3000/api/event/update/${isEdit}`;
+      const method = isEdit === '0' ? "POST" : "PUT";
+      
+      const response = await axios.put(url,formData,{
+        // method: method,
+        // body:JSON.stringify(formData),
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      toast.success("Event submitted successfully");
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+
+      if (response.status !== 200) {
+        toast.error("Event could not be updated");
+      } else {
+        toast.success(isEdit === '0' ? "Event submitted successfully" : "Event updated successfully");
+        setTimeout(() => {
+          navigate("/club-profile");
+        }, 1000);
+      }
     } catch (error) {
-      console.error("Error during event listing", error);
+      console.error("Error during event submission", error);
+      toast.error("Error during event submission");
     }
   };
+
+  
 
   return (
     <div className="event-form-container">
       <ToastContainer/>
       <form onSubmit={handleSubmit} className="event-form">
-        <h1 className="form-header">Create a New Event</h1>
+        <h1 className="form-header">{isEdit === '0' ? 'Create a New Event' : 'Edit Event'}</h1>
 
         <div className="form-section">
           <h2>Basic Details</h2>
@@ -59,6 +99,7 @@ export const EventForm = () => {
               type="text"
               name="eventName"
               placeholder="Enter Event Title"
+              defaultValue={event?.eventName || ''}
               required
             />
           </div>
@@ -74,6 +115,7 @@ export const EventForm = () => {
               type="number"
               name="price"
               placeholder="0 for Free"
+              defaultValue={event?.price || ''}
               required
             />
           </div>
@@ -83,22 +125,22 @@ export const EventForm = () => {
           <h2>Registration & Timing</h2>
           <div className="form-group">
             <label>Registration Start Date</label>
-            <input type="date" name="registrationStartDate" required />
+            <input type="date" name="registrationStartDate" defaultValue={event?.registrationStartDate || ''} required />
           </div>
 
           <div className="form-group">
             <label>Registration End Date</label>
-            <input type="date" name="registrationEndDate" required />
+            <input type="date" name="registrationEndDate" defaultValue={event?.registrationEndDate || ''} required />
           </div>
 
           <div className="form-group">
             <label>Event Start Time</label>
-            <input type="time" name="startTime" required />
+            <input type="time" name="startTime" defaultValue={event?.startTime || ''} required />
           </div>
 
           <div className="form-group">
             <label>Event End Time</label>
-            <input type="time" name="endTime" required />
+            <input type="time" name="endTime" defaultValue={event?.endTime || ''} required />
           </div>
         </div>
 
@@ -106,7 +148,7 @@ export const EventForm = () => {
           <h2>Event Details</h2>
           <div className="form-group">
             <label>Event Type</label>
-            <select name="type" required>
+            <select name="type" defaultValue={event?.type || ''} required>
               <option value="">Select Type</option>
               <option value="Competition">Competition</option>
               <option value="Concert">Concert</option>
@@ -120,6 +162,7 @@ export const EventForm = () => {
               type="text"
               name="venue"
               placeholder="Enter Venue"
+              defaultValue={event?.venue || ''}
               required
             />
           </div>
@@ -157,7 +200,7 @@ export const EventForm = () => {
 
           <div className="form-group">
             <label>Created By</label>
-            <input type="text" name="createdBy" placeholder="Enter Your Name" required />
+            <input type="text" name="createdBy" placeholder="Enter Your Name" defaultValue={event?.createdBy || ''} required />
           </div>
         </div>
 
@@ -165,23 +208,25 @@ export const EventForm = () => {
           <h2>Contact Details</h2>
           <div className="form-group">
             <label>Contact Person 1 Email</label>
-            <input className="text-black" type="email" name="contactPersonEmail" placeholder="Enter Email" required />
+            <input className="text-black" type="email" name="contactPersonEmail" placeholder="Enter Email" defaultValue={event?.contactPersonEmail || ''} required />
           </div>
 
           <div className="form-group">
             <label>Contact Person 1 Phone</label>
-            <input className="text-black" type="tel" name="contactPersonPhone" placeholder="Enter Phone Number" required />
+            <input className="text-black" type="tel" name="contactPersonPhone" placeholder="Enter Phone Number" defaultValue={event?.contactPersonPhone || ''} required />
           </div>
-
-          <div className="form-group">
-            <label>Upload Event Poster</label>
-            <input type="file" name="poster" accept="image/*" />
-          </div>
+          
+          {isEdit === '0' && (
+            <div className="form-group">
+              <label>Upload Event Poster</label>
+              <input type="file" name="poster" accept="image/*" />
+            </div>
+          )}
         </div>
 
         <div className="form-actions">
           <button type="submit" className="submit-btn">
-            Submit Event
+            {isEdit === '0' ? 'Submit Event' : 'Update Event'}
           </button>
         </div>
       </form>

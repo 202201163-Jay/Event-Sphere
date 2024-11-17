@@ -59,6 +59,13 @@ const Navbar = () => {
       <li>
         <a className="text-yellow-500 hover:text-yellow-300">About</a>
       </li>
+      {type === "club" && (
+        <>
+          <li>
+            <Link to="/listing/0" className="text-yellow-500 hover:text-yellow-300">List Events</Link>
+          </li>
+        </>
+      )}
 
     </>
   );
