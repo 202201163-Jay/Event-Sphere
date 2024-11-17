@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { UserIcon, PowerIcon} from '@heroicons/react/24/solid';
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 import Cookies from "js-cookie"
@@ -31,7 +32,7 @@ const Navbar = () => {
   // useEffect(() => {
   //   const fetchUserById = async () => {
   //     try {
-  //       const response = await fetch(`http://localhost:3000/api/users/${userId}`);
+  //       const response = await fetch(http://localhost:3000/api/users/${userId});
   //       const data = await response.json();
 
   //       setUserData(data.data);
@@ -59,13 +60,6 @@ const Navbar = () => {
       <li>
         <a className="text-yellow-500 hover:text-yellow-300">About</a>
       </li>
-      {type === "club" && (
-        <>
-          <li>
-            <Link to="/listing/0" className="text-yellow-500 hover:text-yellow-300">List Events</Link>
-          </li>
-        </>
-      )}
 
     </>
   );
@@ -128,24 +122,28 @@ const Navbar = () => {
                   <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${name}`}</span>
                   <div className="group relative">
                     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <button
-                        onClick={() => {
-                          if (type === "college") {
-                            window.location.href = "/college-profile";
-                          } else if (type === "club") {
-                            window.location.href = "/club-profile";
-                          } else {
-                            window.location.href = "/student-profile";
-                          }
-                        }}
-                        className="block w-full text-left px-4 py-2 hover:bg-yellow-500"
-                      >
-                        View Profile
-                      </button>
+                        <button
+                          onClick={() => {
+                            if (type === "college") {
+                              window.location.href = "/college-profile";
+                            } else if (type === "club") {
+                              window.location.href = "/club-profile";
+                            } else {
+                              window.location.href = "/student-profile";
+                            }
+                          }}
+                          className="block w-full text-left px-4 py-2 hover:bg-yellow-500 flex"
+                        >
+                          <UserIcon className="h-6 w-6 text-gray-500 mr-1" />
+                          View Profile
+                        </button>
                       <button
                         onClick={() => navigate("/logout")}
-                        className="block w-full text-left px-4 py-2 hover:bg-yellow-500"
+                        className="block w-full text-left px-4 py-2 hover:bg-yellow-500 flex"
                       >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-1">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+                        </svg>
                         Logout
                       </button>
                     </div>

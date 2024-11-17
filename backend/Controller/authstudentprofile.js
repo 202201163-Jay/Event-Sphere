@@ -7,6 +7,7 @@ const College = require("../Models/College");
 const mailSender = require("../utils/mailsender");
 const { VERIFICATION_EMAIL_TEMPLATE } = require("../utils/emailTemplates");
 const nodemailer = require("nodemailer")
+const Event = require("../Models/Event")
 // const useAuth =  require("../../frontend/src/Context/AuthProvider.jsx");
 // const { userId } = useAuth();
 
@@ -141,7 +142,7 @@ module.exports.getUserById = async (req, res) => {
   try {
     const { userId } = req.params; 
     console.log(userId);
-    const user = await User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: userId }).populate('participated');
     console.log("user fetched",user)
 
     if (!user) {
@@ -163,7 +164,7 @@ module.exports.getUserprofileById = async (req, res) => {
     try {
       const { id } = req.params; 
     //   console.log(id);
-      const user = await UserProfile.findOne({ _id: id }).populate('participated');
+      const user = await UserProfile.findOne({ _id: id });
   
       if (!user) {
         return res.status(404).json({ message: "User not found" });
