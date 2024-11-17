@@ -16,7 +16,7 @@ exports.getLatest = async (req, res) => {
 
 exports.getTrending = async (req, res) => {
     try {
-        console.log("ttrr");
+        // console.log("ttrr");
         // Fetch events and sort by the count of registrations in descending order
         const trendingEvents = await Event.find({})
             .sort({ 'registrations.length': 1 }) // Sort by number of registrations

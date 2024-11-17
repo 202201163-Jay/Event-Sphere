@@ -17,6 +17,7 @@ export const AddBlog = () => {
 
     const submissionData = new FormData(e.target);
     submissionData.append("clubId", userId);
+    submissionData.append("date", Date.now());
     try {
       await axios.post("http://localhost:3000/api/blog/create", submissionData, {
         headers: {
@@ -47,7 +48,7 @@ export const AddBlog = () => {
               />
             </div>
 
-            <div className="form-group">
+            {/* <div className="form-group">
               <label className="block text-lg font-medium text-yellow-400">Date</label>
               <input
                 type="date"
@@ -55,7 +56,7 @@ export const AddBlog = () => {
                 className="w-full p-3 border border-gray-600 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
                 required
               />
-            </div>
+            </div> */}
 
             <div className="form-group">
               <label className="block text-lg font-medium text-yellow-400">College</label>
@@ -69,11 +70,7 @@ export const AddBlog = () => {
 
             <div className="form-group">
               <label className="block text-lg font-bold text-yellow-400">Content</label>
-              <textarea
-                name="content"
-                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
-                rows="5"
-                required />
+              <EventDescription></EventDescription>
             </div>
 
             <div className="form-group">
@@ -104,4 +101,3 @@ export const AddBlog = () => {
 };
 
 export default AddBlog;
-
