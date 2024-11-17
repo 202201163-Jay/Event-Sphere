@@ -6,7 +6,7 @@
 }
 
 .event-description {
-  width: 46.9vw;
+  max-width: 46.9vw;
 
   strong {
     font-size: 3vh;
@@ -30,7 +30,6 @@
     .ql-picker, .ql-stroke, .ql-fill {
       color: #333;
       stroke: #333;
-      fill: #333;
     }
   }
 
