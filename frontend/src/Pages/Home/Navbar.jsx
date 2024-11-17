@@ -48,16 +48,16 @@ const Navbar = () => {
   const navItems = (
     <>
       <li>
-        <Link to="/" className="text-yellow-500 hover:text-yellow-300">Home</Link>
+        <Link to="/" className="text-yellow-500 hover:text-yellow-200">Home</Link>
       </li>
       <li>
-        <Link to="/events-page" className="text-yellow-500 hover:text-yellow-300">Events</Link>
+        <Link to="/events-page" className="text-yellow-500 hover:text-yellow-200">Events</Link>
       </li>
       <li>
-        <Link to="/blogs" className="text-yellow-500 hover:text-yellow-300">Blogs</Link>
+        <Link to="/blogs" className="text-yellow-500 hover:text-yellow-200">Blogs</Link>
       </li>
       <li>
-        <a className="text-yellow-500 hover:text-yellow-300">About</a>
+        <a className="text-yellow-500 hover:text-yellow-200">About</a>
       </li>
 
     </>
@@ -67,7 +67,7 @@ const Navbar = () => {
     <>
       <div
         className={`max-w-screen-2xl container mx-auto md:px-6 px-4 fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${sticky
-          ? "sticky-navbar shadow-lg bg-gray-800 text-white"
+          ? "sticky-navbar bg-gray-900/50 backdrop-blur-md text-white"
           : "bg-gray-800 text-white"
           }`}
       >
@@ -120,7 +120,7 @@ const Navbar = () => {
                   </Link>
                   <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${name}`}</span>
                   <div className="group relative">
-                    <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="absolute right-0 mt-0 w-48 rounded-md shadow-lg bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     <button
                         onClick={() => {
                           if (type === "college") {

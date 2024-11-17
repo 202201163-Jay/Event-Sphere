@@ -69,7 +69,11 @@ export const AddBlog = () => {
 
             <div className="form-group">
               <label className="block text-lg font-bold text-yellow-400">Content</label>
-              <EventDescription></EventDescription>
+              <textarea
+                name="content"
+                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
+                rows="5"
+                required />
             </div>
 
             <div className="form-group">

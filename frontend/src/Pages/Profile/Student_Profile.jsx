@@ -3,6 +3,8 @@ import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from '../Home/Navbar';
+import Footer from '../Home/Footer';
 import Cookies from "js-cookie"
 
 const userId = Cookies.get("userId");
@@ -410,6 +412,9 @@ export const ProfilePage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
+
+      <Navbar></Navbar>
+
       <ToastContainer />
       <div className="w-full max-w-5xl bg-gray-800 text-white shadow-lg rounded-lg p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Account Settings</h2>
@@ -459,6 +464,9 @@ export const ProfilePage = () => {
           </main>
         </div>
       </div>
+
+      <Footer></Footer>
+
     </div>
   );
 };

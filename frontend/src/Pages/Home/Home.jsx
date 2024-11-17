@@ -31,12 +31,14 @@ export const Home = () => {
 
   return (
     <>
-      <Navbar/>
-      {/* <div className='h-[92px]'></div> */}
-      <Banner/>
-      <EventCard title="Trending Events"/>
-      <EventCard title="Latest Event"/>
-      <Footer />
+      <div className="bg-black">
+        <Navbar/>
+        {/* <div className='h-[92px]'></div> */}
+        <Banner/>
+        <EventCard title="Trending Events"/>
+        <EventCard title="Latest Event"/>
+        <Footer />
+      </div>
     </>
   );
 }

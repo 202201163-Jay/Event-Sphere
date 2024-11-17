@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './EventListing.scss';
 import TagSelector from './tagSelector';
 import EventDescription from './eventDescription';
+import Navbar from '../Home/Navbar';
+import Footer from '../Home/Footer';
 import axios from "axios";
 import Cookies from "js-cookie"
 const userId = Cookies.get("userId");
@@ -46,7 +48,12 @@ export const EventForm = () => {
   };
 
   return (
-    <div className="event-form-container">
+
+    <>
+      <div className="event-form-container">
+
+      <Navbar></Navbar>
+
       <ToastContainer/>
       <form onSubmit={handleSubmit} className="event-form">
         <h1 className="form-header">Create a New Event</h1>
@@ -185,6 +192,10 @@ export const EventForm = () => {
           </button>
         </div>
       </form>
-    </div>
+
+      </div>
+
+      <Footer></Footer>
+    </>
   );
 };
