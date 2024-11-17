@@ -4,14 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../../context/AuthProvider';
+import Cookies from "js-cookie";
 
-const userId = localStorage.getItem("userId");
+const userId = Cookies.get("userId");
 
 export const CollegeProfile = () => {
   const [activeSection, setActiveSection] = useState('profile');
   const navigate = useNavigate();
   const [collegeData, setCollegeData] = useState(null);
-  const {image} = useAuth();
+  const image = Cookies.get("image");
 
   useEffect(() => {
     const fetchCollegeById = async () => {

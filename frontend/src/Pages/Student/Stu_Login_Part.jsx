@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from "js-cookie";
 
 export const Stu_Login = () => {
   const [user, setUser] = useState({
@@ -30,8 +31,12 @@ export const Stu_Login = () => {
       if (response.ok) {
         toast.success("Login Successful !!");
         const responsedata = await response.json();
-        console.log(responsedata)
         const type = "user";
+        Cookies.set("token", responsedata.token, {expires : 7});
+        Cookies.set("name", responsedata.representative.name, {expires : 7});
+        Cookies.set("userId", responsedata.representative.id, {expires : 7});
+        Cookies.set("type", type, {expires : 7});
+        Cookies.set("image", responsedata.representative.image, {expires : 7});
         storeTokenInLs(responsedata.token, responsedata.representative.name, responsedata.representative.id, type, responsedata.representative.image);
         setTimeout(() => {
           navigate("/");

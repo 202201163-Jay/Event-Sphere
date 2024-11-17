@@ -4,12 +4,13 @@ import Navbar from "../Home/Navbar.jsx";
 import Footer from "../Home/Footer.jsx";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Cookies from "js-cookie";
+ 
 export const Payment = () => {
     const { id } = useParams(); // Extract the event ID from the URL
     const [event, setEvent] = useState(null);
     const [isFooterVisible, setIsFooterVisible] = useState(false);
-    const userId = localStorage.getItem("userId");
+    const userId = Cookies.get("userId");
     const navigate = useNavigate();
 
     useEffect(() => {

@@ -3,8 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Home/Navbar";
 import Footer from "../Home/Footer";
+import Cookies from "js-cookie"
 
-const userId = localStorage.getItem("userId");
+const userId = Cookies.get("userId");
 
 export const AddBlog = () => {
  
