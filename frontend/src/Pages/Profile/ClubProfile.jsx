@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../../context/AuthProvider';
+import Cookies from "js-cookie"
 
-const userId = localStorage.getItem("userId");
-const image = localStorage.getItem("image");
+const userId = Cookies.get("userId");
+const image = Cookies.get("image");
 
 export const ClubProfile = () => {
   const [activeSection, setActiveSection] = useState('profile');

@@ -3,7 +3,8 @@ import './EventListing.scss';
 import TagSelector from './tagSelector';
 import EventDescription from './eventDescription';
 import axios from "axios";
-const userId = localStorage.getItem("userId");
+import Cookies from "js-cookie"
+const userId = Cookies.get("userId");
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Navigate, useNavigate } from 'react-router-dom';

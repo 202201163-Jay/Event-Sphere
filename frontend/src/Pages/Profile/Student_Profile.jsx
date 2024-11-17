@@ -3,8 +3,9 @@ import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from "js-cookie"
 
-const userId = localStorage.getItem("userId");
+const userId = Cookies.get("userId");
 
 export const ProfilePage = () => {
   const [activeSection, setActiveSection] = useState('profile');
@@ -68,8 +69,8 @@ export const ProfilePage = () => {
       firstName: editData.firstName,
       lastName: editData.lastName,
       email: editData.email,
-      password: editData.password, // Hash password before sending to backend
-      image: editData.image,
+      password: editData.password,
+      image: `https://api.dicebear.com/5.x/initials/svg?seed=${editData?.firstName} ${editData?.lastName}`,
       isVerified: editData.isVerified,
       additionalDetails: editData.additionalDetails
     };

@@ -3,8 +3,9 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Navbar from "../Home/Navbar";
 import Footer from "../Home/Footer";
+import Cookies from "js-cookie"
 
-const type = localStorage.getItem("type");
+const type = Cookies.get("type");
 
 export const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);

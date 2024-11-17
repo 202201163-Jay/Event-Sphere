@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
+import Cookies from "js-cookie"
 
 const Navbar = () => {
-  const { isLoggedIn, userId, type, image, name } = useAuth();
+  const { isLoggedIn} = useAuth();
+  const name = Cookies.get("name");
+  const image = Cookies.get("image");
+  const type = Cookies.get("type");
+  const userId = Cookies.get("userId");
   const { isCollegeRepresentative } = useAuth();
   const [userData, setUserData] = useState(null);
 
@@ -116,8 +121,16 @@ const Navbar = () => {
                   <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${name}`}</span>
                   <div className="group relative">
                     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <button
-                        onClick={() => navigate(type === "college" ? "/college-profile" : type === "club" ? "/club-profile" : "/student-profile")}
+                    <button
+                        onClick={() => {
+                          if (type === "college") {
+                            window.location.href = "/college-profile";
+                          } else if (type === "club") {
+                            window.location.href = "/club-profile";
+                          } else {
+                            window.location.href = "/student-profile";
+                          }
+                        }}
                         className="block w-full text-left px-4 py-2 hover:bg-yellow-500"
                       >
                         View Profile

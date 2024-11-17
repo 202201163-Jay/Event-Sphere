@@ -29,9 +29,10 @@ import { ClubProfile } from './Pages/Profile/ClubProfile';
 import { Events_Page } from './Pages/EventDetails/Events_Page';
 import { Register_For_Event } from './Pages/EventDetails/Register_For_Event';
 import { Payment } from './Pages/EventDetails/Payment';
+import Cookies from "js-cookie"
 
 export const App = () => {
-  const type = localStorage.getItem("type");
+  const type = Cookies.get("type");
   return (
     <>
       <Router >

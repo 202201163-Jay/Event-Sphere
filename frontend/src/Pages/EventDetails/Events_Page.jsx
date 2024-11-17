@@ -5,7 +5,8 @@ import Footer from "../Home/Footer.jsx";
 import Banner from "../Home/Banner.jsx";
 import axios from "axios";
 import Card from "../../components/Card.jsx";
-const type = localStorage.getItem("type");
+import Cookies from "js-cookie"
+const type = Cookies.get("type");
 
 export const Events_Page = () => {
     const [selectedTags, setSelectedTags] = useState([]);

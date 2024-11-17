@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import Cookies from "js-cookie"
 
 export const AuthContext = createContext();
 
@@ -9,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [type, setType] = useState(localStorage.getItem("type"));
   const [image, setImage] = useState(localStorage.getItem("image"));
   const authorizationToken = `Bearer ${token}`;
+  
 
   const storeTokenInLs = (serverToken, name, userId, type, image) => {
     if(type === "college" || type === "club"){
@@ -19,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     setUserId(userId);
     setType(type);
     setImage(image);
-   
+    
     localStorage.setItem("token", serverToken);
     localStorage.setItem("userId", userId);
     localStorage.setItem("name", name);
@@ -38,12 +40,19 @@ export const AuthProvider = ({ children }) => {
     setType("");
     setImage("");
     setIsCollegeRepresentative(false);
+
+    Cookies.remove("token", { path: "/" });
+    Cookies.remove("name", { path: "/" });
+    Cookies.remove("userId", { path: "/" });
+    Cookies.remove("type", { path: "/" });
+    Cookies.remove("image", { path: "/" });
+
     
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("name");
-    localStorage.removeItem("type");
-    localStorage.removeItem("image");
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("userId");
+    // localStorage.removeItem("name");
+    // localStorage.removeItem("type");
+    // localStorage.removeItem("image");
   };
 
   return (
