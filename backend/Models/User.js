@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
   college: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "College",
-    required: function () { return this.isVerified; }, // Required if user is verified as a student
+    // required: function () { return this.isVerified; }, // Required if user is verified as a student
   },
   image: { type: String, required: true },
   additionalDetails: {
@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     ref: "UserProfile",
     required: true,
   },
+  participated:[{
+    type:mongoose.Schema.Types.ObjectId, 
+    ref: "Event",
+  }],
 });
 
 // Pre-save hook to hash password before saving user

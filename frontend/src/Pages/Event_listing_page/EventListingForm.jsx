@@ -105,8 +105,8 @@ export const EventForm = () => {
           </div>
 
           <div className="form-group">
-            <label>Event Description</label>
-            <EventDescription onDescriptionChange={handleDescriptionChange} initialDescription={description} />
+            <label style={{ fontWeight: 'bold', fontSize: '2.3vh', color: '#f1c40f' }}>Event Description</label>
+            <EventDescription onDescriptionChange={handleDescriptionChange} />
           </div>
 
           <div className="form-group">

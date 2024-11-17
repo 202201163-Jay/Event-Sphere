@@ -1,31 +1,36 @@
 const User = require("../Models/User");
 const Event = require("../Models/Event");
 const UserProfile = require("../Models/UserProfile");
-const CollegeRep = require("../Models/CollegeRep"); // Import CollegeRep model
+const CollegeRep = require("../Models/CollegeRep");
+const College = require("../Models/College"); // Import CollegeRep model
 
 // Event Registration Controller
 exports.registerForEvent = async (req, res) => {
   try {
-    const { eventId } = req.body;
-    const userId = req.user.id; // Assumes the user ID is provided by the auth middleware
-
+    console.log("Hello");
+    const { eventId, userId } = req.params;
+    // const userId = req.user.id; // Assumes the user ID is provided by the auth middleware
+    console.log(1);
     // Fetch event details
-    const event = await Event.findById(eventId).populate("clubId"); // Populate clubId to get the CollegeRep details
+    const event = await Event.findOne({_id:eventId}).populate("clubId"); // Populate clubId to get the CollegeRep details
     if (!event) {
       return res.status(404).json({ error: "Event not found" });
     }
+    console.log(1);
+
 
     // Check registration dates
-    const currentDate = new Date();
-    if (currentDate < event.registrationStartDate || currentDate > event.registrationEndDate) {
-      return res.status(400).json({ error: "Registration is not open for this event." });
-    }
+    // const currentDate = new Date();
+    // if (currentDate < event.registrationStartDate || currentDate > event.registrationEndDate) {
+    //   return res.status(400).json({ error: "Registration is not open for this event." });
+    // }
 
     // Fetch user details
-    const user = await User.findById(userId).populate("college");
+    const user = await User.findOne({ _id: userId }).populate("college");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    console.log(1);
 
     // Check if user is already registered
     if (event.registrations.includes(userId)) {
@@ -36,6 +41,7 @@ exports.registerForEvent = async (req, res) => {
     if (!user.isVerified) {
       return res.status(403).json({ error: "User is not verified. Verification required to register for this event." });
     }
+    console.log(1);
 
     // Check if the user's college matches the event's club's college
     const userCollege = user.college?._id.toString();
@@ -43,22 +49,25 @@ exports.registerForEvent = async (req, res) => {
 
     if (userCollege !== eventCollege) {
       return res.status(200).json({
-        message: "You are from a different college. Payment is required to register for this event."
+        message: "You are from a different college. Payment is required to register for this event.",
+        diffCollege: true
       });
     }
 
     // Register the user
     event.registrations.push(userId);
     await event.save();
+    console.log(1);
 
     // Add the event to the user's participated array
-    const userProfile = await UserProfile.findOne({ user: userId }); // Assuming you have a user reference in UserProfile
-    if (!userProfile) {
-      return res.status(404).json({ error: "User profile not found" });
-    }
+    // const userProfile = await User.findOne({ _id: userId }); // Assuming you have a user reference in UserProfile
+    // if (!userProfile) {
+    //   return res.status(404).json({ error: "User profile not found" });
+    // }
 
-    userProfile.participated.push(eventId);
-    await userProfile.save();
+    user.participated.push(eventId);
+    await user.save();
+    console.log(1);
 
     res.status(200).json({ message: "Registration successful", event });
   } catch (error) {
