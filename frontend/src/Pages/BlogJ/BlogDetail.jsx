@@ -50,7 +50,7 @@ export const BlogDetail = () => {
           <img
             src={images[currentImageIndex]}
             alt={`Blog Image ${currentImageIndex + 1}`}
-            className="w-full h-72 object-cover rounded-lg shadow-md"
+            className="w-full h-96 object-cover rounded-lg shadow-md"
           />
           <button
             onClick={prevImage}

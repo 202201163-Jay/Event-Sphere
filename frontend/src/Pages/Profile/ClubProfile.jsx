@@ -3,6 +3,8 @@ import { PencilIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/solid';
 import { useNavigate ,Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from '../Home/Navbar';
+import Footer from '../Home/Footer';
 import { useAuth } from '../../context/AuthProvider';
 import Cookies from "js-cookie"
 
@@ -253,7 +255,12 @@ export const ClubProfile = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
+
+    <>
+
+      <Navbar></Navbar>
+
+      <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8 mt-12">
       <ToastContainer />
       <div className="w-full max-w-5xl bg-gray-800 text-white shadow-lg rounded-lg p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Club Profile</h2>
@@ -289,6 +296,10 @@ export const ClubProfile = () => {
           </main>
         </div>
       </div>
-    </div>
+      </div>
+
+        <Footer></Footer>
+    </>
+
   );
 };

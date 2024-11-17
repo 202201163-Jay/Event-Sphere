@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './EventListing.scss';
 import TagSelector from './tagSelector';
 import EventDescription from './eventDescription';
+import Navbar from '../Home/Navbar';
+import Footer from '../Home/Footer';
 import axios from "axios";
 const userId = localStorage.getItem("userId");
 import { ToastContainer, toast } from 'react-toastify';
@@ -86,7 +88,12 @@ export const EventForm = () => {
   
 
   return (
-    <div className="event-form-container">
+
+    <>
+      <div className="event-form-container">
+
+      <Navbar></Navbar>
+
       <ToastContainer/>
       <form onSubmit={handleSubmit} className="event-form">
         <h1 className="form-header">{isEdit === '0' ? 'Create a New Event' : 'Edit Event'}</h1>
@@ -230,6 +237,10 @@ export const EventForm = () => {
           </button>
         </div>
       </form>
-    </div>
+
+      </div>
+
+      <Footer></Footer>
+    </>
   );
 };

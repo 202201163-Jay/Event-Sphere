@@ -70,7 +70,8 @@ export const BlogPage = () => {
 
   return (
 
-  <div className="container mx-auto my-8 p-4">
+  <>
+    <div className="container mx-auto mt-12 p-4 bg-black">
 
     <Navbar></Navbar>
 
@@ -79,7 +80,8 @@ export const BlogPage = () => {
         <input
           type="text"
           placeholder="Search blog by title..."
-          className="p-3 border rounded-md w-full shadow-sm"
+          className="w-[515px] px-3 py-2 border rounded-md flex items-center gap-2 bg-gray-700 text-white"
+          // className="p-3 border rounded-md w-full shadow-sm"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setShowSuggestions(true)}
@@ -147,11 +149,12 @@ export const BlogPage = () => {
       )}
     </div>
 
-      <div className="mt-4">
-        <Footer></Footer>
-      </div>
+    </div>
 
-  </div>
+    <div className="mt-0">
+    <Footer></Footer>
+    </div>
+  </>
 
   );
 };
