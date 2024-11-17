@@ -22,6 +22,45 @@ exports.getCollegeRepById = async (req, res) => {
     }
 };
 
+exports.getBlogs=async(req,res)=>{
+    try {
+        // console.log("to get blog")
+        const blogs = await blogModel.find({clubId:req.params.id});
+        // console.log("got the blog")
+        
+        if (!blogs) {
+            return res
+            .status(200)
+            .json({ message: "Blogs is not found" ,isBlog:false});
+        }
+        res
+        .status(200)
+        .json(blogs);
+    } catch (error) {
+        res
+        .status(500)
+        .json({ error: "Failed to retrieve Blogs information" });
+    }
+}
+
+exports.deleteBlogs=async(req,res)=>{
+    try {
+        // console.log("blogggg")
+        const deletedBlog = await blogModel.deleteOne({_id:req.params.id});
+        // console.log("blog deleted")
+        
+        
+        res
+        .status(200)
+        .json({ok:true})
+        
+    } catch (error) {
+        res
+        .status(500)
+        .json({ error: "Failed to retrieve Blogs information" });
+    }
+}
+
 
 exports.getEvents = async (req, res) => {
 

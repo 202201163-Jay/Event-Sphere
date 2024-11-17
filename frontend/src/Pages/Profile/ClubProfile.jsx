@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PencilIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/solid';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../../context/AuthProvider';
@@ -13,6 +13,8 @@ export const ClubProfile = () => {
   const [activeSection, setActiveSection] = useState('profile');
   const [clubData, setClubData] = useState(null);
   const [events, setEvents] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +33,24 @@ export const ClubProfile = () => {
         }
       };
       fetchEventDetails();
+    }
+    if (activeSection === 'blog-details') {
+      const fetchBlogDetails = async () => {
+        try {
+          console.log("i am")
+          const response = await fetch(`http://localhost:3000/api/collegeRep/blogs/${userId}`);
+          const data = await response.json();
+          console.log("Heree",data)
+          if (response.ok) {
+            setBlogs(data);
+          } else {
+            toast.error(data.message || 'Failed to fetch event data');
+          }
+        } catch (error) {
+          toast.error('Error fetching event data');
+        }
+      };
+      fetchBlogDetails();
     }
   }, [activeSection, userId]);
 
@@ -95,6 +115,27 @@ export const ClubProfile = () => {
       toast.error("Error deleting event");
     }
   }
+    const handleDeleteBlog = async (blogId) => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/collegeRep/delete/blogs/${blogId}`, {
+          method: "DELETE",
+        });
+        console.log("Deleted blog?",response)
+        const data = await response.json();
+        console.log(data)
+        if (data.ok===true) {
+          toast.success("Blog deleted successfully");
+          console.log("NOw navigating")
+          await sleep(1000); 
+          window.location.reload()
+        } else {
+          toast.error("Error deleting Blogg");
+        }
+      } catch (error) {
+        toast.error("Error deleting Blog");
+      }
+    }
+  
 
   const renderContent = () => {
     switch (activeSection) {
@@ -159,7 +200,9 @@ export const ClubProfile = () => {
                   className="border border-gray-600 rounded-lg p-4 bg-gray-900"
                   style={{ scrollSnapAlign: 'start', height: '120px' }}
                 >
+                  <Link to={`/event/${event._id}`}>
                   <h3 className="text-xl font-semibold text-white mb-4">{event.eventName}</h3>
+                  </Link>
                   <div className="flex justify-between">
                     <button className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-400">Edit</button>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-400" onClick={() => handleParticpant(event._id)}>Participants</button>
@@ -169,6 +212,33 @@ export const ClubProfile = () => {
               ))
             ) : (
               <p className="text-gray-400">No events available.</p>
+            )}
+          </div>
+        );
+        case 'blog-details':
+        return (
+          <div
+            className="p-6 gap-4 space-y-4 overflow-y-scroll"
+            style={{ height: 'calc(2.5 * 160px)', scrollSnapType: 'y mandatory' }}
+          >
+            {blogs ? (
+              blogs.map((blog) => (
+                <div
+                  key={blog._id}
+                  className="border border-gray-600 rounded-lg p-4 bg-gray-900"
+                  style={{ scrollSnapAlign: 'start', height: '120px' }}
+                >
+                  <Link to={`/blogs/${blog._id}`}>
+                  <h3 className="text-xl font-semibold text-white mb-4">{blog.title}</h3>
+                  </Link>
+                  <div className="flex justify-between">
+                    
+                    <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-400" onClick={() => handleDeleteBlog(blog._id)}>Delete</button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-400">No blogs available.</p>
             )}
           </div>
         );
@@ -196,6 +266,12 @@ export const ClubProfile = () => {
               onClick={() => setActiveSection('event-details')}
             >
               All Event
+            </button>
+            <button
+              className={`w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'blog-details' ? 'text-yellow-500 bg-gray-700' : 'text-gray-300 hover:bg-gray-700'}`}
+              onClick={() => setActiveSection('blog-details')}
+            >
+              All Blogs
             </button>
             <button
               className={`w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'delete' ? 'text-yellow-500 bg-gray-700' : 'text-gray-300 hover:bg-gray-700'}`}
