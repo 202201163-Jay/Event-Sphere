@@ -63,10 +63,10 @@ const Banner = () => {
   };
 
   return (
-    <div className="relative w-full overflow-hidden mr-8 mt-[120px]">
+    <div className="relative w-full overflow-hidden bg-black-800 mr-8 ">
       {/* Slides */}
       <div
-        className="flex transition-transform ease-in-out duration-300"
+        className="flex transition-transform ease-in-out mt-[120px] duration-300"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {banners.map((banner, index) => (

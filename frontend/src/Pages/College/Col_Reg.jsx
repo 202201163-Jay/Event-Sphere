@@ -92,7 +92,6 @@ export const Col_Reg = () => {
               <label className="text-sm font-semibold text-gray-400">College Name *</label>
               <input
                 className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                type="text"
                 name="collegeName"
                 placeholder="Enter Your College Name"
                 value={formData.collegeName}
@@ -142,7 +141,6 @@ export const Col_Reg = () => {
               <label className="text-sm font-semibold text-gray-400">Email Domain *</label>
               <input
                 className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                type="text"
                 name="emailDomain"
                 placeholder="Enter Your College Email Domain"
                 value={formData.emailDomain}

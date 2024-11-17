@@ -63,7 +63,7 @@ export const Col_Login = () => {
             <label className="text-sm font-semibold text-gray-400">Email Address *</label>
             <input
               className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-              type="text"
+              type="email"
               name="email"
               placeholder="Your Work email"
               value={collegeRep.email}

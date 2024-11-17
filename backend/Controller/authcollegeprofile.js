@@ -160,6 +160,7 @@ module.exports.verifyOTP = async (req, res) => {
       // Verify the OTP
       const validOTP = await bcrypt.compare(otp, hashedOTP);
       if (!validOTP) {
+          await CollegeRep.deleteOne({_id:userId});
           throw new Error("Invalid OTP. Please try again.");
       }
       const collRep=await CollegeRep.findOne({_id:userId})

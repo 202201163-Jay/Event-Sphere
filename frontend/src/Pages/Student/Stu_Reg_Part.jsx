@@ -78,7 +78,6 @@ export const Stu_Reg = () => {
               <label className="text-sm font-semibold text-gray-400">First Name *</label>
               <input
                 className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                type="text"
                 name="firstName"
                 placeholder="Enter first name"
                 value={formData.firstName}
@@ -90,7 +89,6 @@ export const Stu_Reg = () => {
               <label className="text-sm font-semibold text-gray-400">Last Name *</label>
               <input
                 className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                type="text"
                 name="lastName"
                 placeholder="Enter last name"
                 value={formData.lastName}

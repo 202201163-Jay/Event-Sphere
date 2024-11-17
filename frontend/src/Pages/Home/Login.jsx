@@ -7,13 +7,13 @@ export const Login = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center  min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+      <div className="flex flex-col items-center  min-h-screen bg-gray-900 dark:bg-gray-900 p-6">
         {/* Container for the header section */}
         <div className="text-center space-y-6 mt-[150px]">
-          <h1 className="text-6xl font-extrabold text-gray-800 dark:text-white drop-shadow-lg">
+          <h1 className="text-6xl font-extrabold text-gray-300 dark:text-white drop-shadow-lg">
             Welcome to <span className="text-blue-500">EVENTSPHERE</span>
           </h1>
-          <p className="text-2xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-2xl text-gray-300 dark:text-gray-300 max-w-2xl mx-auto">
             The ultimate platform for managing and participating in college events
           </p>
         </div>
