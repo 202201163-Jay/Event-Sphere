@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link} from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../Home/Navbar';
 import Footer from '../Home/Footer';
 import Cookies from "js-cookie"
+import moment from "moment";
 
 const userId = Cookies.get("userId");
 
@@ -25,6 +26,7 @@ export const ProfilePage = () => {
         const data = await response.json();
 
         if (response.ok) {
+          console.log(data.data);
           setUserData(data.data);
           setEditData(data.data); // initialize editData with userData
         } else {
@@ -74,15 +76,17 @@ export const ProfilePage = () => {
       password: editData.password,
       image: `https://api.dicebear.com/5.x/initials/svg?seed=${editData?.firstName} ${editData?.lastName}`,
       isVerified: editData.isVerified,
-      additionalDetails: editData.additionalDetails
+      additionalDetails: editData.additionalDetails,
+      participated: editData.participated,
     };
   
     const updatedUserProfileData = {
       gender: editData.gender,
       dateOfBirth: editData.dateOfBirth,
       about: editData.about,
-      participated: editData.participated,
     };
+
+    console.log(updatedUserData)
   
     try {
       // Update user data
@@ -377,20 +381,28 @@ export const ProfilePage = () => {
           <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
           <h4 className="text-lg font-semibold text-yellow-500 mb-4">Events</h4>
           <ul className="list-none pl-0 space-y-4">
-          {editData.participated && editData.participated.length > 0 ? (
-            editData.participated.map((event, index) => (
-              <li key={index} className="bg-gray-700 p-4 rounded-lg shadow-lg">
-                <div className="flex justify-between items-center">
-                  <span className="font-semibold text-md text-gray-400">{event.eventName}</span>
-                  <span className="text-sm text-gray-400">{event.startTime} - {event.endTime}</span>
-                </div>
+            {userData.participated && userData.participated.length > 0 ? (
+              userData.participated.map((event, index) => (
+                <li
+                  key={index}
+                  className="bg-gray-700 p-4 rounded-lg shadow-lg cursor-pointer"
+                  onClick={() => navigate(`/event/${event._id}`)}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold text-md text-gray-400">
+                      {event.eventName}
+                    </span>
+                    <span className="text-sm text-gray-400">
+                      {moment(event.registrationEndDate).format("YYYY-MM-DD")}
+                    </span>
+                  </div>
+                </li>
+                ))
+            ) : (
+              <li className="bg-gray-700 p-4 rounded-lg shadow-lg text-center text-gray-400">
+                No Events available
               </li>
-              ))
-          ) : (
-            <li className="bg-gray-700 p-4 rounded-lg shadow-lg text-center text-gray-400">
-              No Events available
-            </li>
-          )}
+            )}
       </ul>
     </div>
         );

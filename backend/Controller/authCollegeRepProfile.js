@@ -3,6 +3,7 @@ const event=require('../Models/Event')
 const CollegeRepModel=require('../Models/CollegeRep')
 const college=require('../Models/College')
 const eventModel=require('../Models/Event')
+const Blog = require("../Models/Blog")
 
 exports.getCollegeRepById = async (req, res) => {
     try {
@@ -25,7 +26,7 @@ exports.getCollegeRepById = async (req, res) => {
 exports.getBlogs=async(req,res)=>{
     try {
         // console.log("to get blog")
-        const blogs = await blogModel.find({clubId:req.params.id});
+        const blogs = await Blog.find({clubId:req.params.id});
         // console.log("got the blog")
         
         if (!blogs) {
@@ -46,7 +47,7 @@ exports.getBlogs=async(req,res)=>{
 exports.deleteBlogs=async(req,res)=>{
     try {
         // console.log("blogggg")
-        const deletedBlog = await blogModel.deleteOne({_id:req.params.id});
+        const deletedBlog = await Blog.deleteOne({_id:req.params.id});
         // console.log("blog deleted")
         
         
@@ -97,4 +98,3 @@ exports.deleteEvent = async (req, res) => {
         .json({ error: "Failed to delete event" });
     }
 };
-

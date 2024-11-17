@@ -14,7 +14,7 @@ exports.registerForEvent = async (req, res) => {
     // Fetch event details
     const event = await Event.findOne({_id:eventId}).populate("clubId"); // Populate clubId to get the CollegeRep details
     if (!event) {
-      return res.status(404).json({ error: "Event not found" });
+      return res.status(404).json({ message: "Event not found" });
     }
     console.log(1);
 
@@ -28,19 +28,19 @@ exports.registerForEvent = async (req, res) => {
     // Fetch user details
     const user = await User.findOne({ _id: userId }).populate("college");
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
     console.log(1);
 
     // Check if user is already registered
     if (event.registrations.includes(userId)) {
-      return res.status(400).json({ error: "You are already registered for this event." });
+      return res.status(400).json({ message: "You are already registered for this event." });
     }
 
     // Check if user is verified
-    if (!user.isVerified) {
-      return res.status(403).json({ error: "User is not verified. Verification required to register for this event." });
-    }
+    // if (!user.isVerified) {
+    //   return res.status(403).json({ error: "User is not verified. Verification required to register for this event." });
+    // }
     console.log(1);
 
     // Check if the user's college matches the event's club's college

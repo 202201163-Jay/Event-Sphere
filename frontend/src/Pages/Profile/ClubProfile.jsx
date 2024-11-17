@@ -127,9 +127,13 @@ export const ClubProfile = () => {
         console.log(data)
         if (data.ok===true) {
           toast.success("Blog deleted successfully");
-          console.log("NOw navigating")
-          await sleep(1000); 
-          window.location.reload()
+          const updatedBlogs = await fetch(`http://localhost:3000/api/collegeRep/blogs/${userId}`);
+          const updatedBlogsData = await updatedBlogs.json();
+          if (updatedBlogs.ok) {
+            setBlogs(updatedBlogsData);
+          } else {
+            toast.error("Error fetching updated blogs");
+          }
         } else {
           toast.error("Error deleting Blogg");
         }
