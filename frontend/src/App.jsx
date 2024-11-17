@@ -56,11 +56,15 @@ export const App = () => {
             <Route path='/forgot-password-col' element={<Forgot_Pass_Col/>} />
             <Route path='/forgot-password-stu' element={<Forgot_Pass_Stu/>} />  
             <Route path='/events-page' element={<Events_Page/>} />
-            <Route path='/event/:id' element={<Register_For_Event/>} />
-            <Route path='/participants/:eventId' element={<Participants/>} />
-            <Route path='/payment/:id' element={<Payment/>} />
-            
             <Route path="/" element={<Home />} />
+
+            {type === "club" && (
+              <>
+                <Route path='/event/:id' element={<Register_For_Event/>} />
+                <Route path='/participants/:eventId' element={<Participants/>} />
+                <Route path='/payment/:id' element={<Payment/>} />
+              </>
+            )}
             {type === "user" && (
               <Route path="/student-profile" element={<ProfilePage />} />
             )}

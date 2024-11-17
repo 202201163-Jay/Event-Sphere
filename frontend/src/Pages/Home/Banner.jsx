@@ -66,8 +66,8 @@ const Banner = () => {
     <div className="relative w-full overflow-hidden bg-black-800 mr-8 ">
       {/* Slides */}
       <div
-        className="flex transition-transform ease-in-out mt-[120px] duration-300"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        className="flex transition-transform ease-in-out mt-[120px] duration-700"
+        style={{ transform: `translateX(-${currentIndex * 100}%)`}}
       >
         {banners.map((banner, index) => (
           <div className="min-w-full box-border p-1" key={index}>

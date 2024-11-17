@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -81,6 +81,12 @@ export const Col_Reg = () => {
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
       <ToastContainer/>
       <div className="w-[500px]  bg-gray-800 text-white shadow-lg rounded-lg p-8">
+      <Link
+          to="/"
+          className="absolute top-4 left-4 text-yellow-500 hover:text-yellow-600 font-semibold"
+        >
+          &#8592; Back to Home
+        </Link>
         <div className="text-center mb-4">
           <h2 className="text-2xl font-bold text-center mb-4">Join us</h2>
           <h3 className="text-lg text-center mb-2">Boost your events and make an impact!</h3>
