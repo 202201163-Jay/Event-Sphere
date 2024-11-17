@@ -16,10 +16,6 @@ const profileSchema = new mongoose.Schema({
         type:String, 
         
     },
-    participated:[{
-        type:mongoose.Schema.Types.ObjectId, 
-        ref: "Event",
-    }],
 
 })
 

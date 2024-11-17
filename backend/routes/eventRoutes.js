@@ -4,6 +4,7 @@ const { upload } = require("../middleware/multer");
 const authMiddleware = require('../middleware/auth');
 const eventListing = require('../Controller/eventListing');
 const {temp} = require("../Controller/temp.js");
+const eventReg = require('../Controller/regcontroller.js');
 const router = express.Router();
 
 router.post("/listing", eventListing.createEvent);
@@ -12,6 +13,7 @@ router.get("/concerts", eventListing.getcontests);
 router.get("/:id", eventListing.getEvent);
 router.get('/filter', eventListing.getFilteredEvents);
 router.get("/",temp);
+router.get("/hi/:eventId/:userId",eventReg.registerForEvent);
 
 router.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
