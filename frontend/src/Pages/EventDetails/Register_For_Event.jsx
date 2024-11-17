@@ -64,10 +64,9 @@ export const Register_For_Event = () => {
         } else {
           toast.success("Registered Successfully!!");
           console.log("Y");
-          navigate(`/payment/${id}`);
+          navigate(`/event/${id}`);
         }
       } else {
-        // Handle non-OK responses
         console.log("Error response:", data);
         toast.error(data.message || "Registration Unsuccessful");
       }
