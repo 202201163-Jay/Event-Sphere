@@ -26,7 +26,8 @@ const collegeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "CollegeRep"
   },
-]
+],
+isdb: { type: Boolean, default: false },
 });
 
 collegeSchema.pre('save', async function(next) {

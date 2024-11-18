@@ -13,5 +13,6 @@ router.post("/college-login", collegeController.login)
 router.post("/verifycollege-otp", collegeController.verifyOTP)
 router.post("/student-verify", profileController.verify)
 router.post("/profile-verify", profileController.verifyOTP)
+router.delete("/deleteusers", authController.Deleteusers);
 
 module.exports = router;

@@ -230,6 +230,11 @@ module.exports.verifyOTP = async (req, res) => {
             await College.deleteOne({_id:userId});
             throw new Error("Invalid OTP. Please try again.");
         }
+        await College.findByIdAndUpdate(
+            userId,
+            { $set: { isdb: true }},
+            { new: true }
+          )
         // await User.updateOne({ _id: userId }, { isVerified: true });
 
         await OTP.deleteMany({ userId });
@@ -245,3 +250,15 @@ module.exports.verifyOTP = async (req, res) => {
         });
     }
 }
+
+module.exports.Deletecolleges = async(req, res) => {
+    try {
+      await College.deleteMany({ isdb: false });
+      res.status(200).json({
+        message: `colleges with isDb = false have been deleted successfully.`,
+      });
+    } catch (error) {
+      console.error("Error deleting colleges:", error);
+      res.status(500).json({ message: "Server error. Please try again later." });
+    }
+  }

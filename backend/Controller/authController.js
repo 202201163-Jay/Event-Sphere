@@ -176,7 +176,11 @@ module.exports.verifyOTP = async (req, res) => {
       throw new Error("Invalid OTP. Please try again.");
     }
     // await User.updateOne({ _id: userId }, { isVerified: true });
-
+    await User.findByIdAndUpdate(
+      userId,
+      { $set: { isdb: true }},
+      { new: true }
+    )
     await OTP.deleteMany({ userId });
 
     res.json({
@@ -188,6 +192,18 @@ module.exports.verifyOTP = async (req, res) => {
       status: "FAILED",
       message: error.message,
     });
+  }
+}
+
+module.exports.Deleteusers = async(req, res) => {
+  try {
+    await User.deleteMany({ isdb: false });
+    res.status(200).json({
+      message: `users with isDb = false have been deleted successfully.`,
+    });
+  } catch (error) {
+    console.error("Error deleting users:", error);
+    res.status(500).json({ message: "Server error. Please try again later." });
   }
 }
 
