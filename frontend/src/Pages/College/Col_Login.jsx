@@ -55,6 +55,12 @@ export const Col_Login = () => {
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
       <ToastContainer/>
       <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8">
+      <Link
+          to="/"
+          className="absolute top-4 left-4 text-yellow-500 hover:text-yellow-600 font-semibold"
+        >
+          &#8592; Back to Home
+        </Link>
         <h2 className="text-2xl font-bold text-center mb-6">Welcome Back!</h2>
         <h3 className="text-lg text-center mb-4">Login to your Account</h3>
         <p className="text-center mb-6">It's nice to see you again. Ready to conquer?</p>
@@ -63,7 +69,7 @@ export const Col_Login = () => {
             <label className="text-sm font-semibold text-gray-400">Email Address *</label>
             <input
               className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-              type="text"
+              type="email"
               name="email"
               placeholder="Your Work email"
               value={collegeRep.email}

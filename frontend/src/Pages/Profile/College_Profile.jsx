@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PencilIcon, TrashIcon, PlusIcon} from '@heroicons/react/24/solid';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../Home/Navbar';
@@ -151,9 +151,10 @@ export const CollegeProfile = () => {
             </div>
 
 
-
-            <div className="relative border border-gray-700 rounded-lg p-4 bg-gray-800">
+          
+            <div className="overflow-y-auto relative border border-gray-700 rounded-lg p-4 bg-gray-800">
               <h4 className="text-lg font-semibold text-yellow-500 mb-2">Clubs and Committees</h4>
+              <div className='overflow-y-auto max-h-[20vh] p-4 border-none rounded-lg bg-gray-800'>
               <ul className="list-none pl-0 space-y-4">
                 
                 {collegeData?.collegeRepresentatives.length > 0 ? (
@@ -172,6 +173,7 @@ export const CollegeProfile = () => {
                 )}
               </ul>
             </div>
+            </div>
           </div>
         );
       case 'add-club':
@@ -186,7 +188,6 @@ export const CollegeProfile = () => {
                 <label className="text-sm font-semibold text-gray-400">Club Name *</label>
                 <input
                   className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                  type="text"
                   name="clubName"
                   placeholder="Enter club name"
                   value={formData.clubName}
@@ -259,13 +260,19 @@ export const CollegeProfile = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
+    <div className="flex flex-col items-center top-24 w-full min-h-screen bg-gray-900 pb-24">
 
-      <Navbar></Navbar>
+      
 
       <ToastContainer />
       <div className="w-full max-w-5xl bg-gray-800 text-white shadow-lg rounded-lg p-8 mt-28">
-        <h2 className="text-2xl font-bold text-center mb-6">Account Settings</h2>
+      <Link
+          to="/"
+          className="absolute top-4 left-4 text-yellow-500 hover:text-yellow-600 font-semibold"
+        >
+          &#8592; Back to Home
+        </Link>
+        <h2 className="text-2xl font-bold text-center mb-6">Account</h2>
 
         <div className="flex">
           <aside className="w-1/4 space-y-6 pr-4 border-r border-gray-700">
@@ -295,7 +302,7 @@ export const CollegeProfile = () => {
         </div>
       </div>
 
-      <Footer></Footer>
+
 
     </div>
 

@@ -240,7 +240,6 @@ export const ProfilePage = () => {
                   <p className="text-sm text-gray-400">First Name</p>
                   {isEditing ? (
                     <input
-                      type="text"
                       name="firstName"
                       value={editData.firstName || ''}
                       onChange={handleInputChange1}
@@ -254,7 +253,6 @@ export const ProfilePage = () => {
                   <p className="text-sm text-gray-400">Last Name</p>
                   {isEditing ? (
                     <input
-                      type="text"
                       name="lastName"
                       value={editData.lastName || ''}
                       onChange={handleInputChange1}
@@ -423,13 +421,21 @@ export const ProfilePage = () => {
   };
 
   return (
+    
+    
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
-
-      <Navbar></Navbar>
+      
+      
 
       <ToastContainer />
       <div className="w-full max-w-5xl bg-gray-800 text-white shadow-lg rounded-lg p-8">
-        <h2 className="text-2xl font-bold text-center mb-6">Account Settings</h2>
+      <Link
+          to="/"
+          className="absolute top-4 left-4 text-yellow-500 hover:text-yellow-600 font-semibold"
+        >
+          &#8592; Back to Home
+        </Link>
+        <h2 className="text-2xl font-bold text-center mb-6">Account</h2>
 
         <div className="flex">
           {/* Sidebar */}
@@ -477,8 +483,6 @@ export const ProfilePage = () => {
         </div>
       </div>
 
-      <Footer></Footer>
-
-    </div>
+      </div>
   );
 };

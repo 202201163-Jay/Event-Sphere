@@ -26,7 +26,7 @@ export const College_otp = () => {
     const otp = code.join('');
 
     try {
-      const response = await fetch("http://localhost:3000/api/auth/verify-otp", {
+      const response = await fetch("http://localhost:3000/api/auth/verifycollege-otp", {
         method: "POST",
         headers: {"Content-Type" : "application/json",},
         body: JSON.stringify({userId, otp}),
@@ -55,6 +55,12 @@ export const College_otp = () => {
     <div className="flex items-center justify-center h-screen bg-gray-900">
         <ToastContainer/>
       <div className="p-6 bg-gray-800 text-white rounded-lg w-96 text-center">
+      <Link
+          to="/"
+          className="absolute top-4 left-4 text-yellow-500 hover:text-yellow-600 font-semibold"
+        >
+          &#8592; Back to Home
+        </Link>
         <h2 className="text-2xl font-semibold mb-4">Verify email</h2>
         <p className="mb-6">A verification code has been sent to you. Enter the code below</p>
         <div className="flex justify-center space-x-2 mb-6">

@@ -69,6 +69,12 @@ export const Stu_Reg = () => {
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
       <ToastContainer/>
       <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8">
+      <Link
+          to="/"
+          className="absolute top-4 left-4 text-yellow-500 hover:text-yellow-600 font-semibold"
+        >
+          &#8592; Back to Home
+        </Link>
       <h2 className="text-2xl font-bold text-center mb-6">Welcome Aboard!</h2>
         <h3 className="text-lg text-center mb-4">Sign up to join the community</h3>
         <div className="overflow-y-auto max-h-[100vh] p-4 border rounded-lg bg-gray-800">
@@ -78,7 +84,6 @@ export const Stu_Reg = () => {
               <label className="text-sm font-semibold text-gray-400">First Name *</label>
               <input
                 className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                type="text"
                 name="firstName"
                 placeholder="Enter first name"
                 value={formData.firstName}
@@ -90,7 +95,6 @@ export const Stu_Reg = () => {
               <label className="text-sm font-semibold text-gray-400">Last Name *</label>
               <input
                 className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                type="text"
                 name="lastName"
                 placeholder="Enter last name"
                 value={formData.lastName}
