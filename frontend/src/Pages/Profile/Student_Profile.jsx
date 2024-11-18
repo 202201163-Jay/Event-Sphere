@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { useNavigate, Link} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../Home/Navbar';
 import Footer from '../Home/Footer';
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
 import moment from "moment";
 
 const userId = Cookies.get("userId");
@@ -17,9 +17,9 @@ export const ProfilePage = () => {
   const [userprofileData, setUserprofileData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    
     const fetchUserById = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/users/${userId}`);
@@ -79,15 +79,15 @@ export const ProfilePage = () => {
       additionalDetails: editData.additionalDetails,
       participated: editData.participated,
     };
-  
+
     const updatedUserProfileData = {
       gender: editData.gender,
       dateOfBirth: editData.dateOfBirth,
       about: editData.about,
     };
 
-    console.log(updatedUserData)
-  
+    console.log(updatedUserData);
+
     try {
       // Update user data
       const userResponse = await fetch(`http://localhost:3000/api/users/update/${userData._id}`, {
@@ -98,7 +98,7 @@ export const ProfilePage = () => {
         body: JSON.stringify(updatedUserData)
       });
       const userResult = await userResponse.json();
-  
+
       // Update user profile data
       const profileResponse = await fetch(`http://localhost:3000/api/users/updateProfile/${userprofileData._id}`, {
         method: "PUT",
@@ -108,9 +108,9 @@ export const ProfilePage = () => {
         body: JSON.stringify(updatedUserProfileData)
       });
       const profileResult = await profileResponse.json();
-  
+
       if (userResult.status === "SUCCESS" && profileResult.status === "SUCCESS") {
-        userResult.data.image = `https://api.dicebear.com/5.x/initials/svg?seed=${userResult.data?.firstName} ${userResult.data?.lastName}`
+        userResult.data.image = `https://api.dicebear.com/5.x/initials/svg?seed=${userResult.data?.firstName} ${userResult.data?.lastName}`;
         setUserData(userResult.data);
         setUserprofileData(profileResult.data);
         toast.success("Profile updated successfully!");
@@ -120,7 +120,7 @@ export const ProfilePage = () => {
       }
     } catch (error) {
       console.error("Error saving profile:", error);
-      toast.error("Error saving profile.")
+      toast.error("Error saving profile.");
     }
   };
 
@@ -131,8 +131,6 @@ export const ProfilePage = () => {
       [name]: value,
     }));
   };
-
-  // console.log(userprofileData);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -149,9 +147,11 @@ export const ProfilePage = () => {
 
   const handleVerify = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading state to true when verification starts
 
     if (!formData.email) {
       toast.error('Email cannot be empty');
+      setLoading(false); // Set loading state to false if email is empty
       return;
     }
 
@@ -165,10 +165,9 @@ export const ProfilePage = () => {
       const responseData = await response.json();
 
       if (response.ok) {
-        if(responseData.message === "Oops, Your college is not exist!!!"){
-          toast.error(responseData.message)
-        }
-        else{
+        if (responseData.message === "Oops, Your college is not exist!!!") {
+          toast.error(responseData.message);
+        } else {
           toast.success(responseData.message || 'Verification OTP email sent');
         }
         setFormData((prevData) => ({
@@ -184,17 +183,19 @@ export const ProfilePage = () => {
           setTimeout(() => {
             navigate(`/profile-otp/${userId}`);
           }, 2000);
-        }        
+        }
       } else {
         toast.error(responseData.message || 'Something went wrong');
       }
     } catch (error) {
       console.error(error);
       toast.error('Network error, please try again');
+    } finally {
+      setLoading(false); // Set loading state to false after verification attempt
     }
   };
 
-  const handleDeleteProfile = async() => {
+  const handleDeleteProfile = async () => {
     try {
       console.log(userId);
       const response = await fetch(`http://localhost:3000/api/users/delete/${userId}`, {
@@ -209,7 +210,7 @@ export const ProfilePage = () => {
     } catch (error) {
       toast.error("Error deleting profile");
     }
-  }
+  };
 
   console.log(editData);
 
@@ -337,8 +338,6 @@ export const ProfilePage = () => {
                   <PencilIcon className="h-4 w-4 mr-1" /> Edit
                 </button>
               )}
-
-
             </div>
           </div>
         );
@@ -366,9 +365,10 @@ export const ProfilePage = () => {
               <div className="flex justify-between gap-4">
                 <button
                   type="submit"
-                  className="w-full bg-yellow-500 text-gray-800 p-2 rounded font-semibold hover:bg-yellow-600 transition duration-200"
+                  className={`w-full text-gray-800 p-2 rounded font-semibold transition duration-200 ${loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-600'}`}
+                  disabled={loading}
                 >
-                  Verify
+                  {loading ? 'Verifying...' : 'Verify'}
                 </button>
               </div>
             </form>
@@ -377,32 +377,32 @@ export const ProfilePage = () => {
       case 'events':
         return (
           <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
-          <h4 className="text-lg font-semibold text-yellow-500 mb-4">Events</h4>
-          <ul className="list-none pl-0 space-y-4">
-            {userData.participated && userData.participated.length > 0 ? (
-              userData.participated.map((event, index) => (
-                <li
-                  key={index}
-                  className="bg-gray-700 p-4 rounded-lg shadow-lg cursor-pointer"
-                  onClick={() => navigate(`/event/${event._id}`)}
-                >
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-md text-gray-400">
-                      {event.eventName}
-                    </span>
-                    <span className="text-sm text-gray-400">
-                      {moment(event.registrationEndDate).format("YYYY-MM-DD")}
-                    </span>
-                  </div>
-                </li>
+            <h4 className="text-lg font-semibold text-yellow-500 mb-4">Events</h4>
+            <ul className="list-none pl-0 space-y-4">
+              {userData.participated && userData.participated.length > 0 ? (
+                userData.participated.map((event, index) => (
+                  <li
+                    key={index}
+                    className="bg-gray-700 p-4 rounded-lg shadow-lg cursor-pointer"
+                    onClick={() => navigate(`/event/${event._id}`)}
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-md text-gray-400">
+                        {event.eventName}
+                      </span>
+                      <span className="text-sm text-gray-400">
+                        {moment(event.registrationEndDate).format("YYYY-MM-DD")}
+                      </span>
+                    </div>
+                  </li>
                 ))
-            ) : (
-              <li className="bg-gray-700 p-4 rounded-lg shadow-lg text-center text-gray-400">
-                No Events available
-              </li>
-            )}
-      </ul>
-    </div>
+              ) : (
+                <li className="bg-gray-700 p-4 rounded-lg shadow-lg text-center text-gray-400">
+                  No Events available
+                </li>
+              )}
+            </ul>
+          </div>
         );
       case 'delete':
         return (
@@ -410,7 +410,7 @@ export const ProfilePage = () => {
             <h4 className="text-lg font-semibold text-red-600 mb-4">Delete Account</h4>
             <p className="text-gray-200">Deleting your account is permanent and cannot be undone.</p>
             <button onClick={handleDeleteProfile} className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-md flex">
-            <TrashIcon className="h-5 w-5 mr-2" />
+              <TrashIcon className="h-5 w-5 mr-2" />
               Delete Account
             </button>
           </div>
@@ -421,15 +421,10 @@ export const ProfilePage = () => {
   };
 
   return (
-    
-    
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
-      
-      
-
       <ToastContainer />
       <div className="w-full max-w-5xl bg-gray-800 text-white shadow-lg rounded-lg p-8">
-      <Link
+        <Link
           to="/"
           className="absolute top-4 left-4 text-yellow-500 hover:text-yellow-600 font-semibold"
         >
@@ -476,13 +471,11 @@ export const ProfilePage = () => {
             </nav>
           </aside>
 
-
           <main className="w-3/4 bg-gray-900 rounded-lg shadow-inner p-8">
             {renderContent()}
           </main>
         </div>
       </div>
-
-      </div>
+    </div>
   );
 };

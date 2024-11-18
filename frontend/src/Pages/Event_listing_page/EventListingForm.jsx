@@ -18,6 +18,7 @@ export const EventForm = () => {
   const [event, setEvent] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const { isEdit } = useParams();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,13 +50,33 @@ export const EventForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
-    
+    setIsButtonDisabled(true)
+
     const formData = new FormData(e.target);
     formData.append("tags", JSON.stringify(tags)); 
     formData.append("description", description); 
     formData.append("clubId", userId);
     // console.log(formData)
+
+    const phone=formData.get("contactPersonPhone")
+    const email=formData.get("contactPersonEmail")
+    const mode=formData.get("mode")
+
+    if(phone.length!=10)
+    {
+      toast.error("Enter valid Phone Number")
+      setIsButtonDisabled(false)
+      return;
+    }
+
+    if(!mode)
+    {
+      toast.error("Enter a mode")
+      setIsButtonDisabled(false)
+      return;
+    }
+
+    
 
     const start = new Date(formData.get("registrationStartDate"));
     const end = new Date(formData.get("registrationEndDate"));
@@ -68,6 +89,7 @@ export const EventForm = () => {
   if(start<now)
   {
     toast.error('Invalid Start Date')
+    setIsButtonDisabled(false)
     return;
   }
   if (end < start) {
@@ -85,6 +107,7 @@ export const EventForm = () => {
 
       
       toast.error('Registration End time cannot be before Start time')
+      setIsButtonDisabled(false)
       return;
     }
 
@@ -123,6 +146,7 @@ export const EventForm = () => {
      
       if (response.status !== 200) {
         toast.error("Event could not be updated");
+        setIsButtonDisabled(false)
       } else {
         toast.success(isEdit === '0' ? "Event submitted successfully" : "Event updated successfully");
         setTimeout(() => {
@@ -132,6 +156,7 @@ export const EventForm = () => {
     } catch (error) {
       console.error("Error during event submission", error);
       toast.error("Error during event submission");
+      setIsButtonDisabled(false)
     }
   };
 
@@ -282,7 +307,7 @@ export const EventForm = () => {
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="submit-btn">
+        <button type="submit" disabled={isButtonDisabled} className="submit-btn" style={{backgroundColor: isButtonDisabled ? "yellow-100" : "yellow-500"}}>
             {isEdit === '0' ? 'Submit Event' : 'Update Event'}
           </button>
         </div>
