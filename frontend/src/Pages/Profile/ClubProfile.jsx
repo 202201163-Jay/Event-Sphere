@@ -58,6 +58,7 @@ export const ClubProfile = () => {
 
   useEffect(() => {
     const fetchClubById = async () => {
+      // window.location.reload()
       try {
         const response = await fetch(`http://localhost:3000/api/collegeRep/${userId}`);
         const data = await response.json();

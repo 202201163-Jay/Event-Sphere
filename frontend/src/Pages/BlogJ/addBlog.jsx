@@ -10,10 +10,12 @@ const userId = Cookies.get("userId");
 
 export const AddBlog = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading state to true when submission starts
 
     const submissionData = new FormData(e.target);
     submissionData.append("clubId", userId);
@@ -27,6 +29,8 @@ export const AddBlog = () => {
       navigate("/blogs");
     } catch (error) {
       console.error("Error adding blog:", error);
+    } finally {
+      setLoading(false); // Set loading state to false after submission attempt
     }
   };
 
@@ -70,7 +74,11 @@ export const AddBlog = () => {
 
             <div className="form-group">
               <label className="block text-lg font-bold text-yellow-400">Content</label>
-              <EventDescription></EventDescription>
+              <textarea
+                name="content"
+                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
+                rows="5"
+                required />
             </div>
 
             <div className="form-group">
@@ -85,9 +93,10 @@ export const AddBlog = () => {
 
             <button
               type="submit"
-              className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold p-3 rounded-md shadow-md transition duration-300"
+              className={`w-full text-gray-900 font-semibold p-3 rounded-md shadow-md transition duration-300 ${loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-yellow-400 hover:bg-yellow-500'}`}
+              disabled={loading}
             >
-              Submit Blog
+              {loading ? 'Submitting Blog...' : 'Submit Blog'}
             </button>
           </form>
         </div>

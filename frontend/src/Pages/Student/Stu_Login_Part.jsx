@@ -10,6 +10,7 @@ export const Stu_Login = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const { storeTokenInLs } = useAuth();
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export const Stu_Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading state to true when login starts
     try {
       const response = await fetch("http://localhost:3000/api/auth/student-login", {
         method: "POST",
@@ -48,6 +50,8 @@ export const Stu_Login = () => {
       }
     } catch (error) {
       console.error("Error during login", error);
+    } finally {
+      setLoading(false); // Set loading state to false after login attempt
     }
   };
 
@@ -55,12 +59,6 @@ export const Stu_Login = () => {
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
       <ToastContainer/>
       <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8">
-      <Link
-          to="/"
-          className="absolute top-4 left-4 text-yellow-500 hover:text-yellow-600 font-semibold"
-        >
-          &#8592; Back to Home
-        </Link>
         <h2 className="text-2xl font-bold text-center mb-6">Welcome Back!</h2>
         <h3 className="text-lg text-center mb-4">Login to your Account</h3>
         <p className="text-center mb-6">Let's start exploring events tailored for you!</p>
@@ -91,10 +89,11 @@ export const Stu_Login = () => {
           </div>
           <div className="flex justify-center">
             <button
-              className="w-full bg-green-500 text-white p-3 rounded font-bold hover:bg-green-600 transition-colors"
+              className={`w-full text-white p-3 rounded font-bold transition-colors ${loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'}`}
               type="submit"
+              disabled={loading}
             >
-              Log In
+              {loading ? 'Logging In...' : 'Log In'}
             </button>
           </div>
         </form>
