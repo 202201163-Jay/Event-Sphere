@@ -7,6 +7,7 @@ const College = require("../Models/College");
 const mailSender = require("../utils/mailsender");
 const { VERIFICATION_EMAIL_TEMPLATE } = require("../utils/emailTemplates");
 const nodemailer = require("nodemailer")
+const {validateUser} = require("../utils/Uservalidator")
 
 let transporter = nodemailer.createTransport({
   service: "gmail",
@@ -23,24 +24,20 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if the user exists in the database
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(403).json({ error: "User not found" });
     }
-
-    // Check if the provided password matches the stored hashed password
+    
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    // Generate a JWT token
     const token = jwt.sign({ userId: user._id, type: 'student' }, "TeamDoIt", {
-      expiresIn: "1h", // Set token expiry as needed
+      expiresIn: "1h",
     });
 
-    // Respond with the token and user information if needed
     res.status(200).json({
       message: "Login successful",
       token,
@@ -64,17 +61,20 @@ exports.signup = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
-    console.log(req.body);
     const saltRounds = 10;
     const hashedPass = await bcrypt.hash(password, saltRounds);
 
     const existingUser = await User.findOne({ email });
-
-    console.log(existingUser);
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User with this email already exists" });
     }
-
+    const { error } = validateUser({password });
+    if (error) {
+      const passwordError = error.details.find((err) => err.context.key === "password");
+      if (passwordError) {
+        return res.status(400).json({ message: passwordError.message });
+      }
+    }
     const profileDetails = await UserProfile.create({
       gender: null,
       dateOfBirth: null,
@@ -130,7 +130,6 @@ const sendotpVerificationEmail = async ({ _id, email }, res) => {
 
     await newotpVerification.save();
     await transporter.sendMail(mailOptions);
-    console.log("Smit - 4");
     res.json({
       status: "PENDING",
       message: "Verification otp email sent",
@@ -150,9 +149,8 @@ const sendotpVerificationEmail = async ({ _id, email }, res) => {
 module.exports.verifyOTP = async (req, res) => {
   try {
     const { userId, otp } = req.body;
-    // console.log(userId)
-    // console.log(otp);
     if (!userId || !otp) {
+      await User.deleteOne({_id : userId});
       throw new Error("Empty OTP details are not allowed");
     }
 

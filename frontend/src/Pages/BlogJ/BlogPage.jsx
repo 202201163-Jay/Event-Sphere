@@ -135,7 +135,7 @@ export const BlogPage = () => {
               <div className="p-4">
                 <h2 className="text-lg font-semibold text-gray-800 mb-3">{blog.title}</h2>
                 <p className="text-gray-600 mb-4">
-                  {blog.content.substring(0, 80)}...
+                  {blog.content.substring(0, 50)}...
                 </p>
                 <div className="flex items-center mt-4">
                   <p className="text-sm text-gray-800">{"Posted By : " + blog.clubId?.clubName || "Anonymous"}</p>

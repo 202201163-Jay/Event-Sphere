@@ -62,7 +62,6 @@ export const Profile_Otp = () => {
             <input
               key={index}
               id={`code-${index}`}
-              type="text"
               maxLength="1"
               value={digit}
               onChange={(e) => handleChange(e.target.value, index)}
