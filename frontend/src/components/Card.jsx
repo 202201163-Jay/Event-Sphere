@@ -13,8 +13,8 @@ function Card(props) {
             <div className="bg-gray-200 rounded-lg overflow-hidden shadow-md cursor-pointer hover:scale-95 transition transform duration-200">
                 <img src={event.poster} alt={event.eventName} className="w-full h-[400px] object-cover" onClick={() => handleImageClick(event._id)} />
                 <div className="p-3 bg-gray-200">
-                    <h3 className="text-xl mb-2">{event.eventName}</h3>
-                    <p className="text-sm text-gray-500">{event.venue}</p>
+                    <h3 className="text-xl mb-2 text-black "> <strong>{event.eventName}</strong></h3>
+                    <p className="text-sm text-gray-700">{event.venue}</p>
                 </div>
             </div>
         </div>

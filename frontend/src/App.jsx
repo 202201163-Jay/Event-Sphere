@@ -57,12 +57,12 @@ export const App = () => {
             <Route path='/forgot-password-stu' element={<Forgot_Pass_Stu/>} />  
             <Route path='/events-page' element={<Events_Page/>} />
             <Route path="/" element={<Home />} />
+            <Route path='/event/:id' element={<Register_For_Event/>} />
+            <Route path='/payment/:id' element={<Payment/>} />
 
             {type === "club" && (
               <>
-                <Route path='/event/:id' element={<Register_For_Event/>} />
                 <Route path='/participants/:eventId' element={<Participants/>} />
-                <Route path='/payment/:id' element={<Payment/>} />
               </>
             )}
             {type === "user" && (

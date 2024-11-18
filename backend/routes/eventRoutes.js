@@ -15,6 +15,7 @@ router.get("/:id", eventListing.getEvent);
 router.put('/update/:eventId',eventListing.updateEvent)
 router.get("/",temp);
 router.get("/hi/:eventId/:userId",eventReg.registerForEvent);
+router.get("/hi2/:eventId/:userId",eventReg.registerForEvent2);
 
 router.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
