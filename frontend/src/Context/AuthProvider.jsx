@@ -4,11 +4,11 @@ import Cookies from "js-cookie"
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [name, setName] = useState(localStorage.getItem("name"));
-  const [userId, setUserId] = useState(localStorage.getItem("userId"));
-  const [type, setType] = useState(localStorage.getItem("type"));
-  const [image, setImage] = useState(localStorage.getItem("image"));
+  const [token, setToken] = useState(() => Cookies.get("token") || "");
+  const [name, setName] = useState(() => Cookies.get("name") || "");
+  const [userId, setUserId] = useState(() => Cookies.get("userId") || "");
+  const [type, setType] = useState(() => Cookies.get("type") || "");
+  const [image, setImage] = useState(() => Cookies.get("image") || "");
   const authorizationToken = `Bearer ${token}`;
   
 
@@ -21,12 +21,6 @@ export const AuthProvider = ({ children }) => {
     setUserId(userId);
     setType(type);
     setImage(image);
-    
-    localStorage.setItem("token", serverToken);
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("name", name);
-    localStorage.setItem("type", type);
-    localStorage.setItem("image", image);
   };
 
   const isLoggedIn = !!token;

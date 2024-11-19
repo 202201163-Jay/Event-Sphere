@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios"
 
 const PasswordCriteria = ({ password }) => {
   const criteria = [
@@ -104,6 +105,18 @@ export const Col_Reg = () => {
       setLoading(false); // Set loading state to false after registration attempt
     }
   };
+
+  useEffect(() => {
+    const handleDelete = async () => {
+      try {
+        const response = await axios.delete("http://localhost:3000/api/college/deletecolleges");
+        
+      } catch (error) {
+        toast.error("Error deleting profile");
+      }
+    };
+    handleDelete();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">

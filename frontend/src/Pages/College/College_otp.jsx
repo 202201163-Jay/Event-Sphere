@@ -68,7 +68,6 @@ export const College_otp = () => {
             <input
               key={index}
               id={`code-${index}`}
-              type="text"
               maxLength="1"
               value={digit}
               onChange={(e) => handleChange(e.target.value, index)}

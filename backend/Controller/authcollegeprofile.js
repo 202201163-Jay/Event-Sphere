@@ -8,6 +8,7 @@ const CollegeRep = require("../Models/CollegeRep")
 const mailSender = require("../utils/mailsender");
 const { VERIFICATION_EMAIL_TEMPLATE } = require("../utils/emailTemplates");
 const nodemailer = require("nodemailer")
+const {validateUser} = require("../utils/Uservalidator")
 
 let transporter = nodemailer.createTransport({
   service: "gmail",
@@ -31,10 +32,6 @@ exports.login = async (req, res) => {
     }
 
     // Check if the provided password matches the stored hashed password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid password" });
-    }
 
     // Generate a JWT token
     const token = jwt.sign({ userId: user._id }, "TeamDoIt", {
@@ -74,6 +71,14 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ message: "Club already exists" });
     }
 
+    const { error } = validateUser({ password });
+    if (error) {
+      const passwordError = error.details.find((err) => err.context.key === "password");
+        if (passwordError) {
+          return res.status(400).json({ message: passwordError.message });
+        }
+    }
+
     const newClub = new CollegeRep({
       clubName,
       email,
@@ -91,7 +96,7 @@ exports.signup = async (req, res) => {
             // await newUser.save();
   } catch (error) {
     console.error("Signup error:", error);
-    res.status(500).json({ message: "Error registering user" });
+    res.status(500).json({ message: "Error registering club" });
   }
 };
 
@@ -139,6 +144,7 @@ module.exports.verifyOTP = async (req, res) => {
       // console.log(userId)
       // console.log(otp);
       if (!userId || !otp) {
+          await CollegeRep.deleteOne({_id:userId});
           throw new Error("Empty OTP details are not allowed");
       }
 

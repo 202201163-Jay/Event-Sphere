@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from "js-cookie";
+import axios from "axios"
 
 export const Col_Login = () => {
   const [collegeRep, setCollegeRep] = useState({
@@ -53,6 +54,18 @@ export const Col_Login = () => {
       setLoading(false); // Set loading state to false after login attempt
     }
   };
+
+  useEffect(() => {
+    const handleDelete = async () => {
+      try {
+        const response = await axios.delete("http://localhost:3000/api/college/deletecolleges");
+        
+      } catch (error) {
+        toast.error("Error deleting profile");
+      }
+    };
+    handleDelete();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
