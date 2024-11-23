@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { UserIcon, PowerIcon} from '@heroicons/react/24/solid';
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider";
+import { useAuth } from "../../Context/AuthProvider";
 import Cookies from "js-cookie"
 
 const Navbar = () => {

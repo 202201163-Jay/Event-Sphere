@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../Home/Navbar';
 import Footer from '../Home/Footer';
-import { useAuth } from '../../context/AuthProvider';
+import { useAuth } from '../../Context/AuthProvider';
 import Cookies from "js-cookie";
 
 const userId = Cookies.get("userId");

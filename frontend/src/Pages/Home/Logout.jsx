@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Navigate, replace } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider"
+import { useAuth } from "../../Context/AuthProvider"
 
 export const Logout = () => {
     const {Logout} = useAuth()
