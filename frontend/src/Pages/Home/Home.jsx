@@ -31,7 +31,7 @@ export const Home = () => {
 
   return (
     <>
-      <div className="bg-black">
+      <div className="bg-gray-900">
         <Navbar/>
         {/* <div className='h-[92px]'></div> */}
         <Banner/>

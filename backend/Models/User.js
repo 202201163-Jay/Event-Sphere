@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
     type:mongoose.Schema.Types.ObjectId, 
     ref: "Event",
   }],
+  isdb: { type: Boolean, default: false },
 });
 
 // Pre-save hook to hash password before saving user

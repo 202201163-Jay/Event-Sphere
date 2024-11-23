@@ -75,7 +75,7 @@ export const Club_Otp = () => {
         </button>
         {error && <p className="mt-4 text-red-500">{error}</p>}
         <div className="mt-4 text-sm flex justify-between">
-          <button className="text-gray-400 hover:underline" onClick={() => navigate('/student-login')}>← Back to login</button>
+          <button className="text-gray-400 hover:underline" onClick={() => navigate('/college-profile')}>← Back to Profile</button>
         </div>
       </div>
     </div>

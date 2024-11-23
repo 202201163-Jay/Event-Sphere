@@ -66,7 +66,7 @@ import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
-    <div className="flex justify-between bg-gray-900 text-white py-12">
+    <div className="flex justify-between bg-gray-800 text-white py-12">
       <div className="container px-4">
         {/* Newsletter Section */}
         <div >

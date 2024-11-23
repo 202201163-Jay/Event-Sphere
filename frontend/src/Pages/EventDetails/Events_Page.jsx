@@ -203,7 +203,7 @@ export const Events_Page = () => {
                         </svg>
                     </label>
                     {type === "club" && <Link
-                        to="/listing"
+                        to="/listing/0"
                         className="bg-blue-600 text-white px-5 py-3 rounded-md shadow-md ml-4 hover:bg-blue-700"
                     >
                         List Event

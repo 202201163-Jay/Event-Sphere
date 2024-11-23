@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import Navbar from "../Home/Navbar";
+import Footer from "../Home/Footer";
 
 export const BlogDetail = () => {
   const { id } = useParams(); // Get blog ID from URL
@@ -37,9 +39,13 @@ export const BlogDetail = () => {
   };
 
   return (
-    <div className="max-w-screen-lg mx-auto p-6">
+    <>
+    <Navbar />
+    <div className="flex justify-center bg-gray-900 mt-24">
+    <div className=" max-w-screen-lg p-6">
+
       {/* Blog Title */}
-      <h1 className="text-4xl font-bold text-center mb-4 text-blue-400">{title}</h1>
+      <h1 className="text-4xl  font-bold text-center mb-4 text-blue-400">{title}</h1>
       <div className="text-center text-sm text-blue-500 mb-8">
         <span>Published by {college}</span> | <span>{new Date(date).toLocaleDateString()}</span>
       </div>
@@ -73,6 +79,9 @@ export const BlogDetail = () => {
       </div>
 
     </div>
+    </div>
+    <Footer />
+    </>
   );
 };
 

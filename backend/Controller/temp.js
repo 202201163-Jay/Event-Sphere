@@ -2,7 +2,7 @@ const Event = require("../Models/Event");
 
 const temp=async (req,res)=> {
 
-    console.log("qrwe");
+    // console.log("qrwe");
 
     try {
         const { selectedTags = [], selectedTypes = [], searchQuery = "" } = req.query;
@@ -28,7 +28,7 @@ const temp=async (req,res)=> {
           query.eventName = { $regex: searchQuery, $options: 'i' }; // Case-insensitive search
         }
     
-        console.log("Final Query:", query); // Log the final query to verify it's correct
+        // console.log("Final Query:", query); // Log the final query to verify it's correct
         // Find events based on query
         const events = await Event.find(query);
     

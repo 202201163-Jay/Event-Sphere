@@ -116,9 +116,11 @@ const Navbar = () => {
                     <img
                       src={image || "https://via.placeholder.com/80"}
                       alt="Profile"
-                      className="w-14 h-14 rounded-full shadow-md"
+                      className="w-10 h-10 rounded-full shadow-md"
                     />
                   </Link>
+
+
                   <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${name}`}</span>
                   <div className="group relative">
                     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">

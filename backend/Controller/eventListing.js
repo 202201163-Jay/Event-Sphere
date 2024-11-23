@@ -7,7 +7,7 @@ const { upload2 } = require("../middleware/multer");
 
 exports.getParticipants = async (req, res) => {
   try {
-    console.log("Participants page", req.params.eventId)
+    // console.log("Participants page", req.params.eventId)
     const participants = await Event.findOne({ _id: req.params.eventId }).populate({
       path: 'registrations', // Populate 'registrations' array
       populate: {
@@ -16,10 +16,10 @@ exports.getParticipants = async (req, res) => {
       },
     });
 
-    console.log("Participants", participants)
+    // console.log("Participants", participants)
     // participants.registrations.populate('additionalDetails')
 
-    console.log("Participants fetched")
+    // console.log("Participants fetched")
 
     if (!participants) {
       return res
@@ -99,7 +99,7 @@ exports.createEvent = async (req, res) => {
 
       await newEvent.save();
 
-      res.status(201).json({
+      res.status(200).json({
         message: 'Event created successfully!',
         event: newEvent,
       });
@@ -116,9 +116,9 @@ exports.createEvent = async (req, res) => {
 exports.updateEvent = async (req, res) => {
   upload2(req, res, async (err) => {
   try {
-      console.log("Edit carried out");
+      // console.log("Edit carried out");
       const { eventId } = req.params;
-      console.log(req.body)
+      // console.log(req.body)
       const { tags, description, eventName, price, type, venue, createdBy, mode, registrationStartDate, registrationEndDate, startTime, endTime, contactPersonEmail, contactPersonPhone } = req.body;
 
       // Parse tags if sent as JSON string
@@ -147,7 +147,7 @@ exports.updateEvent = async (req, res) => {
           { new: true } // Return the updated document
       );
 
-      console.log("Updated Event:", updatedEvent);
+      // console.log("Updated Event:", updatedEvent);
       if (!updatedEvent) {
           return res.status(404).json({ message: "Event not found" });
       }
@@ -197,46 +197,4 @@ const getDefaultEndTime = () => {
   now.setHours(17, 0, 0, 0); // Default end time at 5:00 PM
   return now;
 };
-exports.getFilteredEvents = async (req, res) => {
-  // console.log(req.query); // Log the query params for debugging
-  console.log("rqqqqqqqqqqparams");
-  res.status(202).json({success:true});
 
-  // try {
-    // Extract query parameters
-  //   const { selectedTags = [], selectedTypes = [], searchQuery = "" } = req.query;
-
-  //   const query = {};
-
-  //   // Convert stringified arrays back to actual arrays
-  //   const parsedSelectedTags = selectedTags ? JSON.parse(selectedTags) : [];
-  //   const parsedSelectedTypes = selectedTypes ? JSON.parse(selectedTypes) : [];
-
-  //   // Use the parsed arrays in your query
-  //   if (parsedSelectedTags.length) {
-  //     query.tags = { $in: parsedSelectedTags };
-  //   }
-
-  //   if (parsedSelectedTypes.length) {
-  //     query.type = { $in: parsedSelectedTypes };
-  //   }
-
-
-  //   // Filter by search query if provided
-  //   if (searchQuery) {
-  //     query.eventName = { $regex: searchQuery, $options: 'i' }; // Case-insensitive search
-  //   }
-
-  //   console.log("Final Query:", query); // Log the final query to verify it's correct
-  //   // Find events based on query
-  //   const events = await Event.find(query);
-
-  //   // Return the filtered events
-  //   res.status(200).json({ events });
-  // } catch (error) {
-  //   // console.error(error);
-  //   console.log('sd');
-  //   res.status(500).json({ message: "Error fetching events" });
-  // }
-
-};

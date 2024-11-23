@@ -7,6 +7,7 @@ const authController = require("../Controller/authController");
 const mailSender = require("../utils/mailsender");
 const { VERIFICATION_EMAIL_TEMPLATE } = require("../utils/emailTemplates");
 const nodemailer = require("nodemailer")
+const {validateUser} = require("../utils/Uservalidator")
 
 let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -26,7 +27,6 @@ exports.signup = async (req, res) => {
             emailDomain, // College email domain
             // representatives // Array of representatives
         } = req.body;
-        console.log(req.body);
 
         // Validate that all required fields are provided
         if (!name || !email || !password || !confirmPassword || !emailDomain) {
@@ -42,6 +42,14 @@ exports.signup = async (req, res) => {
         const existingCollege = await College.findOne({ email });
         if (existingCollege) {
             return res.status(400).json({ message: "College email already registered." });
+        }
+
+        const { error } = validateUser({ password });
+            if (error) {
+            const passwordError = error.details.find((err) => err.context.key === "password");
+            if (passwordError) {
+                return res.status(400).json({ message: passwordError.message });
+            }
         }
 
         // Hash the password
@@ -155,7 +163,7 @@ exports.login = async (req, res) => {
 
 const sendotpVerificationEmail = async ({ _id, email }, res) => {
     try {
-        const otp =    `${Math.floor(1000 + Math.random() * 9000)}`;
+        const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
 
         const mailOptions = {
             from: "eventsphereandteam@gmail.com",
@@ -175,7 +183,6 @@ const sendotpVerificationEmail = async ({ _id, email }, res) => {
 
         await newotpVerification.save();
         await transporter.sendMail(mailOptions);
-        console.log("Smit - 4");
         res.json({
             status: "PENDING",
             message: "Verification otp email sent",
@@ -198,6 +205,7 @@ module.exports.verifyOTP = async (req, res) => {
         // console.log(userId)
         // console.log(otp);
         if (!userId || !otp) {
+            await College.deleteOne({_id:userId});
             throw new Error("Empty OTP details are not allowed");
         }
 
@@ -219,8 +227,14 @@ module.exports.verifyOTP = async (req, res) => {
         // Verify the OTP
         const validOTP = await bcrypt.compare(otp, hashedOTP);
         if (!validOTP) {
+            await College.deleteOne({_id:userId});
             throw new Error("Invalid OTP. Please try again.");
         }
+        await College.findByIdAndUpdate(
+            userId,
+            { $set: { isdb: true }},
+            { new: true }
+          )
         // await User.updateOne({ _id: userId }, { isVerified: true });
 
         await OTP.deleteMany({ userId });
@@ -236,3 +250,15 @@ module.exports.verifyOTP = async (req, res) => {
         });
     }
 }
+
+module.exports.Deletecolleges = async(req, res) => {
+    try {
+      await College.deleteMany({ isdb: false });
+      res.status(200).json({
+        message: `colleges with isDb = false have been deleted successfully.`,
+      });
+    } catch (error) {
+      console.error("Error deleting colleges:", error);
+      res.status(500).json({ message: "Server error. Please try again later." });
+    }
+  }

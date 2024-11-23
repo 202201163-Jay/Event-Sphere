@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from "js-cookie";
+import axios from "axios"
 
 export const Stu_Login = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const { storeTokenInLs } = useAuth();
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ export const Stu_Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading state to true when login starts
     try {
       const response = await fetch("http://localhost:3000/api/auth/student-login", {
         method: "POST",
@@ -48,8 +51,22 @@ export const Stu_Login = () => {
       }
     } catch (error) {
       console.error("Error during login", error);
+    } finally {
+      setLoading(false); // Set loading state to false after login attempt
     }
   };
+
+  useEffect(() => {
+    const handleDelete = async () => {
+      try {
+        const response = await axios.delete("http://localhost:3000/api/auth/deleteusers");
+        
+      } catch (error) {
+        toast.error("Error deleting profile");
+      }
+    };
+    handleDelete();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
@@ -85,10 +102,11 @@ export const Stu_Login = () => {
           </div>
           <div className="flex justify-center">
             <button
-              className="w-full bg-green-500 text-white p-3 rounded font-bold hover:bg-green-600 transition-colors"
+              className={`w-full text-white p-3 rounded font-bold transition-colors ${loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'}`}
               type="submit"
+              disabled={loading}
             >
-              Log In
+              {loading ? 'Logging In...' : 'Log In'}
             </button>
           </div>
         </form>
