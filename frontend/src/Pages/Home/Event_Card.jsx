@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Card from '../../components/Card';
+import config from '../../config';
 
 const EventCard = ({ title }) => {
   const [events, setEvents] = useState([]);
@@ -9,8 +10,9 @@ const EventCard = ({ title }) => {
     const getAllEvents = async () => {
       try {
         const url = title === "Latest Event"
-          ? "http://localhost:3000/api/home/latestevent"
-          : "http://localhost:3000/api/home/trendingevent";
+        ? `${config.BACKEND_API || "http://localhost:3000"}/api/home/latestevent`
+        : `${config.BACKEND_API || "http://localhost:3000"}/api/home/trendingevent`;
+
 
         const results = await axios.get(url);
         

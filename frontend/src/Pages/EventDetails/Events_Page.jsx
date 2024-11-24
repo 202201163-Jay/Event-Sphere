@@ -7,6 +7,7 @@ import axios from "axios";
 import Card from "../../components/Card.jsx";
 import Cookies from "js-cookie"
 const type = Cookies.get("type");
+import config from "../../config.js";
 
 export const Events_Page = () => {
     const [selectedTags, setSelectedTags] = useState([]);
@@ -25,7 +26,7 @@ export const Events_Page = () => {
         const getAllEvents = async () => {
             try {
                 // Pass selected tags, types, and search query as query params
-                const results = await axios.get("http://localhost:3000/api/asd", {
+                const results = await axios.get(`${config.BACKEND_API || "http://localhost:3000"}/api/asd`, {
                     params: {
                         selectedTags: JSON.stringify(selectedTags), // Convert array to string
                         selectedTypes: JSON.stringify(selectedTypes), // Convert array to string

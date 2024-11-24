@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../Home/Navbar";
 import Footer from "../Home/Footer";
 import Cookies from "js-cookie"
+import config from "../../config";
 
 const type = Cookies.get("type");
 
@@ -18,7 +19,7 @@ export const BlogPage = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/blog");
+        const response = await axios.get(`${config.BACKEND_API || "http://localhost:3000"}/api/blog`);
         console.log("API Response:", response);
         if (Array.isArray(response.data)) {
           setBlogs(response.data);

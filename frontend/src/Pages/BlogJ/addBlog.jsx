@@ -5,6 +5,7 @@ import Navbar from "../Home/Navbar";
 import Footer from "../Home/Footer";
 import EventDescription from "../Event_listing_page/eventDescription";
 import Cookies from "js-cookie";
+import config from "../../config";
 
 const userId = Cookies.get("userId");
 
@@ -21,7 +22,7 @@ export const AddBlog = () => {
     submissionData.append("clubId", userId);
     submissionData.append("date", Date.now());
     try {
-      await axios.post("http://localhost:3000/api/blog/create", submissionData, {
+      await axios.post(`${config.BACKEND_API || "http://localhost:3000"}/api/blog/create`, submissionData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

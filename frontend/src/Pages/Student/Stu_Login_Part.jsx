@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from "js-cookie";
 import axios from "axios"
+import config from '../../config';
 
 export const Stu_Login = () => {
   const [user, setUser] = useState({
@@ -21,11 +22,13 @@ export const Stu_Login = () => {
     setUser({ ...user, [name]: value });
   };
 
+  // "http://localhost:3000/api/auth/student-signup"
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true); // Set loading state to true when login starts
     try {
-      const response = await fetch("http://localhost:3000/api/auth/student-login", {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/student-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
@@ -59,7 +62,7 @@ export const Stu_Login = () => {
   useEffect(() => {
     const handleDelete = async () => {
       try {
-        const response = await axios.delete("http://localhost:3000/api/auth/deleteusers");
+        const response = await axios.delete(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/deleteusers`);
         
       } catch (error) {
         toast.error("Error deleting profile");

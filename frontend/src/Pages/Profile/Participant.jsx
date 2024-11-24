@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from "js-cookie";
+import config from '../../config';
 
 const userId = Cookies.get("userId");
 
@@ -15,7 +16,7 @@ export const Participants = () => {
     const fetchParticipants = async () => {
       try {
         console.log(eventId)
-        const response = await fetch(`http://localhost:3000/api/event/participants/${eventId}`);
+        const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/event/participants/${eventId}`);
         const data = await response.json();
         console.log("data",data)
         if (response.ok) {

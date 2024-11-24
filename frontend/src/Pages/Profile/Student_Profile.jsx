@@ -7,6 +7,7 @@ import Navbar from '../Home/Navbar';
 import Footer from '../Home/Footer';
 import Cookies from "js-cookie";
 import moment from "moment";
+import config from '../../config';
 
 const userId = Cookies.get("userId");
 
@@ -22,7 +23,7 @@ export const ProfilePage = () => {
   useEffect(() => {
     const fetchUserById = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/users/${userId}`);
+        const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/users/${userId}`);
         const data = await response.json();
 
         if (response.ok) {
@@ -46,7 +47,7 @@ export const ProfilePage = () => {
       if (userData && userData.additionalDetails) {
         try {
           const id = userData.additionalDetails;
-          const response = await fetch(`http://localhost:3000/api/users/profile/${id}`);
+          const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/users/profile/${id}`);
           const data = await response.json();
 
           if (response.ok) {
@@ -90,7 +91,7 @@ export const ProfilePage = () => {
 
     try {
       // Update user data
-      const userResponse = await fetch(`http://localhost:3000/api/users/update/${userData._id}`, {
+      const userResponse = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/users/update/${userData._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -100,7 +101,7 @@ export const ProfilePage = () => {
       const userResult = await userResponse.json();
 
       // Update user profile data
-      const profileResponse = await fetch(`http://localhost:3000/api/users/updateProfile/${userprofileData._id}`, {
+      const profileResponse = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/users/updateProfile/${userprofileData._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -156,7 +157,7 @@ export const ProfilePage = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/auth/student-verify", {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/student-verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -198,7 +199,7 @@ export const ProfilePage = () => {
   const handleDeleteProfile = async () => {
     try {
       console.log(userId);
-      const response = await fetch(`http://localhost:3000/api/users/delete/${userId}`, {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/users/delete/${userId}`, {
         method: "DELETE",
       });
       if (response.ok) {

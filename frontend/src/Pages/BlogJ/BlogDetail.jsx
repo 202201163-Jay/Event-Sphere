@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from "../Home/Navbar";
 import Footer from "../Home/Footer";
+import config from '../../config';
 
 export const BlogDetail = () => {
   const { id } = useParams(); // Get blog ID from URL
@@ -14,7 +15,7 @@ export const BlogDetail = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/blog/${id}`);
+        const response = await axios.get(`${config.BACKEND_API || "http://localhost:3000"}/api/blog/${id}`);
         setBlog(response.data);
       } catch (err) {
         setError('Failed to load the blog. Please try again later.');

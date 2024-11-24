@@ -9,6 +9,7 @@ const userId = localStorage.getItem("userId");
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import config from '../../config';
 // import client from '../axioscalls/api'
 
 export const EventForm = () => {
@@ -25,7 +26,7 @@ export const EventForm = () => {
     if (isEdit !== '0') {
       const fetchEventDetails = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/api/event/${isEdit}`);
+          const response = await axios.get(`${config.BACKEND_API || "http://localhost:3000"}/api/event/${isEdit}`);
           const eventData = response.data;
           setEvent(eventData);
           setTags(eventData.tags || []);
@@ -115,7 +116,7 @@ export const EventForm = () => {
     
     
     try {
-      const url = isEdit === '0' ? "http://localhost:3000/api/event/listing/" : `http://localhost:3000/api/event/update/${isEdit}`;
+      const url = isEdit === '0' ? `${config.BACKEND_API || "http://localhost:3000"}/api/event/listing/` : `${config.BACKEND_API || "http://localhost:3000"}/api/event/listing/`;
       // const method = isEdit === '0' ? "POST" : "PUT";
 
       let response

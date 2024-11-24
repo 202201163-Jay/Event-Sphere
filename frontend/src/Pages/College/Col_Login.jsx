@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from "js-cookie";
 import axios from "axios"
+import config from '../../config';
 
 export const Col_Login = () => {
   const [collegeRep, setCollegeRep] = useState({
@@ -25,7 +26,7 @@ export const Col_Login = () => {
     e.preventDefault();
     setLoading(true); // Set loading state to true when login starts
     try {
-      const response = await fetch("http://localhost:3000/api/auth/college-login", {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/college-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(collegeRep),
@@ -58,7 +59,7 @@ export const Col_Login = () => {
   useEffect(() => {
     const handleDelete = async () => {
       try {
-        const response = await axios.delete("http://localhost:3000/api/college/deletecolleges");
+        const response = await axios.delete(`${config.BACKEND_API || "http://localhost:3000"}/api/college/deletecolleges`);
         
       } catch (error) {
         toast.error("Error deleting profile");

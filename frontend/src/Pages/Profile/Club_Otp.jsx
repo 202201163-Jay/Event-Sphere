@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import config from '../../config';
 
 export const Club_Otp = () => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export const Club_Otp = () => {
     const otp = code.join('');
     
     try {
-      const response = await fetch("http://localhost:3000/api/college/club-verify", {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/college/club-verify`, {
         method: "POST",
         headers: {"Content-Type" : "application/json",},
         body: JSON.stringify({userId, otp}),

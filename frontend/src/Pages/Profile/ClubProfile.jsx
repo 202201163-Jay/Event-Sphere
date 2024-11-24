@@ -7,6 +7,7 @@ import Navbar from '../Home/Navbar';
 import Footer from '../Home/Footer';
 import { useAuth } from '../../Context/AuthProvider';
 import Cookies from "js-cookie"
+import config from '../../config';
 
 const userId = Cookies.get("userId");
 const image = Cookies.get("image");
@@ -23,7 +24,7 @@ export const ClubProfile = () => {
     if (activeSection === 'event-details') {
       const fetchEventDetails = async () => {
         try {
-          const response = await fetch(`http://localhost:3000/api/collegeRep/events/${userId}`);
+          const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/collegeRep/events/${userId}`);
           const data = await response.json();
           if (response.ok) {
             setEvents(data);
@@ -40,7 +41,7 @@ export const ClubProfile = () => {
       const fetchBlogDetails = async () => {
         try {
           console.log("i am")
-          const response = await fetch(`http://localhost:3000/api/collegeRep/blogs/${userId}`);
+          const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/collegeRep/blogs/${userId}`);
           const data = await response.json();
           console.log("Heree", data)
           if (response.ok) {
@@ -60,7 +61,7 @@ export const ClubProfile = () => {
     const fetchClubById = async () => {
       // window.location.reload()
       try {
-        const response = await fetch(`http://localhost:3000/api/collegeRep/${userId}`);
+        const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/collegeRep/${userId}`);
         const data = await response.json();
         if (response.ok) {
           setClubData(data);
@@ -78,7 +79,7 @@ export const ClubProfile = () => {
 
   const handleDeleteProfile = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/college/delete/${userId}`, {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/college/delete/${userId}`, {
         method: "DELETE",
       });
       if (response.ok) {
@@ -98,13 +99,13 @@ export const ClubProfile = () => {
 
   const handleDeleteEvent = async (eventId) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/collegeRep/delete/${eventId}`, {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/collegeRep/delete/${eventId}`, {
         method: "DELETE",
       });
       const data = await response.json();
       if (data.res === "ok") {
         toast.success("Event deleted successfully");
-        const updatedEvents = await fetch(`http://localhost:3000/api/collegeRep/events/${userId}`);
+        const updatedEvents = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/collegeRep/events/${userId}`);
         const updatedEventsData = await updatedEvents.json();
         if (updatedEvents.ok) {
           setEvents(updatedEventsData);
@@ -120,7 +121,7 @@ export const ClubProfile = () => {
   }
   const handleDeleteBlog = async (blogId) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/collegeRep/delete/blogs/${blogId}`, {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/collegeRep/delete/blogs/${blogId}`, {
         method: "DELETE",
       });
       console.log("Deleted blog?", response)
@@ -128,7 +129,7 @@ export const ClubProfile = () => {
       console.log(data)
       if (data.ok === true) {
         toast.success("Blog deleted successfully");
-        const updatedBlogs = await fetch(`http://localhost:3000/api/collegeRep/blogs/${userId}`);
+        const updatedBlogs = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/collegeRep/blogs/${userId}`);
         const updatedBlogsData = await updatedBlogs.json();
         if (updatedBlogs.ok) {
           setBlogs(updatedBlogsData);

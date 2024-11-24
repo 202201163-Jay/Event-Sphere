@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config';
 
 const Banner = () => {
   const [banners, setBanners] = useState([]);
@@ -10,7 +11,7 @@ const Banner = () => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/event/concerts'); // Replace with your API URL
+        const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/event/concerts`); // Replace with your API URL
         const data = await response.json();
         setBanners(data);
       } catch (error) {

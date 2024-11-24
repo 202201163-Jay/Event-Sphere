@@ -7,6 +7,7 @@ import Navbar from '../Home/Navbar';
 import Footer from '../Home/Footer';
 import { useAuth } from '../../Context/AuthProvider';
 import Cookies from "js-cookie";
+import config from '../../config';
 
 const userId = Cookies.get("userId");
 
@@ -45,7 +46,7 @@ export const CollegeProfile = () => {
   useEffect(() => {
     const fetchCollegeById = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/college/${userId}`);
+        const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/college/${userId}`);
         const data = await response.json();
 
         if (response.ok) {
@@ -91,7 +92,7 @@ export const CollegeProfile = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3000/api/college/club-signup", {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/college/club-signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -124,7 +125,7 @@ export const CollegeProfile = () => {
   const handleDeleteProfile = async () => {
     try {
       console.log(userId);
-      const response = await fetch(`http://localhost:3000/api/college/delete/${userId}`, {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/college/delete/${userId}`, {
         method: "DELETE",
       });
       if (response.ok) {

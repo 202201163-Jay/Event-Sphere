@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
+import config from '../../config';
 
 const PasswordCriteria = ({ password }) => {
   const criteria = [
@@ -57,7 +58,7 @@ export const Stu_Reg = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:3000/api/auth/student-signup", {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/student-signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -92,7 +93,7 @@ export const Stu_Reg = () => {
   useEffect(() => {
     const handleDelete = async () => {
       try {
-        const response = await axios.delete("http://localhost:3000/api/auth/deleteusers");
+        const response = await axios.delete(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/deleteusers`);
         
       } catch (error) {
         toast.error("Error deleting profile");

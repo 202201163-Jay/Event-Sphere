@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Context/AuthProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import config from '../../config';
 
 export const Forgot_Pass_Col = () => {
   const [collegeRep, setCollegeRep] = useState({
@@ -22,7 +23,7 @@ export const Forgot_Pass_Col = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/api/auth/college-login", {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/college-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(collegeRep),

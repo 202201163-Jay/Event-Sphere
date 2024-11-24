@@ -5,6 +5,7 @@ import Footer from "../Home/Footer.jsx";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from "js-cookie"
+import config from "../../config.js";
 
 export const Register_For_Event = () => {
   const { id } = useParams(); // Extract the event ID from the URL
@@ -17,7 +18,7 @@ export const Register_For_Event = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/event/${id}`); // Replace with your API URL
+        const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/event/${id}`); // Replace with your API URL
         const data = await response.json();
         setEvent(data);
       } catch (error) {
@@ -55,7 +56,7 @@ export const Register_For_Event = () => {
   const handleClick = async () => {
     try {
       console.log("H");
-      const response = await fetch(`http://localhost:3000/api/event/hi/${id}/${userId}`);
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/event/hi/${id}/${userId}`);
       console.log(response);
       const data = await response.json();
       if (response.ok) {
