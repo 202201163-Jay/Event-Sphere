@@ -7,12 +7,12 @@ const {temp} = require("../Controller/temp.js");
 const eventReg = require('../Controller/regcontroller.js');
 const router = express.Router();
 
-router.post("/listing", eventListing.createEvent);
+router.post("/listing", upload.fields([{ name: 'image', maxCount: 1 }]), eventListing.createEvent);
 router.get("/participants/:eventId",eventListing.getParticipants);
 router.get("/concerts", eventListing.getcontests);
 router.get("/:id", eventListing.getEvent);
 
-router.put('/update/:eventId',eventListing.updateEvent)
+router.put('/update/:eventId',upload.fields([{ name: 'image', maxCount: 1 }]), eventListing.updateEvent)
 router.get("/",temp);
 router.get("/hi/:eventId/:userId",eventReg.registerForEvent);
 router.get("/hi2/:eventId/:userId",eventReg.registerForEvent2);

@@ -38,6 +38,7 @@ export const App = () => {
       <Router >
         <AuthProvider>
           <Routes>
+            {/* <Route path="*" element={<NotFound />} /> */}
             <Route path='/login' element={<Login />} />
             <Route path='/logout' element={<Logout />} />
             <Route path="/blogs" element={<BlogPage />} />

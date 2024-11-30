@@ -9,10 +9,10 @@ exports.getParticipants = async (req, res) => {
   try {
     // console.log("Participants page", req.params.eventId)
     const participants = await Event.findOne({ _id: req.params.eventId }).populate({
-      path: 'registrations', // Populate 'registrations' array
+      path: 'registrations',
       populate: {
-        path: 'additionalDetails', // For each user, populate 'additionalDetails'
-        model: 'UserProfile', // Specify the model for nested population
+        path: 'additionalDetails',
+        model: 'UserProfile',
       },
     });
 
@@ -42,96 +42,106 @@ exports.getParticipants = async (req, res) => {
 }
 
 exports.createEvent = async (req, res) => {
-  upload2(req, res, async (err) => {
-    if (err) {
-      return res.status(500).json({ message: 'File upload error', error: err });
+  try {
+    const {
+      eventName,
+      description,
+      price,
+      registrationStartDate,
+      registrationEndDate,
+      startTime,
+      endTime,
+      type,
+      tags,
+      createdBy,
+      mode,
+      venue,
+      contactPersonEmail,
+      contactPersonPhone,
+      clubId,
+    } = req.body;
+
+    if (
+      !eventName ||
+      !description ||
+      !registrationStartDate ||
+      !registrationEndDate ||
+      !createdBy ||
+      !clubId
+    ) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
-    try {
-      const {
-        eventName,
-        description,
-        price,
-        registrationStartDate,
-        registrationEndDate,
-        startTime,
-        endTime,
-        type,
-        tags,
-        createdBy,
-        mode,
-        venue,
-        contactPersonEmail,
-        contactPersonPhone,
-        clubId,
-      } = req.body;
-
-      // Access uploaded poster file
-      const posterFile = req.file;
-
-      // Upload poster to Cloudinary and get URL
-      let posterUrl = null;
-      if (posterFile) {
-        const uploadResult = await uploadOnCloudinary(posterFile.path, "/eventsphere/events");
-        posterUrl = uploadResult ? uploadResult.url : null;
-      }
-
-      // Create a new event and save it to the database
-      const newEvent = new Event({
-        eventName,
-        description,
-        price,
-        poster: posterUrl,
-        listedAt: new Date(), // Default to current date if not provided
-        registrationStartDate: new Date(registrationStartDate),
-        registrationEndDate: new Date(registrationEndDate),
-        startTime: startTime || getDefaultStartTime(), // Use default function if not provided
-        endTime: endTime || getDefaultEndTime(),       // Use default function if not provided
-        type,
-        tags: JSON.parse(tags), // Ensure tags is parsed to array
-        createdBy, // Assuming createdBy is a valid ObjectId reference to CollegeRep
-        mode,
-        venue,
-        contactPersonEmail,
-        contactPersonPhone,
-        clubId,
-      });
-
-      await newEvent.save();
-
-      res.status(200).json({
-        message: 'Event created successfully!',
-        event: newEvent,
-      });
-    } catch (error) {
-      console.error("Error creating event:", error);
-      res.status(500).json({
-        message: 'An error occurred while creating the event',
-        error: error.message,
-      });
+    const uploadedFile = req.files?.image?.[0];
+    if (!uploadedFile) {
+      return res.status(400).json({ message: "No poster file uploaded" });
     }
-  });
+
+    const uploadResult = await uploadOnCloudinary(uploadedFile.buffer, "image");
+    if (!uploadResult || !uploadResult.secure_url) {
+      return res.status(500).json({ message: "Failed to upload poster to Cloudinary" });
+    }
+
+    const parsedTags = tags ? JSON.parse(tags) : [];
+    const newEvent = new Event({
+      eventName,
+      description,
+      price: price || 0,
+      poster: uploadResult.secure_url,
+      listedAt: new Date(),
+      registrationStartDate: new Date(registrationStartDate),
+      registrationEndDate: new Date(registrationEndDate),
+      startTime: startTime || null,
+      endTime: endTime || null,
+      type,
+      tags: parsedTags,
+      createdBy,
+      mode,
+      venue,
+      contactPersonEmail,
+      contactPersonPhone,
+      clubId,
+    });
+
+    await newEvent.save();
+
+    res.status(201).json({
+      message: "Event created successfully!",
+      event: newEvent,
+    });
+  } catch (error) {
+    console.error("Error creating event:", error.message);
+    res.status(500).json({
+      message: "An error occurred while creating the event",
+      error: error.message,
+    });
+  }
 };
 
+
 exports.updateEvent = async (req, res) => {
-  upload2(req, res, async (err) => {
   try {
       // console.log("Edit carried out");
       const { eventId } = req.params;
-      // console.log(req.body)
+
       const { tags, description, eventName, price, type, venue, createdBy, mode, registrationStartDate, registrationEndDate, startTime, endTime, contactPersonEmail, contactPersonPhone } = req.body;
+      const uploadedFile = req.files?.image?.[0];
+      if (!uploadedFile) {
+        return res.status(400).json({ message: "No poster file uploaded" });
+      }
 
-      // Parse tags if sent as JSON string
+      const uploadResult = await uploadOnCloudinary(uploadedFile.buffer, "image");
+      if (!uploadResult || !uploadResult.secure_url) {
+        return res.status(500).json({ message: "Failed to upload poster to Cloudinary" });
+      }
       const parsedTags = tags ? JSON.parse(tags) : [];
-      console.log("Description:", description, eventId, tags, description, eventName, price, type, venue, createdBy, mode, registrationStartDate, registrationEndDate, startTime, endTime, contactPersonEmail, contactPersonPhone);
-
-      // Find the event to update and update fields
       const updatedEvent = await Event.findOneAndUpdate(
           { _id: eventId },
           {
               description: description,
               eventName: eventName,
               price: price,
+              poster: uploadResult.secure_url,
               type: type,
               venue: venue,
               createdBy: createdBy,
@@ -144,7 +154,7 @@ exports.updateEvent = async (req, res) => {
               contactPersonPhone: contactPersonPhone,
               tags: parsedTags
           },
-          { new: true } // Return the updated document
+          { new: true }
       );
 
       // console.log("Updated Event:", updatedEvent);
@@ -160,7 +170,6 @@ exports.updateEvent = async (req, res) => {
       console.error("Error updating event:", error);
       res.status(500).json({ message: "Error updating event", error });
   }
-})
 };
 
 exports.getcontests = async (req, res) => {

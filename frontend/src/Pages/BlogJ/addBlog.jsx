@@ -35,27 +35,28 @@ export const AddBlog = () => {
       submissionData.append("image", posters); 
     }
 
-    const title=submissionData.get("title")
-    const college=submissionData.get("college")
-    const content=submissionData.get("content")
-
     if (title.length <= 3 || title.length >= 30) {
       toast.error('Title must be between 3 and 30 characters.');
       setLoading(false); 
       return;
     }
+
     if (college.length <= 3 || college.length >= 30) {
       toast.error('College must be between 3 and 30 characters.');
       setLoading(false); 
       return;
     }
 
+
     if (content.length <= 10 || title.length >= 1000) {
       toast.error('Content must be between 10 and 1000 characters.');
       setLoading(false); 
       return;
     }
+
     try {
+      console.log("hello");
+      console.log(...submissionData)
       await axios.post(`${config.BACKEND_API || "http://localhost:3000"}/api/blog/create`, submissionData, {
         headers: {
           "Content-Type": "multipart/form-data",
