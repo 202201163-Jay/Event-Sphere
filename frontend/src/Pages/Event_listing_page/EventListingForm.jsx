@@ -78,6 +78,25 @@ export const EventForm = () => {
       return;
     }
 
+    console.log("Heloo")
+
+    const title=formData.get("eventName")
+    console.log(title)
+    const venue=formData.get("venue")
+    console.log(venue)
+
+    if (title.length <= 3 || title.length >= 30) {
+      toast.error('Event Name must be between 3 and 30 characters.');
+      setIsButtonDisabled(false); 
+      return;
+    }
+
+    if (venue.length <= 3 || venue.length >= 50) {
+      toast.error('Venue must be between 3 and 50 characters.');
+      setIsButtonDisabled(false); 
+      return;
+    }
+
     
 
     const start = new Date(formData.get("registrationStartDate"));

@@ -69,6 +69,13 @@ export const Col_Reg = () => {
     };
 
     try {
+      // console.log(formData.collegeName)
+
+      if (formData.collegeName.length <= 3 || formData.collegeName.length >= 30) {
+        toast.error('College Name must be between 3 and 30 characters.');
+        setLoading(false); 
+        return;
+      }
       const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/college-register`, {
         method: "POST",
         headers: {

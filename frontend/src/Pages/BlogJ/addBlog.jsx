@@ -6,6 +6,7 @@ import Footer from "../Home/Footer";
 import EventDescription from "../Event_listing_page/eventDescription";
 import Cookies from "js-cookie";
 import config from "../../config";
+import { ToastContainer, toast } from 'react-toastify';
 
 const userId = Cookies.get("userId");
 
@@ -21,14 +22,35 @@ export const AddBlog = () => {
     const submissionData = new FormData(e.target);
     submissionData.append("clubId", userId);
     submissionData.append("date", Date.now());
+    const title=submissionData.get("title")
+    const college=submissionData.get("college")
+    const content=submissionData.get("content")
+
+    if (title.length <= 3 || title.length >= 30) {
+      toast.error('Title must be between 3 and 30 characters.');
+      setLoading(false); 
+      return;
+    }
+    if (college.length <= 3 || college.length >= 30) {
+      toast.error('College must be between 3 and 30 characters.');
+      setLoading(false); 
+      return;
+    }
+
+    if (content.length <= 10 || title.length >= 1000) {
+      toast.error('Content must be between 10 and 1000 characters.');
+      setLoading(false); 
+      return;
+    }
     try {
-      await axios.post(`${config.BACKEND_API || "http://localhost:3000"}/api/blog/create`, submissionData, {
+      await axios.post("http://localhost:3000/api/blog/create", submissionData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
       navigate("/blogs");
     } catch (error) {
+      setLoading(false); 
       console.error("Error adding blog:", error);
     } finally {
       setLoading(false); // Set loading state to false after submission attempt
@@ -39,6 +61,7 @@ export const AddBlog = () => {
     <>
       <div className="bg-cyan-100">
         <Navbar />
+        <ToastContainer/>
 
         <div className="max-w-3xl mx-auto mt-32 mb-4 p-8 shadow-lg rounded-lg bg-gray-900 border border-gray-700">
           <h1 className="text-3xl font-bold mb-6 text-center text-yellow-400">Add New Blog</h1>

@@ -58,7 +58,19 @@ export const Stu_Reg = () => {
         return;
       }
 
-      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/student-signup`, {
+      if (formData.firstName.length <= 1 || formData.firstName.length >= 30) {
+        toast.error('First Name must be between 8 and 30 characters.');
+        setLoading(false); // Set loading state to false if validation fails
+        return;
+      }
+
+      if (formData.lastName.length <= 1 || formData.lastName.length >= 30) {
+        toast.error('Last Name must be between 8 and 30 characters.');
+        setLoading(false); // Set loading state to false if validation fails
+        return;
+      }
+
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/student-signu`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
