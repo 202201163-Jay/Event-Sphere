@@ -5,7 +5,8 @@ import EventDescription from './eventDescription';
 import Navbar from '../Home/Navbar';
 import Footer from '../Home/Footer';
 import axios from "axios";
-const userId = localStorage.getItem("userId");
+import Cookies from "js-cookie"
+const userId = Cookies.get("userId");
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, useParams } from 'react-router-dom';

@@ -25,9 +25,11 @@ export const ClubProfile = () => {
       const fetchEventDetails = async () => {
         try {
           const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/collegeRep/events/${userId}`);
+          console.log(userId);
           const data = await response.json();
           if (response.ok) {
             setEvents(data);
+            console.log(events)
           } else {
             toast.error(data.message || 'Failed to fetch event data');
           }

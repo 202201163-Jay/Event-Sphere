@@ -4,6 +4,7 @@ const { uploadOnCloudinary } = require("../config/cloudinary");
 const {upload} = require("../middleware/multer")
 
 const createBlog = async (req, res) => {
+  
   upload(req, res, async(err) => {
     if (err) {
       return res.status(500).json({ message: 'File upload error', error: err });
