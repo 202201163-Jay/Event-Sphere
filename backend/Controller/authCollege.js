@@ -43,6 +43,15 @@ exports.signup = async (req, res) => {
         if (existingCollege) {
             return res.status(400).json({ message: "College email already registered." });
         }
+        console.log("Here")
+
+        const existingCollegeDomain = await College.findOne({ emailDomain });
+        if (existingCollegeDomain) {
+            return res.status(400).json({ message: "College email domain already registered." });
+        }
+
+        console.log("He")
+
 
         const { error } = validateUser({ password });
             if (error) {
