@@ -36,7 +36,7 @@ const PasswordCriteria = ({ password }) => {
 };
 
 
-export const CollegeProfile = () => {
+export const ClubProfile = () => {
   const [activeSection, setActiveSection] = useState('profile');
   const navigate = useNavigate();
   const [collegeData, setCollegeData] = useState(null);

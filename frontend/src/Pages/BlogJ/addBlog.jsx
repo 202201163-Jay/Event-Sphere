@@ -14,14 +14,27 @@ export const AddBlog = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  const [title, setTitle] = useState("");
+  const [college, setCollege] = useState("");
+  const [content, setContent] = useState("");
+  const [posters, setImage] = useState(null);
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading state to true when submission starts
+    setLoading(true);
 
-    const submissionData = new FormData(e.target);
+    const submissionData = new FormData();
+    submissionData.append("title", title);
+    submissionData.append("college", college);
+    submissionData.append("content", content);
     submissionData.append("clubId", userId);
     submissionData.append("date", Date.now());
+
+    if (posters) {
+      submissionData.append("image", posters); 
+    }
+
     const title=submissionData.get("title")
     const college=submissionData.get("college")
     const content=submissionData.get("content")
@@ -43,7 +56,7 @@ export const AddBlog = () => {
       return;
     }
     try {
-      await axios.post("http://localhost:3000/api/blog/create", submissionData, {
+      await axios.post(`${config.BACKEND_API || "http://localhost:3000"}/api/blog/create`, submissionData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -53,7 +66,7 @@ export const AddBlog = () => {
       setLoading(false); 
       console.error("Error adding blog:", error);
     } finally {
-      setLoading(false); // Set loading state to false after submission attempt
+      setLoading(false);
     }
   };
 
@@ -61,7 +74,6 @@ export const AddBlog = () => {
     <>
       <div className="bg-cyan-100">
         <Navbar />
-        <ToastContainer/>
 
         <div className="max-w-3xl mx-auto mt-32 mb-4 p-8 shadow-lg rounded-lg bg-gray-900 border border-gray-700">
           <h1 className="text-3xl font-bold mb-6 text-center text-yellow-400">Add New Blog</h1>
@@ -70,27 +82,19 @@ export const AddBlog = () => {
               <label className="block text-lg font-medium text-yellow-400">Title</label>
               <input
                 type="text"
-                name="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 className="w-full p-3 border border-gray-600 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
                 required
               />
             </div>
 
-            {/* <div className="form-group">
-              <label className="block text-lg font-medium text-yellow-400">Date</label>
-              <input
-                type="date"
-                name="date"
-                className="w-full p-3 border border-gray-600 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
-                required
-              />
-            </div> */}
-
             <div className="form-group">
               <label className="block text-lg font-medium text-yellow-400">College</label>
               <input
                 type="text"
-                name="college"
+                value={college}
+                onChange={(e) => setCollege(e.target.value)}
                 className="w-full p-3 border border-gray-600 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
                 required
               />
@@ -99,18 +103,19 @@ export const AddBlog = () => {
             <div className="form-group">
               <label className="block text-lg font-bold text-yellow-400">Content</label>
               <textarea
-                name="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
                 className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
                 rows="5"
-                required />
+                required
+              />
             </div>
 
             <div className="form-group">
               <label className="block text-lg font-medium text-yellow-400">Images</label>
               <input
-                name="posters"
                 type="file"
-                multiple
+                onChange={(e) => setImage(e.target.files[0])}
                 className="w-full p-3 border border-gray-600 rounded-md bg-gray-800 text-gray-200 focus:border-yellow-400 focus:ring focus:ring-yellow-200"
               />
             </div>

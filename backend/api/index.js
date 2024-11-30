@@ -13,8 +13,8 @@ const collegeRep=require('../routes/collegeRep')
 const app = express();
 
 const corsOptions = {
-    origin: "https://event-sphere-g11.vercel.app",
-    // origin: "*",
+    // origin: "https://event-sphere-g11.vercel.app",
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD"],
     allowedHeaders:["Content-Type"],
     credentials: true,
@@ -54,6 +54,5 @@ connectDb().then(() => {
         console.log(`Server is running at port: ${PORT}`);
     });
 });
-cloudinaryConnect();
 
 module.exports = app;
