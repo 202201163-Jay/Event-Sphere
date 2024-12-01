@@ -4,6 +4,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios"
 import config from '../../config';
+import bg1 from "../../../public/assets/images/bg1.jpg";
+import bg2 from "../../../public/assets/images/bg2.jpg";
 
 const PasswordCriteria = ({ password }) => {
   const criteria = [
@@ -127,21 +129,21 @@ export const Col_Reg = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
+    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8" style={{ backgroundImage: `url(${bg2})` }}>
       <ToastContainer />
-      <div className="w-[500px] bg-gray-800 text-white shadow-lg rounded-lg p-8">
-        <Link
+      <Link
           to="/"
           className="absolute top-4 left-4 text-yellow-500 hover:text-yellow-600 font-semibold"
         >
           &#8592; Back to Home
         </Link>
+      <div className="w-[500px] bg-gray-800 text-white shadow-lg rounded-lg p-8 bg-gray-900/50 backdrop-blur-md text-white">
         <div className="text-center mb-4">
           <h2 className="text-2xl font-bold text-center mb-4">Join us</h2>
           <h3 className="text-lg text-center mb-2">Boost your events and make an impact!</h3>
         </div>
 
-        <div className="overflow-y-auto max-h-[50vh] p-4 border rounded-lg bg-gray-800">
+        <div className="overflow-y-auto max-h-[50vh] p-4 border rounded-lg bg-gray-800 bg-gray-900/50 ">
           <form className="w-full" onSubmit={handleSubmit}>
             <div className='mb-4'>
               <label className="text-sm font-semibold text-gray-400">College Name *</label>

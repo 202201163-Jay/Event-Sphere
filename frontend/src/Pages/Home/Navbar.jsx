@@ -71,7 +71,7 @@ const Navbar = () => {
   return (
     <>
       <div
-        className={`max-w-screen-2xl container mx-auto md:px-6 px-4 fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${sticky
+        className={`max-w-screen-2xl h-[112px] flex items-center justify-center container mx-auto md:px-6 px-4 fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${sticky
           ? "sticky-navbar bg-gray-900/50 backdrop-blur-md text-white"
           : "bg-gray-800 text-white"
           }`}
@@ -123,17 +123,17 @@ const Navbar = () => {
             {isLoggedIn ? (
               <div className="relative">
 
-                <div className="flex rounded-full items-center space-x-2 h-20">
+                <div className="flex rounded-full items-center space-x-2">
                   <Link to={`/profile/${userId}`}>
                     <img
                       src={image || "https://via.placeholder.com/80"}
                       alt="Profile"
-                      className="w-10 h-10 rounded-full shadow-md"
+                      className="w-10 h-10 rounded-full shadow-md m-1"
                     />
                   </Link>
 
 
-                  <span className="ml-2 text-lg font-medium text-yellow-500">{`Hi! ${name}`}</span>
+                  <span className="ml-2 text-lg font-medium text-yellow-500 text-center truncate overflow-hidden whitespace-nowrap text-ellipsis">{`Hi! ${name}`}</span>
                   <div className="group relative">
                     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         <button

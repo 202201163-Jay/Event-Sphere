@@ -73,10 +73,11 @@ export const AddBlog = () => {
 
   return (
     <>
-      <div className="bg-cyan-100">
+      <div className="">
         <Navbar />
 
         <div className="max-w-3xl mx-auto mt-32 mb-4 p-8 shadow-lg rounded-lg bg-gray-900 border border-gray-700">
+        <ToastContainer/>
           <h1 className="text-3xl font-bold mb-6 text-center text-yellow-400">Add New Blog</h1>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="form-group">

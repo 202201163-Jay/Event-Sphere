@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Cookies from "js-cookie";
 import axios from "axios"
 import config from '../../config';
+import bg1 from "../../../public/assets/images/bg1.jpg";
+import bg2 from "../../../public/assets/images/bg2.jpg";
 
 export const Stu_Login = () => {
   const [user, setUser] = useState({
@@ -72,9 +74,17 @@ export const Stu_Login = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-900 py-8">
+    <div
+    className="flex flex-col items-center justify-center w-full min-h-screen bg-cover bg-center py-8"
+    style={{ backgroundImage: `url(${bg2})` }}>
       <ToastContainer/>
-      <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8">
+      <Link
+          to="/"
+          className="absolute top-4 left-4 text-yellow-500 hover:text-yellow-600 font-semibold"
+        >
+          &#8592; Back to Home
+        </Link>
+      <div className="w-full max-w-md bg-gray-800 text-white shadow-lg rounded-lg p-8 bg-gray-900/50 backdrop-blur-md text-white">
         <h2 className="text-2xl font-bold text-center mb-6">Welcome Back!</h2>
         <h3 className="text-lg text-center mb-4">Login to your Account</h3>
         <p className="text-center mb-6">Let's start exploring events tailored for you!</p>

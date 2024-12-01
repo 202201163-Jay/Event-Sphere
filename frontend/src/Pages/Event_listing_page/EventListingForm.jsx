@@ -344,7 +344,7 @@ export const EventForm = () => {
             <div className="form-group">
               <label>Contact Person 1 Email</label>
               <input
-                className="text-black"
+                className="text-white"
                 type="email"
                 name="contactPersonEmail"
                 placeholder="Enter Email"
@@ -357,7 +357,7 @@ export const EventForm = () => {
             <div className="form-group">
               <label>Contact Person 1 Phone</label>
               <input
-                className="text-black"
+                className="text-white"
                 type="tel"
                 name="contactPersonPhone"
                 placeholder="Enter Phone Number"

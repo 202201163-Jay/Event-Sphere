@@ -56,7 +56,7 @@ export const FAQ = () => {
     return (
         <div>
             <Navbar />
-            <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white">
+            <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white mt-12">
                 {/* Hero Section */}
                 <div className="container mx-auto px-6 py-28">
                     <div className="text-center mb-16">
