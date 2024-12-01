@@ -30,6 +30,13 @@ import { Events_Page } from './Pages/EventDetails/Events_Page';
 import { Register_For_Event } from './Pages/EventDetails/Register_For_Event';
 import { Payment } from './Pages/EventDetails/Payment';
 import Cookies from "js-cookie"
+import { AboutUs } from './Pages/Home/About_us';
+import {ErrorPage} from './Pages/Home/Error_page';
+import {FAQ} from './Pages/Home/FAQ';
+import { AdminProfile } from './Pages/Admin/Profile';
+import {Blogs} from './Pages/Admin/Blogs'
+import {Events} from './Pages/Admin/Events'
+import {Clubs} from './Pages/Admin/Clubs'
 
 export const App = () => {
   const type = Cookies.get("type");
@@ -60,6 +67,13 @@ export const App = () => {
             <Route path="/" element={<Home />} />
             <Route path='/event/:id' element={<Register_For_Event/>} />
             <Route path='/payment/:id' element={<Payment/>} />
+            <Route path='/aboutus' element={<AboutUs/>} />
+            <Route path='/error' element={<ErrorPage/>} />
+            <Route path='/FAQ' element={<FAQ/>} />
+            <Route path='/admin-profile' element={<AdminProfile/>}/>
+            <Route path='/admin-blogs' element={<Blogs/>}/>
+            <Route path='/admin-events' element={<Events/>}/>
+            <Route path='/admin-clubs' element={<Clubs/>}/>
 
             {type === "club" && (
               <>
