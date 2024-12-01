@@ -142,7 +142,10 @@ const Navbar = () => {
                               window.location.href = "/college-profile";
                             } else if (type === "club") {
                               window.location.href = "/club-profile";
-                            } else {
+                            } else if (type === "user" && userId === "674c6a061769a00957ce9c86"){
+                              window.location.href = "/admin-profile";
+                            }
+                            else{
                               window.location.href = "/student-profile";
                             }
                           }}

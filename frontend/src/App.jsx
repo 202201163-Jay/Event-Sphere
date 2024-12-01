@@ -40,6 +40,7 @@ import {Clubs} from './Pages/Admin/Clubs'
 
 export const App = () => {
   const type = Cookies.get("type");
+  const userId = Cookies.get("userId");
   return (
     <>
       <Router >
@@ -70,17 +71,22 @@ export const App = () => {
             <Route path='/aboutus' element={<AboutUs/>} />
             <Route path='/error' element={<ErrorPage/>} />
             <Route path='/FAQ' element={<FAQ/>} />
-            <Route path='/admin-profile' element={<AdminProfile/>}/>
-            <Route path='/admin-blogs' element={<Blogs/>}/>
-            <Route path='/admin-events' element={<Events/>}/>
-            <Route path='/admin-clubs' element={<Clubs/>}/>
+
 
             {type === "club" && (
               <>
                 <Route path='/participants/:eventId' element={<Participants/>} />
               </>
             )}
-            {type === "user" && (
+            {type === "user" && userId === "674c6a061769a00957ce9c86" && (
+              <>
+                <Route path='/admin-profile' element={<AdminProfile/>}/>
+                <Route path='/admin-blogs/:id' element={<Blogs/>}/>
+                <Route path='/admin-events/:id' element={<Events/>}/>
+                <Route path='/admin-clubs/:id' element={<Clubs/>}/>
+              </>
+            )}
+            {type === "user" && userId != "674c6a061769a00957ce9c86" && (
               <Route path="/student-profile" element={<ProfilePage />} />
             )}
             {type === "college" && (

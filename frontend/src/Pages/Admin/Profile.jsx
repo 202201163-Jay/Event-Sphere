@@ -16,6 +16,28 @@ export const AdminProfile = () => {
   const navigate = useNavigate();
   const image = Cookies.get("image");
   const [loading, setLoading] = useState(false);
+  const [colleges, setColleges] = useState(null);
+  useEffect(() => {
+    const fetchColleges = async () => {
+      try {
+        const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/admin/colleges`);
+        const data = await response.json();
+        console.log(data);
+        if (response.ok) {
+          setColleges(data);
+        } else {
+          toast.error(data.message || 'Failed to fetch colleges');
+        }
+      } catch (error) {
+        toast.error('Error fetching colleges');
+      }
+    };
+    // if (userId) {
+      fetchColleges();
+    // }
+  }, []);
+
+  console.log(colleges)
 
   const renderContent = () => {
     switch (activeSection) {
@@ -26,7 +48,7 @@ export const AdminProfile = () => {
             <div className="relative border border-gray-700 rounded-lg p-4 mb-8 bg-gray-800">
               <div className="flex items-center space-x-4">
                 <img
-                  src={image || "https://via.placeholder.com/80"}
+                  src={`https://api.dicebear.com/5.x/initials/svg?seed=Event Sphere`}
                   alt="Profile"
                   className="w-20 h-20 rounded-full shadow-md"
                 />
@@ -39,37 +61,29 @@ export const AdminProfile = () => {
         );
       case 'Colleges':
         return (
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
-            <ToastContainer />
-            <div className="text-center mb-10">
-              <h4 className="text-2xl font-semibold text-yellow-500">View registered colleges</h4>
+            <div className="overflow-y-auto relative border border-gray-700 rounded-lg p-4 bg-gray-800">
+              <h4 className="text-lg font-semibold text-yellow-500 mb-2 flex justify-center">Registered Colleges</h4>
+              <div className='overflow-y-auto max-h-[40vh] p-4 border-none rounded-lg bg-gray-800'>
+                <ul className="list-none pl-0 space-y-4">
+                  {colleges? (
+                    colleges.map((college) => (
+                      <li key={college._id} className="bg-gray-700 p-4 rounded-lg shadow-lg">
+                        <Link to={`/admin-clubs/${college._id}`}>
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-lg text-gray-400">{college.name}</span>
+                            <span className="text-sm text-gray-400">{college.email}</span>
+                          </div>
+                        </Link>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="bg-gray-700 p-4 rounded-lg shadow-lg text-center text-gray-400">
+                      No colleges available
+                    </li>
+                  )}
+                </ul>
+              </div>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="text-sm font-semibold text-gray-400">Club Name *</label>
-                <input
-                  className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                  name="clubName"
-                  placeholder="Enter club name"
-                  value={formData.clubName}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold text-gray-400">Club email *</label>
-                <input
-                  className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500"
-                  type="email"
-                  name="email"
-                  placeholder="Enter club email address"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-            </form>
-          </div>
         );
       default:
         return null;
@@ -86,7 +100,7 @@ export const AdminProfile = () => {
         >
           &#8592; Back to Home
         </Link>
-        <h2 className="text-2xl font-bold text-center mb-6">Account</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Admin</h2>
 
         <div className="flex">
           <aside className="w-1/4 space-y-6 pr-4 border-r border-gray-700">
@@ -98,7 +112,7 @@ export const AdminProfile = () => {
             </button>
             <button
               className={`w-full text-left text-lg font-semibold py-2 px-4 rounded-md ${activeSection === 'Colleges' ? 'text-yellow-500 bg-gray-700' : 'text-gray-300 hover:bg-gray-700'}`}
-              onClick={() => setActiveSection('add-club')}
+              onClick={() => setActiveSection('Colleges')}
             >
               Colleges
             </button>

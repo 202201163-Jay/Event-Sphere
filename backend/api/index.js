@@ -10,6 +10,7 @@ require("dotenv").config();
 const eventRoutes = require("../routes/eventRoutes")
 const homepageRoutes = require("../routes/homepageRoutes")
 const collegeRep=require('../routes/collegeRep')
+const adminroutes = require("../routes/adminroutes")
 const app = express();
 
 const corsOptions = {
@@ -41,7 +42,8 @@ app.use("/api/college",college)
 app.use("/api/event",eventRoutes);
 app.use("/api/asd",eventRoutes)
 app.use("/api/home",homepageRoutes);
-app.use("/api/collegeRep",collegeRep)
+app.use("/api/collegeRep",collegeRep);
+app.use("/api/admin", adminroutes);
 
 
 app.get("/", (req, res) => {

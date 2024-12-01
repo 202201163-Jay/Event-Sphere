@@ -70,7 +70,7 @@ export const Stu_Reg = () => {
         return;
       }
 
-      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/student-signu`, {
+      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/auth/student-signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

@@ -20,10 +20,27 @@ exports.registerForEvent = async (req, res) => {
 
 
     // Check registration dates
-    // const currentDate = new Date();
-    // if (currentDate < event.registrationStartDate || currentDate > event.registrationEndDate) {
-    //   return res.status(400).json({ error: "Registration is not open for this event." });
-    // }
+    const currentDate = new Date();
+
+    // Parse registration start and end dates
+    const registrationStartDate = new Date(event.registrationStartDate);
+    const registrationEndDate = new Date(event.registrationEndDate);
+
+    if (currentDate.toDateString() === registrationStartDate.toDateString()) {
+      if (currentDate.getTime() < event.startTime) {
+        return res.status(400).json({ message: "Registration has not started yet." });
+      }
+    } 
+    else if (currentDate.toDateString() === registrationEndDate.toDateString()) {
+      if (currentDate.getTime() > event.endTime) {
+        return res.status(400).json({ message: "Registration is already closed." });
+      }
+    } 
+    else if (
+      currentDate < registrationStartDate || currentDate > registrationEndDate
+    ) {
+      return res.status(400).json({ message: "Registration is not open for this event." });
+    }
 
     // Fetch user details
     const user = await User.findOne({ _id: userId }).populate("college");

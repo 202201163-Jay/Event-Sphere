@@ -121,30 +121,6 @@ export const ClubProfile = () => {
       toast.error("Error deleting event");
     }
   }
-  const handleDeleteBlog = async (blogId) => {
-    try {
-      const response = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/collegeRep/delete/blogs/${blogId}`, {
-        method: "DELETE",
-      });
-      console.log("Deleted blog?", response)
-      const data = await response.json();
-      console.log(data)
-      if (data.ok === true) {
-        toast.success("Blog deleted successfully");
-        const updatedBlogs = await fetch(`${config.BACKEND_API || "http://localhost:3000"}/api/collegeRep/blogs/${userId}`);
-        const updatedBlogsData = await updatedBlogs.json();
-        if (updatedBlogs.ok) {
-          setBlogs(updatedBlogsData);
-        } else {
-          toast.error("Error fetching updated blogs");
-        }
-      } else {
-        toast.error("Error deleting Blogg");
-      }
-    } catch (error) {
-      toast.error("Error deleting Blog");
-    }
-  }
 
 
   const renderContent = () => {
