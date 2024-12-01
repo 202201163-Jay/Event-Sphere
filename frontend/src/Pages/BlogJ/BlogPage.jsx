@@ -71,8 +71,8 @@ export const BlogPage = () => {
 
   return (
 
-  <>
-    <div className="container mx-auto mt-12 p-4 bg-black">
+  <div className="bg-black">
+    <div className="container mx-auto mt-12 p-4 ">
 
     <Navbar></Navbar>
 
@@ -155,7 +155,7 @@ export const BlogPage = () => {
     <div className="mt-0">
     <Footer></Footer>
     </div>
-  </>
+  </div>
 
   );
 };

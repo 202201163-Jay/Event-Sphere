@@ -29,7 +29,7 @@ export const AboutUs = () => {
                 {/* Hero Section */}
                 <div className="container mx-auto px-6 py-28">
                     <div className="text-center mb-16">
-                        <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-yellow-400 to-yellow-600 text-transparent bg-clip-text animate-pulse">
+                        <h1 className="text-5xl font-bold mt-12 mb-6 bg-gradient-to-r from-yellow-400 to-yellow-600 text-transparent bg-clip-text animate-pulse">
                             About Us
                         </h1>
                         <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
