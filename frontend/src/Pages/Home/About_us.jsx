@@ -10,6 +10,7 @@ import DD from "../../../public/assets/images/DD_SE.jpg";
 import Kathan from "../../../public/assets/images/Kathan_SE.jpg";
 import Rishi from "../../../public/assets/images/Rishi_SE.jpg";
 import Sahil from "../../../public/assets/images/Sahil_SE.jpg";
+import Parshwa from "../../../public/assets/images/Parshwa_SE.png";
 
 const techStack = [
     { name: "React", iconSrc: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" },
@@ -63,16 +64,33 @@ export const AboutUs = () => {
                             Meet Our Team
                         </h2>
                         <div className="grid grid-cols-4 gap-10">
-                            <TeamMember image={Jay} name="Jay" />
-                            <TeamMember image={Het} name="Het" />
-                            <TeamMember image={Smit} name="Smit" />
-                            <TeamMember image={DD} name="Dhrudeep" />
+                            <a href="https://github.com/Jay-R-Goyani" target="_blank" rel="noopener noreferrer">
+                                <TeamMember image={Jay} name="Jay" />
+                            </a>
+                            <a href="https://github.com/Het255" target="_blank" rel="noopener noreferrer">
+                                <TeamMember image={Het} name="Het" />
+                            </a>
+                            <a href="https://github.com/202201162-Smit" target="_blank" rel="noopener noreferrer">
+                                <TeamMember image={Smit} name="Smit" />
+                            </a>
+                            <a href="https://github.com/202201150-Dhrudeep" target="_blank" rel="noopener noreferrer">
+                                <TeamMember image={DD} name="Dhrudeep" />
+                            </a>
+                            <a href="https://github.com/Kathan-Kadiya" target="_blank" rel="noopener noreferrer">
+                                <TeamMember image={Kathan} name="Kathan" />
+                            </a>
+                            <a href="https://github.com/Rishishah631" target="_blank" rel="noopener noreferrer">
+                                <TeamMember image={Rishi} name="Rishi" />
+                            </a>
+                            <a href="https://github.com/202201171-Sahil" target="_blank" rel="noopener noreferrer">
+                                <TeamMember image={Sahil} name="Sahil" />
+                            </a>
+                            <a href="https://github.com/Git-Parshwa" target="_blank" rel="noopener noreferrer">
+                                <TeamMember image={Parshwa} name="Parshwa" />
+                            </a>
                         </div>
-                        <div className="grid grid-cols-3 gap-10 mt-10">
-                            <TeamMember image={Kathan} name="Kathan" />
-                            <TeamMember image={Rishi} name="Rishi" />
-                            <TeamMember image={Sahil} name="Sahil" />
-                        </div>
+
+
                     </div>
 
                     {/* Tech Stack */}
@@ -88,12 +106,15 @@ export const AboutUs = () => {
                     {/* Footer */}
                     <footer className="text-center text-gray-400">
                         <div className="flex justify-center gap-6 mb-8">
-                            <a href="#" className="hover:text-purple-400 transition-colors">
-                                <Github className="w-8 h-8" />
-                            </a>
-                            <a href="#" className="hover:text-blue-400 transition-colors">
-                                <Twitter className="w-8 h-8" />
-                            </a>
+                        <a
+                            href="https://github.com/202201163-Jay/Event-Sphere"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-purple-400 transition-colors"
+                        >
+                            <Github className="w-8 h-8" />
+                        </a>
+                            
                         </div>
                         <p>© All rights reserved.</p>
                     </footer>
@@ -120,7 +141,7 @@ function TeamMember({ image, name, role }) {
             <img
                 src={image}
                 alt={name}
-                className="w-36 h-36 rounded-full mx-auto mb-4 object-cover border-4 border-yellow-100 shadow-lg"
+                className="w-36 h-36 rounded-full mx-auto mb-4 object-cover border-4 border-yellow-500 shadow-lg"
             />
             <h3 className="text-lg font-bold">{name}</h3>
             <p className="text-gray-400">{role}</p>

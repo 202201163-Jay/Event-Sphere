@@ -33,6 +33,10 @@ import Cookies from "js-cookie"
 import { AboutUs } from './Pages/Home/About_us';
 import {ErrorPage} from './Pages/Home/Error_page';
 import {FAQ} from './Pages/Home/FAQ';
+import { AdminProfile } from './Pages/Admin/Profile';
+import {Blogs} from './Pages/Admin/Blogs'
+import {Events} from './Pages/Admin/Events'
+import {Clubs} from './Pages/Admin/Clubs'
 
 export const App = () => {
   const type = Cookies.get("type");
@@ -66,6 +70,10 @@ export const App = () => {
             <Route path='/aboutus' element={<AboutUs/>} />
             <Route path='/error' element={<ErrorPage/>} />
             <Route path='/FAQ' element={<FAQ/>} />
+            <Route path='/admin-profile' element={<AdminProfile/>}/>
+            <Route path='/admin-blogs' element={<Blogs/>}/>
+            <Route path='/admin-events' element={<Events/>}/>
+            <Route path='/admin-clubs' element={<Clubs/>}/>
 
             {type === "club" && (
               <>

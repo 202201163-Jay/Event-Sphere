@@ -58,8 +58,12 @@ const Navbar = () => {
         <Link to="/blogs" className="text-yellow-500 hover:text-yellow-200">Blogs</Link>
       </li>
       <li>
-        <a className="text-yellow-500 hover:text-yellow-200">About</a>
+        <Link to="/aboutus" className="text-yellow-500 hover:text-yellow-200">About Us</Link>
       </li>
+      <li>
+        <Link to="/FAQ" className="text-yellow-500 hover:text-yellow-200">FAQ</Link>
+      </li>
+      
 
     </>
   );
@@ -95,9 +99,17 @@ const Navbar = () => {
                 {navItems}
               </ul>
             </div>
-            <Link className="text-2xl font-bold cursor-pointer text-yellow-500" to="/">
-              Event Sphere
+            
+            <Link className="text-2xl font-bold cursor-pointer text-yellow-500 flex items-center space-x-2" to="/">
+              <img
+                src="https://res.cloudinary.com/dggywuuhe/image/upload/v1733046340/logo_SE_final_u0tuff.png"
+                alt="Company Logo"
+                className="h-10 w-auto"
+              />
+              <span>Event Sphere</span>
             </Link>
+
+
           </div>
           <div className="navbar-end space-x-6">
             <div className="navbar-center lg:flex">
