@@ -58,13 +58,18 @@ export const Stu_Reg = () => {
         return;
       }
 
-      if (formData.firstName.length <= 1 || formData.firstName.length >= 30) {
+      const F_len=formData.get("firstName")
+      console.log(F_len)
+      const L_len=formData.get("lastName")
+      console.log(L_len)
+
+      if (F_len.length <= 1 || F_len.length >= 30) {
         toast.error('First Name must be between 8 and 30 characters.');
         setLoading(false); // Set loading state to false if validation fails
         return;
       }
 
-      if (formData.lastName.length <= 1 || formData.lastName.length >= 30) {
+      if (L_len.length <= 1 || L_len.length >= 30) {
         toast.error('Last Name must be between 8 and 30 characters.');
         setLoading(false); // Set loading state to false if validation fails
         return;
