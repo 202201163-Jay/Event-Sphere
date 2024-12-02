@@ -10,12 +10,9 @@ const temp=async (req,res)=> {
         const query = {};
     
         // Convert stringified arrays back to actual arrays
-        const parsedSelectedTags = Array.isArray(selectedTags) 
-        ? selectedTags 
-        : JSON.parse(selectedTags);
-      const parsedSelectedTypes = Array.isArray(selectedTypes) 
-        ? selectedTypes 
-        : JSON.parse(selectedTypes);
+        const parsedSelectedTags = selectedTags ? JSON.parse(selectedTags) : [];
+        const parsedSelectedTypes = selectedTypes ? JSON.parse(selectedTypes) : [];
+    
         // Use the parsed arrays in your query
         if (parsedSelectedTags.length) {
           query.tags = { $in: parsedSelectedTags };
