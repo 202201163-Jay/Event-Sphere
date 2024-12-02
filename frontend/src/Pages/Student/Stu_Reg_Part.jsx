@@ -123,7 +123,7 @@ export const Stu_Reg = () => {
         >
           &#8592; Back to Home
         </Link>
-      <div className="w-full w-[450px] bg-gray-800 text-white shadow-lg rounded-lg p-8 bg-gray-900/50 backdrop-blur-md text-white">
+      <div className="w-[450px] bg-gray-800 text-white shadow-lg rounded-lg p-8 bg-gray-900/50 backdrop-blur-md text-white">
         <h2 className="text-2xl font-bold text-center mb-2">Welcome Aboard!</h2>
         <h3 className="text-lg text-center mb-6">Sign up to join the community</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
