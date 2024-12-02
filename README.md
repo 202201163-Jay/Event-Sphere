@@ -11,7 +11,7 @@ Our platform serves as a professional online event management system, enabling c
 ---
 
 ## ⬇️ Youtube Demo link ⬇️  
-[Demo Videol 🔗](https://youtu.be/5EN16JZaEkg)  
+[Demo Video 🔗](https://youtu.be/5EN16JZaEkg)  
 
 ---
 
