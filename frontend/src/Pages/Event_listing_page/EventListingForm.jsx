@@ -374,6 +374,7 @@ export const EventForm = () => {
                   type="file"
                   name="poster"
                   accept="image/*"
+                  required
                 />
               </div>
           </div>
