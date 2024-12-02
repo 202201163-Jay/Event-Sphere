@@ -17,11 +17,10 @@ exports.getLatest = async (req, res) => {
 exports.getTrending = async (req, res) => {
     try {
         // console.log("ttrr");
-        // Fetch events and sort by the count of registrations in descending order
         const trendingEvents = await Event.find({})
-            .sort({ 'registrations.length': 1 }) // Sort by number of registrations
-            .limit(3); // Limit the number of events returned
-
+            .sort({ 'registrations.length': 1 })
+            .limit(3);
+        
         res.status(200).json({ trendingEvents, status: "ok" });
     } catch (error) {
         res.status(500).json({ error: 'Error fetching trending events' });
