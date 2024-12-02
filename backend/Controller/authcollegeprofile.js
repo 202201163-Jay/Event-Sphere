@@ -222,7 +222,7 @@ module.exports.getCollegeById = async (req, res) => {
   try {
     const { userId } = req.params; 
     // console.log(userId);
-    const college = await College.findOne({ _id: userId }).populate('collegeRepresentatives');
+    const college = await College.findOne({ _id: userId }).populate('collegeRepresentatives').exec();
 
     if (!college) {
       return res.status(404).json({ message: "College not found" });
